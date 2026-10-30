@@ -5,9 +5,11 @@
 //   /lab/planet?id=<planet-id>   single PlanetViewport (← / → to cycle)
 //   /lab/gallery                 all fixtures in one canvas
 //   /lab/system?host=<host>      SystemExplorer over lab fixtures + synthetic test system
+//   /lab/profile?id=<planet-id>  PlanetProfile (planet page template) over lab fixtures
 
 import { useEffect, useMemo, useState } from 'react'
 import SystemExplorer from '../../pages/explore/SystemExplorer.jsx'
+import PlanetProfile from '../../pages/planet/PlanetProfile.jsx'
 import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router'
 import { visualParams } from '../planet/visualParams.js'
 import PlanetViewport from '../viewports/PlanetViewport.jsx'
@@ -22,6 +24,7 @@ const MODES = [
   { key: 'planet', label: 'PlanetViewport' },
   { key: 'gallery', label: 'Gallery' },
   { key: 'system', label: 'SystemViewport' },
+  { key: 'profile', label: 'Profile' },
 ]
 
 export default function LabPage() {
@@ -61,9 +64,23 @@ export default function LabPage() {
           planets={SYSTEM_PLANETS}
           host={search.get('host') ?? 'TRAPPIST-1'}
           onHostChange={(host) => setSearch({ host }, { replace: true })}
-          profileHref={(id) => `/lab/planet?id=${id}`}
+          profileHref={(id) => `/lab/profile?id=${id}`}
         />
       </div>
+    )
+  }
+
+  if (viewport === 'profile') {
+    return (
+      <PlanetProfile
+        planet={planet}
+        planets={labPlanets}
+        planetHref={(id) => `/lab/profile?id=${id}`}
+        systemHref={(host) => `/lab/system?host=${encodeURIComponent(host)}`}
+        orbitHref={(id) => `/planet/${id}/orbit`}
+        closeHref={`/lab/system?host=${encodeURIComponent(planet.host)}`}
+        onSelectPlanet={(id) => navigate(`/lab/profile?id=${id}`)}
+      />
     )
   }
 

@@ -1,0 +1,133 @@
+/* Scientific value presentation — owner: UI (implemented by LEAD). */
+
+.prov {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.prov--measured {
+  color: color-mix(in srgb, var(--color-measured) 70%, transparent);
+}
+.prov--calculated {
+  color: var(--color-calculated);
+}
+.prov--estimated,
+.prov--minimum,
+.prov--assumed {
+  color: var(--color-estimated);
+}
+.prov--missing {
+  color: var(--color-missing);
+}
+
+.mrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  padding: 13px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.mrow__label {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
+.mrow__basis {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--color-text-muted) 75%, transparent);
+}
+
+.mrow__value {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+}
+
+.mrow__number {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.mrow--calculated .mrow__number {
+  color: color-mix(in srgb, var(--color-text) 82%, var(--color-calculated));
+}
+
+.mrow--estimated .mrow__number,
+.mrow--minimum .mrow__number,
+.mrow--assumed .mrow__number {
+  color: color-mix(in srgb, var(--color-text) 72%, var(--color-estimated));
+}
+
+.mrow__limit {
+  color: var(--color-text-muted);
+}
+
+.mrow__err {
+  margin-left: 4px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.mrow__err--asym {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.05;
+  font-size: 10px;
+  align-self: center;
+}
+
+.mrow__unit {
+  margin-left: 5px;
+  color: var(--color-text-muted);
+}
+
+.mrow__missing {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--color-missing);
+}
+
+.mrow__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mrow__src {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  max-width: 180px;
+  overflow: hidden;
+  font-size: 10.5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.mrow__src:hover {
+  color: var(--color-accent);
+}
+
+.mrow__secondary {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
