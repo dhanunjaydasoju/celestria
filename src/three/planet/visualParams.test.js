@@ -70,6 +70,12 @@ describe('visualParams on real NASA fixtures', () => {
     expect(hashSeed('TRAPPIST-1 e')).not.toBe(hashSeed('TRAPPIST-1 f'))
   })
 
+  it('separates seeds of sibling planets whose names differ by one letter', () => {
+    const seeds = ['b', 'c', 'd', 'e', 'f', 'g', 'h'].map((l) => hashSeed(`TRAPPIST-1 ${l}`)).sort((a, b) => a - b)
+    const minGap = Math.min(...seeds.slice(1).map((s, i) => s - seeds[i]))
+    expect(minGap).toBeGreaterThan(0.01)
+  })
+
   it('never gives rocky worlds an atmosphere shell', () => {
     for (const p of labPlanets) {
       const v = visualParams(p)
@@ -79,8 +85,8 @@ describe('visualParams on real NASA fixtures', () => {
 })
 
 describe('lab collection', () => {
-  it('holds 19 NASA planets and 2 synthetic test planets with unique ids', () => {
-    expect(labPlanets.filter((p) => !p.synthetic)).toHaveLength(19)
+  it('holds 41 NASA planets and 2 synthetic test planets with unique ids', () => {
+    expect(labPlanets.filter((p) => !p.synthetic)).toHaveLength(41)
     expect(labPlanets.filter((p) => p.synthetic).map((p) => p.id)).toEqual(['test-all-missing', 'test-insolation-only'])
     expect(new Set(labPlanets.map((p) => p.id)).size).toBe(labPlanets.length)
   })

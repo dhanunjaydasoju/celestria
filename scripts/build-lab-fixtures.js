@@ -50,6 +50,19 @@ const FEATURED = [
   'HD 189733 b',
 ]
 
+// Sibling planets so SystemViewport can show whole systems (M2, 2026-10-31).
+const SIBLINGS = [
+  'TRAPPIST-1 b', 'TRAPPIST-1 c', 'TRAPPIST-1 d', 'TRAPPIST-1 f', 'TRAPPIST-1 g', 'TRAPPIST-1 h',
+  'HR 8799 c', 'HR 8799 d', 'HR 8799 e',
+  '55 Cnc b', '55 Cnc c', '55 Cnc d', '55 Cnc f',
+  'Kepler-167 b', 'Kepler-167 c', 'Kepler-167 d',
+  'Kepler-10 c', 'Kepler-10 d',
+  'Proxima Cen d',
+  'LHS 1140 c',
+  'K2-18 c',
+  'HAT-P-11 c',
+]
+
 // field → [column, unit]; *_reflink, *err1/2, *lim are fetched alongside.
 const PLANET_FIELDS = {
   radiusEarth: 'pl_rade',
@@ -158,7 +171,7 @@ function normalize(row) {
 
 const existing = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null
 const have = new Set(existing?.planets.map((p) => p.name) ?? [])
-const wanted = [...new Set([...PLANETS, ...FEATURED])]
+const wanted = [...new Set([...PLANETS, ...FEATURED, ...SIBLINGS])]
 const toFetch = wanted.filter((n) => !have.has(n))
 
 if (toFetch.length === 0) {

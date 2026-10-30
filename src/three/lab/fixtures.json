@@ -4399,6 +4399,5093 @@
     "controversial": false,
     "ttv": false
    }
+  },
+  {
+   "id": "trappist-1-b",
+   "name": "TRAPPIST-1 b",
+   "host": "TRAPPIST-1",
+   "radiusEarth": {
+    "value": 1.116,
+    "status": "measured",
+    "err": [
+     0.014,
+     -0.012
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 1.374,
+    "status": "measured",
+    "err": [
+     0.069,
+     -0.069
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 5.441939,
+    "status": "measured",
+    "err": [
+     0.264654,
+     -0.275681
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 397.6,
+    "status": "measured",
+    "err": [
+     3.8,
+     -3.8
+    ],
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 4.153,
+    "status": "measured",
+    "err": [
+     0.161,
+     -0.159
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 1.510826,
+    "status": "measured",
+    "err": [
+     0.000006,
+     -0.000006
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.01154,
+    "status": "measured",
+    "err": [
+     0.0001,
+     -0.0001
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.00622,
+    "status": "measured",
+    "err": [
+     0.00304,
+     -0.00304
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.728,
+    "status": "measured",
+    "err": [
+     0.165,
+     -0.165
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 336.86,
+    "status": "measured",
+    "err": [
+     34.24,
+     -34.24
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457322.514193,
+    "status": "measured",
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "star": {
+    "name": "TRAPPIST-1",
+    "spectralType": "M8.0 V",
+    "teff": {
+     "value": 2566,
+     "status": "measured",
+     "err": [
+      26,
+      -26
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.1192,
+     "status": "measured",
+     "err": [
+      0.0013,
+      -0.0013
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.0898,
+     "status": "measured",
+     "err": [
+      0.0023,
+      -0.0023
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -3.25727,
+     "status": "measured",
+     "err": [
+      0.01467,
+      -0.01518
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.052,
+     "status": "measured",
+     "err": [
+      0.073,
+      -0.073
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.6,
+     "status": "measured",
+     "err": [
+      2.2,
+      -2.2
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2016,
+    "method": "Transit",
+    "facility": "La Silla Observatory",
+    "telescope": "0.60 m Transiting Planets and Planetesimals Small Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.42988881,
+     "status": "measured",
+     "err": [
+      0.01870661,
+      -0.01870661
+     ],
+     "source": {
+      "label": "Gaia DR2",
+      "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...616A...1G/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 1,
+    "raDeg": 346.6263919,
+    "decDeg": -5.0434618,
+    "vMag": 17.02
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "trappist-1-c",
+   "name": "TRAPPIST-1 c",
+   "host": "TRAPPIST-1",
+   "radiusEarth": {
+    "value": 1.097,
+    "status": "measured",
+    "err": [
+     0.014,
+     -0.012
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 1.308,
+    "status": "measured",
+    "err": [
+     0.056,
+     -0.056
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 5.463993,
+    "status": "measured",
+    "err": [
+     0.220545,
+     -0.237085
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 339.7,
+    "status": "measured",
+    "err": [
+     3.3,
+     -3.3
+    ],
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 2.214,
+    "status": "measured",
+    "err": [
+     0.086,
+     -0.085
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 2.421937,
+    "status": "measured",
+    "err": [
+     0.000018,
+     -0.000018
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.0158,
+    "status": "measured",
+    "err": [
+     0.00013,
+     -0.00013
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.00654,
+    "status": "measured",
+    "err": [
+     0.00188,
+     -0.00188
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.778,
+    "status": "measured",
+    "err": [
+     0.118,
+     -0.118
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 282.45,
+    "status": "measured",
+    "err": [
+     17.1,
+     -17.1
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457282.8113871,
+    "status": "measured",
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "star": {
+    "name": "TRAPPIST-1",
+    "spectralType": "M8.0 V",
+    "teff": {
+     "value": 2566,
+     "status": "measured",
+     "err": [
+      26,
+      -26
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.1192,
+     "status": "measured",
+     "err": [
+      0.0013,
+      -0.0013
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.0898,
+     "status": "measured",
+     "err": [
+      0.0023,
+      -0.0023
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -3.25727,
+     "status": "measured",
+     "err": [
+      0.01467,
+      -0.01518
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.052,
+     "status": "measured",
+     "err": [
+      0.073,
+      -0.073
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.6,
+     "status": "measured",
+     "err": [
+      2.2,
+      -2.2
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2016,
+    "method": "Transit",
+    "facility": "La Silla Observatory",
+    "telescope": "0.60 m Transiting Planets and Planetesimals Small Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.42988881,
+     "status": "measured",
+     "err": [
+      0.01870661,
+      -0.01870661
+     ],
+     "source": {
+      "label": "Gaia DR2",
+      "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...616A...1G/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 1,
+    "raDeg": 346.6263919,
+    "decDeg": -5.0434618,
+    "vMag": 17.02
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "trappist-1-d",
+   "name": "TRAPPIST-1 d",
+   "host": "TRAPPIST-1",
+   "radiusEarth": {
+    "value": 0.788,
+    "status": "measured",
+    "err": [
+     0.011,
+     -0.01
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 0.388,
+    "status": "measured",
+    "err": [
+     0.012,
+     -0.012
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 4.366784,
+    "status": "measured",
+    "err": [
+     0.154381,
+     -0.165408
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 286.2,
+    "status": "measured",
+    "err": [
+     2.8,
+     -2.8
+    ],
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 1.115,
+    "status": "measured",
+    "err": [
+     0.043,
+     -0.043
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 4.049219,
+    "status": "measured",
+    "err": [
+     0.000026,
+     -0.000026
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.02227,
+    "status": "measured",
+    "err": [
+     0.00019,
+     -0.00019
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.00837,
+    "status": "measured",
+    "err": [
+     0.00093,
+     -0.00093
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.896,
+    "status": "measured",
+    "err": [
+     0.077,
+     -0.077
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": -8.73,
+    "status": "measured",
+    "err": [
+     6.17,
+     -6.17
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457670.1463014,
+    "status": "measured",
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "star": {
+    "name": "TRAPPIST-1",
+    "spectralType": "M8.0 V",
+    "teff": {
+     "value": 2566,
+     "status": "measured",
+     "err": [
+      26,
+      -26
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.1192,
+     "status": "measured",
+     "err": [
+      0.0013,
+      -0.0013
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.0898,
+     "status": "measured",
+     "err": [
+      0.0023,
+      -0.0023
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -3.25727,
+     "status": "measured",
+     "err": [
+      0.01467,
+      -0.01518
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.052,
+     "status": "measured",
+     "err": [
+      0.073,
+      -0.073
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.6,
+     "status": "measured",
+     "err": [
+      2.2,
+      -2.2
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2016,
+    "method": "Transit",
+    "facility": "La Silla Observatory",
+    "telescope": "0.60 m Transiting Planets and Planetesimals Small Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.42988881,
+     "status": "measured",
+     "err": [
+      0.01870661,
+      -0.01870661
+     ],
+     "source": {
+      "label": "Gaia DR2",
+      "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...616A...1G/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 1,
+    "raDeg": 346.6263919,
+    "decDeg": -5.0434618,
+    "vMag": 17.02
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "trappist-1-f",
+   "name": "TRAPPIST-1 f",
+   "host": "TRAPPIST-1",
+   "radiusEarth": {
+    "value": 1.045,
+    "status": "measured",
+    "err": [
+     0.013,
+     -0.012
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 1.039,
+    "status": "measured",
+    "err": [
+     0.031,
+     -0.031
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 5.022904,
+    "status": "measured",
+    "err": [
+     0.13784,
+     -0.159895
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 217.7,
+    "status": "measured",
+    "err": [
+     2.1,
+     -2.1
+    ],
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.373,
+    "status": "measured",
+    "err": [
+     0.015,
+     -0.014
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 9.20754,
+    "status": "measured",
+    "err": [
+     0.000032,
+     -0.000032
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.03849,
+    "status": "measured",
+    "err": [
+     0.00033,
+     -0.00033
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.01007,
+    "status": "measured",
+    "err": [
+     0.00068,
+     -0.00068
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.74,
+    "status": "measured",
+    "err": [
+     0.019,
+     -0.019
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 368.81,
+    "status": "measured",
+    "err": [
+     3.11,
+     -3.11
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457671.3737299,
+    "status": "measured",
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "star": {
+    "name": "TRAPPIST-1",
+    "spectralType": "M8.0 V",
+    "teff": {
+     "value": 2566,
+     "status": "measured",
+     "err": [
+      26,
+      -26
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.1192,
+     "status": "measured",
+     "err": [
+      0.0013,
+      -0.0013
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.0898,
+     "status": "measured",
+     "err": [
+      0.0023,
+      -0.0023
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -3.25727,
+     "status": "measured",
+     "err": [
+      0.01467,
+      -0.01518
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.052,
+     "status": "measured",
+     "err": [
+      0.073,
+      -0.073
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.6,
+     "status": "measured",
+     "err": [
+      2.2,
+      -2.2
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2017,
+    "method": "Transit",
+    "facility": "Multiple Observatories",
+    "telescope": "Multiple Telescopes"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.42988881,
+     "status": "measured",
+     "err": [
+      0.01870661,
+      -0.01870661
+     ],
+     "source": {
+      "label": "Gaia DR2",
+      "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...616A...1G/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 1,
+    "raDeg": 346.6263919,
+    "decDeg": -5.0434618,
+    "vMag": 17.02
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "trappist-1-g",
+   "name": "TRAPPIST-1 g",
+   "host": "TRAPPIST-1",
+   "radiusEarth": {
+    "value": 1.129,
+    "status": "measured",
+    "err": [
+     0.015,
+     -0.013
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 1.321,
+    "status": "measured",
+    "err": [
+     0.038,
+     -0.038
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 5.055986,
+    "status": "measured",
+    "err": [
+     0.13784,
+     -0.159895
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 197.3,
+    "status": "measured",
+    "err": [
+     1.9,
+     -1.9
+    ],
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.252,
+    "status": "measured",
+    "err": [
+     0.01,
+     -0.01
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 12.352446,
+    "status": "measured",
+    "err": [
+     0.000054,
+     -0.000054
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.04683,
+    "status": "measured",
+    "err": [
+     0.0004,
+     -0.0004
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.00208,
+    "status": "measured",
+    "err": [
+     0.00058,
+     -0.00058
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.742,
+    "status": "measured",
+    "err": [
+     0.012,
+     -0.012
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 191.34,
+    "status": "measured",
+    "err": [
+     13.83,
+     -13.83
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457665.3628439,
+    "status": "measured",
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "star": {
+    "name": "TRAPPIST-1",
+    "spectralType": "M8.0 V",
+    "teff": {
+     "value": 2566,
+     "status": "measured",
+     "err": [
+      26,
+      -26
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.1192,
+     "status": "measured",
+     "err": [
+      0.0013,
+      -0.0013
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.0898,
+     "status": "measured",
+     "err": [
+      0.0023,
+      -0.0023
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -3.25727,
+     "status": "measured",
+     "err": [
+      0.01467,
+      -0.01518
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.052,
+     "status": "measured",
+     "err": [
+      0.073,
+      -0.073
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.6,
+     "status": "measured",
+     "err": [
+      2.2,
+      -2.2
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2017,
+    "method": "Transit",
+    "facility": "Multiple Observatories",
+    "telescope": "Multiple Telescopes"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.42988881,
+     "status": "measured",
+     "err": [
+      0.01870661,
+      -0.01870661
+     ],
+     "source": {
+      "label": "Gaia DR2",
+      "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...616A...1G/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 1,
+    "raDeg": 346.6263919,
+    "decDeg": -5.0434618,
+    "vMag": 17.02
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "trappist-1-h",
+   "name": "TRAPPIST-1 h",
+   "host": "TRAPPIST-1",
+   "radiusEarth": {
+    "value": 0.755,
+    "status": "measured",
+    "err": [
+     0.014,
+     -0.014
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 0.326,
+    "status": "measured",
+    "err": [
+     0.02,
+     -0.02
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 4.16278,
+    "status": "measured",
+    "err": [
+     0.325303,
+     -0.303249
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 171.7,
+    "status": "measured",
+    "err": [
+     1.7,
+     -1.7
+    ],
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.144,
+    "status": "measured",
+    "err": [
+     0.006,
+     -0.006
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 18.772866,
+    "status": "measured",
+    "err": [
+     0.000214,
+     -0.000214
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.06189,
+    "status": "measured",
+    "err": [
+     0.00053,
+     -0.00053
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.00567,
+    "status": "measured",
+    "err": [
+     0.00121,
+     -0.00121
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.805,
+    "status": "measured",
+    "err": [
+     0.013,
+     -0.013
+    ],
+    "source": {
+     "label": "Agol et al. 2021",
+     "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 338.92,
+    "status": "measured",
+    "err": [
+     9.66,
+     -9.66
+    ],
+    "source": {
+     "label": "Grimm et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...613A..68G/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457662.5741486,
+    "status": "measured",
+    "source": {
+     "label": "Ducrot et al. 2020",
+     "url": "https://ui.adsabs.harvard.edu/abs/2020A&A...640A.112D/abstract"
+    }
+   },
+   "star": {
+    "name": "TRAPPIST-1",
+    "spectralType": "M8.0 V",
+    "teff": {
+     "value": 2566,
+     "status": "measured",
+     "err": [
+      26,
+      -26
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.1192,
+     "status": "measured",
+     "err": [
+      0.0013,
+      -0.0013
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.0898,
+     "status": "measured",
+     "err": [
+      0.0023,
+      -0.0023
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -3.25727,
+     "status": "measured",
+     "err": [
+      0.01467,
+      -0.01518
+     ],
+     "source": {
+      "label": "Agol et al. 2021",
+      "url": "https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.052,
+     "status": "measured",
+     "err": [
+      0.073,
+      -0.073
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.6,
+     "status": "measured",
+     "err": [
+      2.2,
+      -2.2
+     ],
+     "source": {
+      "label": "Piaulet-Ghorayeb et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025ApJ...989..181P/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2017,
+    "method": "Transit",
+    "facility": "Multiple Observatories",
+    "telescope": "Multiple Telescopes"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.42988881,
+     "status": "measured",
+     "err": [
+      0.01870661,
+      -0.01870661
+     ],
+     "source": {
+      "label": "Gaia DR2",
+      "url": "https://ui.adsabs.harvard.edu/abs/2018A&A...616A...1G/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 1,
+    "raDeg": 346.6263919,
+    "decDeg": -5.0434618,
+    "vMag": 17.02
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "hr-8799-c",
+   "name": "HR 8799 c",
+   "host": "HR 8799",
+   "radiusEarth": {
+    "value": 13,
+    "status": "measured",
+    "err": [
+     1,
+     0
+    ],
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 3000,
+    "status": "measured",
+    "err": [
+     1000,
+     -1000
+    ],
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 7.5,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 1200,
+    "status": "measured",
+    "source": {
+     "label": "Bonnefoy et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..58B/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.0034,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 69000,
+    "status": "measured",
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 38,
+    "status": "measured",
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.5,
+    "status": "measured",
+    "limit": "<",
+    "source": {
+     "label": "Konopacky et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 29.43,
+    "status": "measured",
+    "err": [
+     0.35,
+     -0.35
+    ],
+    "source": {
+     "label": "Zurlo et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": 2396093,
+    "status": "measured",
+    "err": [
+     3590,
+     -3590
+    ],
+    "source": {
+     "label": "Zurlo et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "star": {
+    "name": "HR 8799",
+    "spectralType": "A5 V",
+    "teff": {
+     "value": 7204.58,
+     "status": "measured",
+     "err": [
+      83.84,
+      -129.54
+     ],
+     "source": {
+      "label": "Konopacky et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 1.49338,
+     "status": "measured",
+     "err": [
+      0.049341,
+      -0.050935
+     ],
+     "source": {
+      "label": "Konopacky et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.5,
+     "status": "measured",
+     "err": [
+      0.3,
+      -0.3
+     ],
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": 0.69197,
+     "status": "measured",
+     "err": [
+      0.03476,
+      -0.03779
+     ],
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    },
+    "metallicity": {
+     "value": -0.47,
+     "status": "measured",
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 0.06,
+     "status": "measured",
+     "err": [
+      0.1,
+      -0.03
+     ],
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2008,
+    "method": "Imaging",
+    "facility": "Gemini Observatory",
+    "telescope": "8.19 m Gemini North Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 41.2441,
+     "status": "measured",
+     "err": [
+      0.1515,
+      -0.1505
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 4,
+    "starCount": 1,
+    "raDeg": 346.8701486,
+    "decDeg": 21.1340376,
+    "vMag": 5.98
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "hr-8799-d",
+   "name": "HR 8799 d",
+   "host": "HR 8799",
+   "radiusEarth": {
+    "value": 13,
+    "status": "measured",
+    "err": [
+     1,
+     0
+    ],
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 3000,
+    "status": "measured",
+    "err": [
+     1000,
+     -1000
+    ],
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 7.5,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 1300,
+    "status": "measured",
+    "source": {
+     "label": "Bonnefoy et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..58B/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.0085,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 37000,
+    "status": "measured",
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 24,
+    "status": "measured",
+    "source": {
+     "label": "Marois et al. 2008",
+     "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.6,
+    "status": "measured",
+    "limit": "<",
+    "source": {
+     "label": "Konopacky et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 38.63,
+    "status": "measured",
+    "err": [
+     2.84,
+     -2.84
+    ],
+    "source": {
+     "label": "Zurlo et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": 2438859,
+    "status": "measured",
+    "err": [
+     566,
+     -566
+    ],
+    "source": {
+     "label": "Zurlo et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "star": {
+    "name": "HR 8799",
+    "spectralType": "A5 V",
+    "teff": {
+     "value": 7204.58,
+     "status": "measured",
+     "err": [
+      83.84,
+      -129.54
+     ],
+     "source": {
+      "label": "Konopacky et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 1.49338,
+     "status": "measured",
+     "err": [
+      0.049341,
+      -0.050935
+     ],
+     "source": {
+      "label": "Konopacky et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.5,
+     "status": "measured",
+     "err": [
+      0.3,
+      -0.3
+     ],
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": 0.69197,
+     "status": "measured",
+     "err": [
+      0.03476,
+      -0.03779
+     ],
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    },
+    "metallicity": {
+     "value": -0.47,
+     "status": "measured",
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 0.06,
+     "status": "measured",
+     "err": [
+      0.1,
+      -0.03
+     ],
+     "source": {
+      "label": "Marois et al. 2008",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008Sci...322.1348M/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2008,
+    "method": "Imaging",
+    "facility": "W. M. Keck Observatory",
+    "telescope": "10 m Keck II Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 41.2441,
+     "status": "measured",
+     "err": [
+      0.1515,
+      -0.1505
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 4,
+    "starCount": 1,
+    "raDeg": 346.8701486,
+    "decDeg": 21.1340376,
+    "vMag": 5.98
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "hr-8799-e",
+   "name": "HR 8799 e",
+   "host": "HR 8799",
+   "radiusEarth": {
+    "value": 13.11453,
+    "status": "measured",
+    "err": [
+     1.45717,
+     -1.23299
+    ],
+    "source": {
+     "label": "Gravity Collaboration et al. 2019",
+     "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 3178.3,
+    "status": "measured",
+    "err": [
+     2224.81,
+     -1271.32
+    ],
+    "source": {
+     "label": "Gravity Collaboration et al. 2019",
+     "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 7.74,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 1150,
+    "status": "measured",
+    "err": [
+     50,
+     -50
+    ],
+    "source": {
+     "label": "Gravity Collaboration et al. 2019",
+     "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.0201,
+    "status": "calculated",
+    "err": [
+     0.004,
+     -0.004
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 20815.6,
+    "status": "measured",
+    "err": [
+     1128.62,
+     -1128.62
+    ],
+    "source": {
+     "label": "Zurlo et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 16.4,
+    "status": "measured",
+    "err": [
+     2.1,
+     -1.1
+    ],
+    "source": {
+     "label": "Gravity Collaboration et al. 2019",
+     "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.15,
+    "status": "measured",
+    "err": [
+     0.08,
+     -0.08
+    ],
+    "source": {
+     "label": "Gravity Collaboration et al. 2019",
+     "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 25,
+    "status": "measured",
+    "err": [
+     8,
+     -8
+    ],
+    "source": {
+     "label": "Gravity Collaboration et al. 2019",
+     "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": 2449940,
+    "status": "measured",
+    "err": [
+     340,
+     -340
+    ],
+    "source": {
+     "label": "Zurlo et al. 2016",
+     "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "star": {
+    "name": "HR 8799",
+    "spectralType": "A5",
+    "teff": {
+     "value": 7400,
+     "status": "measured",
+     "source": {
+      "label": "Gravity Collaboration et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 1.49338,
+     "status": "measured",
+     "err": [
+      0.049341,
+      -0.050935
+     ],
+     "source": {
+      "label": "Konopacky et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.51,
+     "status": "measured",
+     "err": [
+      0.038,
+      -0.024
+     ],
+     "source": {
+      "label": "Zurlo et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016A&A...587A..57Z/abstract"
+     }
+    },
+    "lumLog": {
+     "value": 0.73347,
+     "status": "measured",
+     "err": [
+      0.01645,
+      -0.01535
+     ],
+     "source": {
+      "label": "Konopacky et al. 2016",
+      "url": "https://ui.adsabs.harvard.edu/abs/2016AJ....152...28K/abstract"
+     }
+    },
+    "metallicity": {
+     "value": -0.5,
+     "status": "measured",
+     "source": {
+      "label": "Gravity Collaboration et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 0.03,
+     "status": "measured",
+     "source": {
+      "label": "Gravity Collaboration et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019A&A...623L..11G/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2010,
+    "method": "Imaging",
+    "facility": "W. M. Keck Observatory",
+    "telescope": "10 m Keck II Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 41.2441,
+     "status": "measured",
+     "err": [
+      0.1515,
+      -0.1505
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 4,
+    "starCount": 1,
+    "raDeg": 346.8701486,
+    "decDeg": 21.1340376,
+    "vMag": 5.98
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "55-cnc-b",
+   "name": "55 Cnc b",
+   "host": "55 Cnc",
+   "radiusEarth": {
+    "value": 13.9,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 263.9785,
+    "status": "measured",
+    "err": [
+     1.0488,
+     -1.0488
+    ],
+    "source": {
+     "label": "Baluev 2015",
+     "url": "https://ui.adsabs.harvard.edu/abs/2015MNRAS.446.1493B/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 0.54,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 700,
+    "status": "measured",
+    "source": {
+     "label": "Salz et al. 2015",
+     "url": "https://ui.adsabs.harvard.edu/abs/2015A&A...576A..42S/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 45.6336,
+    "status": "calculated",
+    "err": [
+     1.9593,
+     -1.9593
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 14.651552,
+    "status": "measured",
+    "err": [
+     0.000036,
+     -0.000036
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.118,
+    "status": "measured",
+    "err": [
+     0.002,
+     -0.002
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.0029,
+    "status": "measured",
+    "err": [
+     0.0027,
+     -0.002
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.73,
+    "status": "measured",
+    "err": [
+     24.49,
+     -24.54
+    ],
+    "source": {
+     "label": "Nelson et al. 2014",
+     "url": "https://ui.adsabs.harvard.edu/abs/2014MNRAS.441..442N/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 23,
+    "status": "measured",
+    "err": [
+     56,
+     -57
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": 2453021.08,
+    "status": "measured",
+    "err": [
+     0.01,
+     -0.01
+    ],
+    "source": {
+     "label": "McArthur et al. 2004",
+     "url": "https://ui.adsabs.harvard.edu/abs/2004ApJ...614L..81M/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": 2455495.595,
+    "status": "measured",
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "star": {
+    "name": "55 Cnc",
+    "spectralType": "G8 V",
+    "teff": {
+     "value": 5198,
+     "status": "measured",
+     "err": [
+      31,
+      -31
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.98,
+     "status": "measured",
+     "err": [
+      0.016,
+      -0.016
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.015,
+     "status": "measured",
+     "err": [
+      0.051,
+      -0.051
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.19695,
+     "status": "measured",
+     "err": [
+      0.0125,
+      -0.01039
+     ],
+     "source": {
+      "label": "Knapp et al. 2020",
+      "url": "https://ui.adsabs.harvard.edu/abs/2020AJ....160...23K/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.39,
+     "status": "measured",
+     "err": [
+      0.1,
+      -0.1
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 10,
+     "status": "measured",
+     "limit": ">",
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 1996,
+    "method": "Radial Velocity",
+    "facility": "Lick Observatory",
+    "telescope": "3.0 m C. Donald Shane Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.5855,
+     "status": "measured",
+     "err": [
+      0.0124,
+      -0.0123
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 2,
+    "raDeg": 133.1468373,
+    "decDeg": 28.3298154,
+    "vMag": 5.95084
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "55-cnc-c",
+   "name": "55 Cnc c",
+   "host": "55 Cnc",
+   "radiusEarth": {
+    "value": 8.51,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 54.4738,
+    "status": "measured",
+    "err": [
+     1.748,
+     -1.748
+    ],
+    "source": {
+     "label": "Baluev 2015",
+     "url": "https://ui.adsabs.harvard.edu/abs/2015MNRAS.446.1493B/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 0.486,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 499.27,
+    "status": "calculated",
+    "err": [
+     6.47,
+     -6.47
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "insolationEarth": {
+    "value": 10.4149,
+    "status": "calculated",
+    "err": [
+     0.4349,
+     -0.4349
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 44.3936,
+    "status": "measured",
+    "err": [
+     0.0024,
+     -0.0024
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.247,
+    "status": "measured",
+    "err": [
+     0.004,
+     -0.004
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.088,
+    "status": "measured",
+    "err": [
+     0.23,
+     -0.23
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.73,
+    "status": "measured",
+    "err": [
+     24.49,
+     -24.54
+    ],
+    "source": {
+     "label": "Nelson et al. 2014",
+     "url": "https://ui.adsabs.harvard.edu/abs/2014MNRAS.441..442N/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 31,
+    "status": "measured",
+    "err": [
+     14,
+     -14
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": 2453028.63,
+    "status": "measured",
+    "err": [
+     0.25,
+     -0.25
+    ],
+    "source": {
+     "label": "McArthur et al. 2004",
+     "url": "https://ui.adsabs.harvard.edu/abs/2004ApJ...614L..81M/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": 2455491.23,
+    "status": "measured",
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "star": {
+    "name": "55 Cnc",
+    "spectralType": "G8 V",
+    "teff": {
+     "value": 5198,
+     "status": "measured",
+     "err": [
+      31,
+      -31
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.98,
+     "status": "measured",
+     "err": [
+      0.016,
+      -0.016
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.015,
+     "status": "measured",
+     "err": [
+      0.051,
+      -0.051
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.19695,
+     "status": "measured",
+     "err": [
+      0.0125,
+      -0.01039
+     ],
+     "source": {
+      "label": "Knapp et al. 2020",
+      "url": "https://ui.adsabs.harvard.edu/abs/2020AJ....160...23K/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.39,
+     "status": "measured",
+     "err": [
+      0.1,
+      -0.1
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 10,
+     "status": "measured",
+     "limit": ">",
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2004,
+    "method": "Radial Velocity",
+    "facility": "McDonald Observatory",
+    "telescope": "9.2 m Hobby-Eberly Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.5855,
+     "status": "measured",
+     "err": [
+      0.0124,
+      -0.0123
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 2,
+    "raDeg": 133.1468373,
+    "decDeg": 28.3298154,
+    "vMag": 5.95084
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "55-cnc-d",
+   "name": "55 Cnc d",
+   "host": "55 Cnc",
+   "radiusEarth": {
+    "value": 13,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 1232.493,
+    "status": "measured",
+    "err": [
+     21.612,
+     -21.612
+    ],
+    "source": {
+     "label": "Baluev 2015",
+     "url": "https://ui.adsabs.harvard.edu/abs/2015MNRAS.446.1493B/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 3.08,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 104.85,
+    "status": "calculated",
+    "err": [
+     1.41,
+     -1.41
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.0203,
+    "status": "calculated",
+    "err": [
+     0.0009,
+     -0.0009
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 4799,
+    "status": "measured",
+    "err": [
+     4.9,
+     -15
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 5.6,
+    "status": "measured",
+    "err": [
+     0.1,
+     -0.1
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.0913,
+    "status": "measured",
+    "err": [
+     0.0067,
+     -0.0067
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.73,
+    "status": "measured",
+    "err": [
+     24.49,
+     -24.54
+    ],
+    "source": {
+     "label": "Nelson et al. 2014",
+     "url": "https://ui.adsabs.harvard.edu/abs/2014MNRAS.441..442N/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": -90,
+    "status": "measured",
+    "err": [
+     2,
+     -2
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": 2452837.69,
+    "status": "measured",
+    "err": [
+     68.87,
+     -68.87
+    ],
+    "source": {
+     "label": "McArthur et al. 2004",
+     "url": "https://ui.adsabs.harvard.edu/abs/2004ApJ...614L..81M/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": 2451517.8,
+    "status": "measured",
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "star": {
+    "name": "55 Cnc",
+    "spectralType": "G8 V",
+    "teff": {
+     "value": 5198,
+     "status": "measured",
+     "err": [
+      31,
+      -31
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.98,
+     "status": "measured",
+     "err": [
+      0.016,
+      -0.016
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.015,
+     "status": "measured",
+     "err": [
+      0.051,
+      -0.051
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.19695,
+     "status": "measured",
+     "err": [
+      0.0125,
+      -0.01039
+     ],
+     "source": {
+      "label": "Knapp et al. 2020",
+      "url": "https://ui.adsabs.harvard.edu/abs/2020AJ....160...23K/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.39,
+     "status": "measured",
+     "err": [
+      0.1,
+      -0.1
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 10,
+     "status": "measured",
+     "limit": ">",
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2002,
+    "method": "Radial Velocity",
+    "facility": "Lick Observatory",
+    "telescope": "3.0 m C. Donald Shane Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.5855,
+     "status": "measured",
+     "err": [
+      0.0124,
+      -0.0123
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 2,
+    "raDeg": 133.1468373,
+    "decDeg": 28.3298154,
+    "vMag": 5.95084
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "55-cnc-f",
+   "name": "55 Cnc f",
+   "host": "55 Cnc",
+   "radiusEarth": {
+    "value": 7.59,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 44.812,
+    "status": "measured",
+    "err": [
+     3.814,
+     -3.814
+    ],
+    "source": {
+     "label": "Baluev 2015",
+     "url": "https://ui.adsabs.harvard.edu/abs/2015MNRAS.446.1493B/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 0.563,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 277.07,
+    "status": "calculated",
+    "err": [
+     3.7,
+     -3.7
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.9879,
+    "status": "calculated",
+    "err": [
+     0.0432,
+     -0.0432
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 260.58,
+    "status": "measured",
+    "err": [
+     0.15,
+     -0.15
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.802,
+    "status": "measured",
+    "err": [
+     0.014,
+     -0.014
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.063,
+    "status": "measured",
+    "err": [
+     0.048,
+     -0.043
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.73,
+    "status": "measured",
+    "err": [
+     24.49,
+     -24.54
+    ],
+    "source": {
+     "label": "Nelson et al. 2014",
+     "url": "https://ui.adsabs.harvard.edu/abs/2014MNRAS.441..442N/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 100,
+    "status": "measured",
+    "err": [
+     45,
+     -25
+    ],
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": 2447488,
+    "status": "measured",
+    "err": [
+     1.1,
+     -1.1
+    ],
+    "source": {
+     "label": "Wright et al. 2009",
+     "url": "https://ui.adsabs.harvard.edu/abs/2009ApJ...693.1084W/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": 2455236.4,
+    "status": "measured",
+    "source": {
+     "label": "Moutou et al. 2026",
+     "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+    }
+   },
+   "star": {
+    "name": "55 Cnc",
+    "spectralType": "G8 V",
+    "teff": {
+     "value": 5198,
+     "status": "measured",
+     "err": [
+      31,
+      -31
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.98,
+     "status": "measured",
+     "err": [
+      0.016,
+      -0.016
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "massSun": {
+     "value": 1.015,
+     "status": "measured",
+     "err": [
+      0.051,
+      -0.051
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.19695,
+     "status": "measured",
+     "err": [
+      0.0125,
+      -0.01039
+     ],
+     "source": {
+      "label": "Knapp et al. 2020",
+      "url": "https://ui.adsabs.harvard.edu/abs/2020AJ....160...23K/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.39,
+     "status": "measured",
+     "err": [
+      0.1,
+      -0.1
+     ],
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 10,
+     "status": "measured",
+     "limit": ">",
+     "source": {
+      "label": "Moutou et al. 2026",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A&A...705A.190M/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2007,
+    "method": "Radial Velocity",
+    "facility": "Multiple Observatories",
+    "telescope": "Multiple Telescopes"
+   },
+   "system": {
+    "distancePc": {
+     "value": 12.5855,
+     "status": "measured",
+     "err": [
+      0.0124,
+      -0.0123
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 7,
+    "starCount": 2,
+    "raDeg": 133.1468373,
+    "decDeg": 28.3298154,
+    "vMag": 5.95084
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "kepler-167-b",
+   "name": "Kepler-167 b",
+   "host": "Kepler-167",
+   "radiusEarth": {
+    "value": 1.718,
+    "status": "measured",
+    "err": [
+     0.07,
+     -0.07
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 3.6,
+    "status": "estimated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    },
+    "kind": "M-R"
+   },
+   "densityGcc": {
+    "value": 3.9,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 918,
+    "status": "measured",
+    "err": [
+     27,
+     -27
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 122.502,
+    "status": "measured",
+    "err": [
+     2.892,
+     -2.831
+    ],
+    "source": {
+     "label": "Berger et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018ApJ...866...99B/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 4.3931539,
+    "status": "measured",
+    "err": [
+     0.0000048,
+     -0.0000046
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.04825,
+    "status": "measured",
+    "err": [
+     0.0007,
+     -0.0007
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0,
+    "status": "measured",
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 88.3,
+    "status": "measured",
+    "err": [
+     1.6,
+     -1.2
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2455831.78065,
+    "status": "measured",
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "star": {
+    "name": "Kepler-167",
+    "spectralType": "K4",
+    "teff": {
+     "value": 4884,
+     "status": "measured",
+     "err": [
+      69,
+      -75
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.749,
+     "status": "measured",
+     "err": [
+      0.02,
+      -0.02
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.777,
+     "status": "measured",
+     "err": [
+      0.034,
+      -0.031
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.5391,
+     "status": "measured",
+     "err": [
+      0.02482,
+      -0.03115
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.02,
+     "status": "measured",
+     "err": [
+      0.067,
+      -0.067
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.1,
+     "status": "measured",
+     "err": [
+      4.4,
+      -4.6
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2014,
+    "method": "Transit",
+    "facility": "Kepler",
+    "telescope": "0.95 m Kepler Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 341.908,
+     "status": "measured",
+     "err": [
+      1.973,
+      -1.973
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 4,
+    "starCount": 2,
+    "raDeg": 292.6585253,
+    "decDeg": 38.3455558,
+    "vMag": 14.284
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "kepler-167-c",
+   "name": "Kepler-167 c",
+   "host": "Kepler-167",
+   "radiusEarth": {
+    "value": 1.674,
+    "status": "measured",
+    "err": [
+     0.069,
+     -0.069
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 3.44,
+    "status": "estimated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    },
+    "kind": "M-R"
+   },
+   "densityGcc": {
+    "value": 4.03,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 771,
+    "status": "measured",
+    "err": [
+     23,
+     -23
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 61.175,
+    "status": "measured",
+    "err": [
+     1.444,
+     -1.414
+    ],
+    "source": {
+     "label": "Berger et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018ApJ...866...99B/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 7.406106,
+    "status": "measured",
+    "err": [
+     0.00001,
+     -0.00001
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.0684,
+    "status": "measured",
+    "err": [
+     0.001,
+     -0.001
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0,
+    "status": "measured",
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 88.48,
+    "status": "measured",
+    "err": [
+     0.88,
+     -1
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2455552.15797,
+    "status": "measured",
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "star": {
+    "name": "Kepler-167",
+    "spectralType": "K4",
+    "teff": {
+     "value": 4884,
+     "status": "measured",
+     "err": [
+      69,
+      -75
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.749,
+     "status": "measured",
+     "err": [
+      0.02,
+      -0.02
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.777,
+     "status": "measured",
+     "err": [
+      0.034,
+      -0.031
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.5391,
+     "status": "measured",
+     "err": [
+      0.02482,
+      -0.03115
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.02,
+     "status": "measured",
+     "err": [
+      0.067,
+      -0.067
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.1,
+     "status": "measured",
+     "err": [
+      4.4,
+      -4.6
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2014,
+    "method": "Transit",
+    "facility": "Kepler",
+    "telescope": "0.95 m Kepler Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 341.908,
+     "status": "measured",
+     "err": [
+      1.973,
+      -1.973
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 4,
+    "starCount": 2,
+    "raDeg": 292.6585253,
+    "decDeg": 38.3455558,
+    "vMag": 14.284
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "kepler-167-d",
+   "name": "Kepler-167 d",
+   "host": "Kepler-167",
+   "radiusEarth": {
+    "value": 1.238,
+    "status": "measured",
+    "err": [
+     0.064,
+     -0.064
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 2.06,
+    "status": "estimated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    },
+    "kind": "M-R"
+   },
+   "densityGcc": {
+    "value": 5.97,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 538,
+    "status": "measured",
+    "err": [
+     16,
+     -16
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 14.489,
+    "status": "measured",
+    "err": [
+     0.342,
+     -0.335
+    ],
+    "source": {
+     "label": "Berger et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018ApJ...866...99B/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 21.80379,
+    "status": "measured",
+    "err": [
+     0.00013,
+     -0.00018
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.1404,
+    "status": "measured",
+    "err": [
+     0.002,
+     -0.002
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0,
+    "status": "measured",
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.26,
+    "status": "measured",
+    "err": [
+     0.5,
+     -0.5
+    ],
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2455669.7888,
+    "status": "measured",
+    "source": {
+     "label": "Chachan et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+    }
+   },
+   "star": {
+    "name": "Kepler-167",
+    "spectralType": "K4",
+    "teff": {
+     "value": 4884,
+     "status": "measured",
+     "err": [
+      69,
+      -75
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.749,
+     "status": "measured",
+     "err": [
+      0.02,
+      -0.02
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.777,
+     "status": "measured",
+     "err": [
+      0.034,
+      -0.031
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.5391,
+     "status": "measured",
+     "err": [
+      0.02482,
+      -0.03115
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.02,
+     "status": "measured",
+     "err": [
+      0.067,
+      -0.067
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 7.1,
+     "status": "measured",
+     "err": [
+      4.4,
+      -4.6
+     ],
+     "source": {
+      "label": "Chachan et al. 2022",
+      "url": "https://ui.adsabs.harvard.edu/abs/2022ApJ...926...62C/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2016,
+    "method": "Transit",
+    "facility": "Kepler",
+    "telescope": "0.95 m Kepler Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 341.908,
+     "status": "measured",
+     "err": [
+      1.973,
+      -1.973
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 4,
+    "starCount": 2,
+    "raDeg": 292.6585253,
+    "decDeg": 38.3455558,
+    "vMag": 14.284
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "kepler-10-c",
+   "name": "Kepler-10 c",
+   "host": "Kepler-10",
+   "radiusEarth": {
+    "value": 2.355,
+    "status": "measured",
+    "err": [
+     0.022,
+     -0.022
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 11.29,
+    "status": "measured",
+    "err": [
+     1.24,
+     -1.24
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 4.75,
+    "status": "measured",
+    "err": [
+     0.53,
+     -0.53
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 579,
+    "status": "measured",
+    "err": [
+     4,
+     -4
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 18.3,
+    "status": "measured",
+    "err": [
+     0.39,
+     -0.383
+    ],
+    "source": {
+     "label": "Berger et al. 2018",
+     "url": "https://ui.adsabs.harvard.edu/abs/2018ApJ...866...99B/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 45.294301,
+    "status": "measured",
+    "err": [
+     0.000048,
+     -0.000048
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.241,
+    "status": "measured",
+    "err": [
+     0.0019,
+     -0.0019
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.136,
+    "status": "measured",
+    "err": [
+     0.05,
+     -0.05
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.623,
+    "status": "measured",
+    "err": [
+     0.011,
+     -0.011
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 330,
+    "status": "measured",
+    "err": [
+     31,
+     -23
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2455062.26648,
+    "status": "measured",
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "star": {
+    "name": "Kepler-10",
+    "spectralType": null,
+    "teff": {
+     "value": 5708,
+     "status": "measured",
+     "err": [
+      28,
+      -28
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 1.065,
+     "status": "measured",
+     "err": [
+      0.009,
+      -0.009
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.91,
+     "status": "measured",
+     "err": [
+      0.021,
+      -0.021
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "lumLog": {
+     "value": 0.05467,
+     "status": "measured",
+     "err": [
+      0.01123,
+      -0.014
+     ],
+     "source": {
+      "label": "Gajdo&scaron; et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019RAA....19...41G/abstract"
+     }
+    },
+    "metallicity": {
+     "value": -0.15,
+     "status": "measured",
+     "err": [
+      0.04,
+      -0.04
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 10.6,
+     "status": "measured",
+     "err": [
+      1.5,
+      -1.3
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2011,
+    "method": "Transit",
+    "facility": "Kepler",
+    "telescope": "0.95 m Kepler Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 185.506,
+     "status": "measured",
+     "err": [
+      0.811,
+      -0.805
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 3,
+    "starCount": 1,
+    "raDeg": 285.679298,
+    "decDeg": 50.2414842,
+    "vMag": 11.043
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": true
+   }
+  },
+  {
+   "id": "kepler-10-d",
+   "name": "Kepler-10 d",
+   "host": "Kepler-10",
+   "radiusEarth": {
+    "value": 3.49,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 12,
+    "status": "measured",
+    "err": [
+     2.15,
+     -2.15
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    },
+    "kind": "Msini"
+   },
+   "densityGcc": {
+    "value": 1.55,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 387,
+    "status": "measured",
+    "err": [
+     3,
+     -3
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 3.9198,
+    "status": "calculated",
+    "err": [
+     0.1299,
+     -0.1299
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 151.06,
+    "status": "measured",
+    "err": [
+     0.48,
+     -0.48
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.5379,
+    "status": "measured",
+    "err": [
+     0.0043,
+     -0.0043
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.19,
+    "status": "measured",
+    "err": [
+     0.1,
+     -0.1
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronArgDeg": {
+    "value": 150,
+    "status": "measured",
+    "err": [
+     28,
+     -31
+    ],
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2457165.4,
+    "status": "measured",
+    "source": {
+     "label": "Bonomo et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...696A.233B/abstract"
+    }
+   },
+   "star": {
+    "name": "Kepler-10",
+    "spectralType": null,
+    "teff": {
+     "value": 5708,
+     "status": "measured",
+     "err": [
+      28,
+      -28
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 1.065,
+     "status": "measured",
+     "err": [
+      0.009,
+      -0.009
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.91,
+     "status": "measured",
+     "err": [
+      0.021,
+      -0.021
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "lumLog": {
+     "value": 0.05467,
+     "status": "measured",
+     "err": [
+      0.01123,
+      -0.014
+     ],
+     "source": {
+      "label": "Gajdo&scaron; et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019RAA....19...41G/abstract"
+     }
+    },
+    "metallicity": {
+     "value": -0.15,
+     "status": "measured",
+     "err": [
+      0.04,
+      -0.04
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 10.6,
+     "status": "measured",
+     "err": [
+      1.5,
+      -1.3
+     ],
+     "source": {
+      "label": "Dumusque et al. 2014",
+      "url": "https://ui.adsabs.harvard.edu/abs/2014ApJ...789..154D/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2023,
+    "method": "Radial Velocity",
+    "facility": "Roque de los Muchachos Observatory",
+    "telescope": "3.58 m Telescopio Nazionale Galileo"
+   },
+   "system": {
+    "distancePc": {
+     "value": 185.506,
+     "status": "measured",
+     "err": [
+      0.811,
+      -0.805
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 3,
+    "starCount": 1,
+    "raDeg": 285.679298,
+    "decDeg": 50.2414842,
+    "vMag": 11.043
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "proxima-cen-d",
+   "name": "Proxima Cen d",
+   "host": "Proxima Cen",
+   "radiusEarth": {
+    "value": 0.692,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 0.26,
+    "status": "measured",
+    "err": [
+     0.038,
+     -0.038
+    ],
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    },
+    "kind": "Msini"
+   },
+   "densityGcc": {
+    "value": 4.31,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 282,
+    "status": "measured",
+    "err": [
+     23,
+     -23
+    ],
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 1.814,
+    "status": "measured",
+    "err": [
+     0.098,
+     -0.098
+    ],
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 5.12338,
+    "status": "measured",
+    "err": [
+     0.00035,
+     -0.00035
+    ],
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.02881,
+    "status": "measured",
+    "err": [
+     0.00017,
+     -0.00017
+    ],
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0,
+    "status": "measured",
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronArgDeg": {
+    "value": 4,
+    "status": "measured",
+    "err": [
+     2,
+     -1.7
+    ],
+    "source": {
+     "label": "Faria et al. 2022",
+     "url": "https://ui.adsabs.harvard.edu/abs/2022A&A...658A.115F/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": 2460557.55,
+    "status": "measured",
+    "err": [
+     0.16,
+     -0.16
+    ],
+    "source": {
+     "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "star": {
+    "name": "Proxima Cen",
+    "spectralType": "M5.5 V",
+    "teff": {
+     "value": 2900,
+     "status": "measured",
+     "err": [
+      100,
+      -100
+     ],
+     "source": {
+      "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.141,
+     "status": "measured",
+     "err": [
+      0.021,
+      -0.021
+     ],
+     "source": {
+      "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.1221,
+     "status": "measured",
+     "err": [
+      0.0022,
+      -0.0022
+     ],
+     "source": {
+      "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -2.82102,
+     "status": "measured",
+     "err": [
+      0.02242,
+      -0.02364
+     ],
+     "source": {
+      "label": "Su&aacute;rez Mascare&ntilde;o et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025A&A...700A..11M/abstract"
+     }
+    },
+    "metallicity": {
+     "value": null,
+     "status": "missing"
+    },
+    "ageGyr": {
+     "value": null,
+     "status": "missing"
+    }
+   },
+   "discovery": {
+    "year": 2025,
+    "method": "Radial Velocity",
+    "facility": "La Silla Observatory",
+    "telescope": "3.6 m ESO Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 1.30119,
+     "status": "measured",
+     "err": [
+      0.00034,
+      -0.00035
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 2,
+    "starCount": 3,
+    "raDeg": 217.3934657,
+    "decDeg": -62.6761821,
+    "vMag": 11.01
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "lhs-1140-c",
+   "name": "LHS 1140 c",
+   "host": "LHS 1140",
+   "radiusEarth": {
+    "value": 1.272,
+    "status": "measured",
+    "err": [
+     0.026,
+     -0.026
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "massEarth": {
+    "value": 1.91,
+    "status": "measured",
+    "err": [
+     0.06,
+     -0.06
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 5.1,
+    "status": "measured",
+    "err": [
+     0.4,
+     -0.4
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "eqTempK": {
+    "value": 422,
+    "status": "measured",
+    "err": [
+     7,
+     -7
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 5.3,
+    "status": "measured",
+    "err": [
+     0.4,
+     -0.4
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "periodDays": {
+    "value": 3.77794,
+    "status": "measured",
+    "err": [
+     0.000002,
+     -0.000002
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.027,
+    "status": "measured",
+    "err": [
+     0.0005,
+     -0.0005
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.05,
+    "status": "measured",
+    "limit": "<",
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 89.8,
+    "status": "measured",
+    "err": [
+     0.14,
+     -0.19
+    ],
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": 2458389.2939,
+    "status": "measured",
+    "source": {
+     "label": "Cadieux et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+    }
+   },
+   "star": {
+    "name": "LHS 1140",
+    "spectralType": "M4.5 V",
+    "teff": {
+     "value": 3096,
+     "status": "measured",
+     "err": [
+      48,
+      -48
+     ],
+     "source": {
+      "label": "Cadieux et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.2159,
+     "status": "measured",
+     "err": [
+      0.003,
+      -0.003
+     ],
+     "source": {
+      "label": "Cadieux et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.1844,
+     "status": "measured",
+     "err": [
+      0.0045,
+      -0.0045
+     ],
+     "source": {
+      "label": "Cadieux et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -2.42022,
+     "status": "measured",
+     "err": [
+      0.033,
+      -0.03572
+     ],
+     "source": {
+      "label": "Cadieux et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+     }
+    },
+    "metallicity": {
+     "value": -0.15,
+     "status": "measured",
+     "err": [
+      0.09,
+      -0.09
+     ],
+     "source": {
+      "label": "Cadieux et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 5,
+     "status": "measured",
+     "limit": ">",
+     "source": {
+      "label": "Cadieux et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024ApJ...960L...3C/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2018,
+    "method": "Transit",
+    "facility": "Multiple Observatories",
+    "telescope": "Multiple Telescopes"
+   },
+   "system": {
+    "distancePc": {
+     "value": 14.9861,
+     "status": "measured",
+     "err": [
+      0.0153,
+      -0.0152
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 2,
+    "starCount": 1,
+    "raDeg": 11.248632,
+    "decDeg": -15.2741085,
+    "vMag": 14.15
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
+  },
+  {
+   "id": "k2-18-c",
+   "name": "K2-18 c",
+   "host": "K2-18",
+   "radiusEarth": {
+    "value": 2.65,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 7.51,
+    "status": "measured",
+    "err": [
+     1.33,
+     -1.33
+    ],
+    "source": {
+     "label": "Cloutier et al. 2017",
+     "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+    },
+    "kind": "Msini"
+   },
+   "densityGcc": {
+    "value": 2.22,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 363,
+    "status": "measured",
+    "err": [
+     14,
+     -14
+    ],
+    "source": {
+     "label": "Cloutier et al. 2017",
+     "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+    }
+   },
+   "insolationEarth": {
+    "value": 7.0278,
+    "status": "calculated",
+    "err": [
+     0.9142,
+     -0.9142
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 8.962,
+    "status": "measured",
+    "err": [
+     0.008,
+     -0.008
+    ],
+    "source": {
+     "label": "Cloutier et al. 2017",
+     "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 0.06,
+    "status": "measured",
+    "err": [
+     0.003,
+     -0.003
+    ],
+    "source": {
+     "label": "Cloutier et al. 2017",
+     "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.47,
+    "status": "measured",
+    "limit": "<",
+    "source": {
+     "label": "Cloutier et al. 2017",
+     "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronArgDeg": {
+    "value": null,
+    "status": "missing"
+   },
+   "periastronTimeJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "transitMidJD": {
+    "value": null,
+    "status": "missing"
+   },
+   "star": {
+    "name": "K2-18",
+    "spectralType": "M2.5 V",
+    "teff": {
+     "value": 3457,
+     "status": "measured",
+     "err": [
+      39,
+      -39
+     ],
+     "source": {
+      "label": "Cloutier et al. 2017",
+      "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.411,
+     "status": "measured",
+     "err": [
+      0.038,
+      -0.038
+     ],
+     "source": {
+      "label": "Cloutier et al. 2017",
+      "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.359,
+     "status": "measured",
+     "err": [
+      0.047,
+      -0.047
+     ],
+     "source": {
+      "label": "Cloutier et al. 2017",
+      "url": "https://ui.adsabs.harvard.edu/abs/2017A&A...608A..35C/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -1.59688,
+     "status": "measured",
+     "err": [
+      0.03463,
+      -0.03763
+     ],
+     "source": {
+      "label": "Benneke et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019ApJ...887L..14B/abstract"
+     }
+    },
+    "metallicity": {
+     "value": 0.09,
+     "status": "measured",
+     "err": [
+      0.09,
+      -0.09
+     ],
+     "source": {
+      "label": "Montet et al. 2015",
+      "url": "https://ui.adsabs.harvard.edu/abs/2015ApJ...809...25M/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": null,
+     "status": "missing"
+    }
+   },
+   "discovery": {
+    "year": 2017,
+    "method": "Radial Velocity",
+    "facility": "La Silla Observatory",
+    "telescope": "3.6 m ESO Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 38.0266,
+     "status": "measured",
+     "err": [
+      0.07955,
+      -0.07955
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 2,
+    "starCount": 1,
+    "raDeg": 172.560141,
+    "decDeg": 7.5878315,
+    "vMag": 13.477
+   },
+   "flags": {
+    "controversial": true,
+    "ttv": false
+   }
+  },
+  {
+   "id": "hat-p-11-c",
+   "name": "HAT-P-11 c",
+   "host": "HAT-P-11",
+   "radiusEarth": {
+    "value": 13.2,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "massEarth": {
+    "value": 851.78013076,
+    "status": "measured",
+    "err": [
+     130.30964687,
+     -130.30964687
+    ],
+    "source": {
+     "label": "An et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+    },
+    "kind": "Mass"
+   },
+   "densityGcc": {
+    "value": 2.04,
+    "status": "calculated",
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "eqTempK": {
+    "value": 91.58,
+    "status": "calculated",
+    "err": [
+     1.12,
+     -1.12
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "insolationEarth": {
+    "value": 0.0161,
+    "status": "calculated",
+    "err": [
+     0.0007,
+     -0.0007
+    ],
+    "source": {
+     "label": "Calculated Value",
+     "url": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html"
+    }
+   },
+   "periodDays": {
+    "value": 3361,
+    "status": "measured",
+    "err": [
+     31,
+     -31
+    ],
+    "source": {
+     "label": "An et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+    }
+   },
+   "semiMajorAxisAU": {
+    "value": 4.1,
+    "status": "measured",
+    "err": [
+     0.06,
+     -0.06
+    ],
+    "source": {
+     "label": "An et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+    }
+   },
+   "eccentricity": {
+    "value": 0.652,
+    "status": "measured",
+    "err": [
+     0.017,
+     -0.017
+    ],
+    "source": {
+     "label": "An et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+    }
+   },
+   "inclinationDeg": {
+    "value": 33.1,
+    "status": "measured",
+    "err": [
+     7.3,
+     -4.9
+    ],
+    "source": {
+     "label": "An et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+    }
+   },
+   "periastronArgDeg": {
+    "value": 142.1,
+    "status": "measured",
+    "err": [
+     2.5,
+     -2.5
+    ],
+    "source": {
+     "label": "An et al. 2025",
+     "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+    }
+   },
+   "periastronTimeJD": {
+    "value": 2456867,
+    "status": "measured",
+    "err": [
+     15,
+     -18
+    ],
+    "source": {
+     "label": "Yee et al. 2024",
+     "url": "https://ui.adsabs.harvard.edu/abs/2024RNAAS...8..187Y/abstract"
+    }
+   },
+   "transitMidJD": {
+    "value": 2456746,
+    "status": "measured",
+    "source": {
+     "label": "Bourrier et al. 2023",
+     "url": "https://ui.adsabs.harvard.edu/abs/2023A&A...669A..63B/abstract"
+    }
+   },
+   "star": {
+    "name": "HAT-P-11",
+    "spectralType": "K4",
+    "teff": {
+     "value": 4653,
+     "status": "measured",
+     "err": [
+      33,
+      -35
+     ],
+     "source": {
+      "label": "Bourrier et al. 2023",
+      "url": "https://ui.adsabs.harvard.edu/abs/2023A&A...669A..63B/abstract"
+     }
+    },
+    "radiusSun": {
+     "value": 0.683,
+     "status": "measured",
+     "err": [
+      0.009,
+      -0.009
+     ],
+     "source": {
+      "label": "Chachan et al. 2019",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..244C/abstract"
+     }
+    },
+    "massSun": {
+     "value": 0.811,
+     "status": "measured",
+     "err": [
+      0.03,
+      -0.03
+     ],
+     "source": {
+      "label": "An et al. 2025",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025AJ....169...22A/abstract"
+     }
+    },
+    "lumLog": {
+     "value": -0.56702,
+     "status": "measured",
+     "err": [
+      0.01303,
+      -0.01602
+     ],
+     "source": {
+      "label": "Q1-Q17 DR25 Supplemental KOI Table",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/docs/Kepler_KOI_docs.html"
+     }
+    },
+    "metallicity": {
+     "value": 0.31,
+     "status": "measured",
+     "err": [
+      0.05,
+      -0.05
+     ],
+     "source": {
+      "label": "Basilicata et al. 2024",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024A&A...686A.127B/abstract"
+     }
+    },
+    "ageGyr": {
+     "value": 2.69,
+     "status": "measured",
+     "err": [
+      2.88,
+      -1.24
+     ],
+     "source": {
+      "label": "Bourrier et al. 2023",
+      "url": "https://ui.adsabs.harvard.edu/abs/2023A&A...669A..63B/abstract"
+     }
+    }
+   },
+   "discovery": {
+    "year": 2018,
+    "method": "Radial Velocity",
+    "facility": "W. M. Keck Observatory",
+    "telescope": "10 m Keck I Telescope"
+   },
+   "system": {
+    "distancePc": {
+     "value": 37.7647,
+     "status": "measured",
+     "err": [
+      0.0337,
+      -0.0336
+     ],
+     "source": {
+      "label": "TICv8",
+      "url": "https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract"
+     }
+    },
+    "planetCount": 2,
+    "starCount": 1,
+    "raDeg": 297.7101763,
+    "decDeg": 48.0818635,
+    "vMag": 9.46
+   },
+   "flags": {
+    "controversial": false,
+    "ttv": false
+   }
   }
  ],
  "additions": [
@@ -4410,6 +9497,33 @@
     "HR 8799 b",
     "Kepler-16 b",
     "HD 189733 b"
+   ]
+  },
+  {
+   "retrievedAt": "2026-10-30T20:23:36.794Z",
+   "planets": [
+    "TRAPPIST-1 b",
+    "TRAPPIST-1 c",
+    "TRAPPIST-1 d",
+    "TRAPPIST-1 f",
+    "TRAPPIST-1 g",
+    "TRAPPIST-1 h",
+    "HR 8799 c",
+    "HR 8799 d",
+    "HR 8799 e",
+    "55 Cnc b",
+    "55 Cnc c",
+    "55 Cnc d",
+    "55 Cnc f",
+    "Kepler-167 b",
+    "Kepler-167 c",
+    "Kepler-167 d",
+    "Kepler-10 c",
+    "Kepler-10 d",
+    "Proxima Cen d",
+    "LHS 1140 c",
+    "K2-18 c",
+    "HAT-P-11 c"
    ]
   }
  ]

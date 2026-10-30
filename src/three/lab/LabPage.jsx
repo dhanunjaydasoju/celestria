@@ -4,18 +4,24 @@
 //
 //   /lab/planet?id=<planet-id>   single PlanetViewport (← / → to cycle)
 //   /lab/gallery                 all fixtures in one canvas
+//   /lab/system?host=<host>      SystemExplorer over lab fixtures + synthetic test system
 
 import { useEffect, useMemo, useState } from 'react'
+import SystemExplorer from '../../pages/explore/SystemExplorer.jsx'
 import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router'
 import { visualParams } from '../planet/visualParams.js'
 import PlanetViewport from '../viewports/PlanetViewport.jsx'
 import { labPlanets, labSource } from './fixtures.js'
 import LabGallery from './LabGallery.jsx'
+import { labTestSystemPlanets } from './testSystems.js'
+
+const SYSTEM_PLANETS = [...labPlanets.filter((p) => !p.synthetic), ...labTestSystemPlanets]
 import './LabPage.css'
 
 const MODES = [
   { key: 'planet', label: 'PlanetViewport' },
   { key: 'gallery', label: 'Gallery' },
+  { key: 'system', label: 'SystemViewport' },
 ]
 
 export default function LabPage() {
@@ -40,6 +46,26 @@ export default function LabPage() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [index, setSearch, viewport])
+
+  if (viewport === 'system') {
+    return (
+      <div className="lab lab--system">
+        <nav className="lab__modes lab__modes--floating">
+          {MODES.map((m) => (
+            <NavLink key={m.key} to={`/lab/${m.key}`}>
+              {m.label}
+            </NavLink>
+          ))}
+        </nav>
+        <SystemExplorer
+          planets={SYSTEM_PLANETS}
+          host={search.get('host') ?? 'TRAPPIST-1'}
+          onHostChange={(host) => setSearch({ host }, { replace: true })}
+          profileHref={(id) => `/lab/planet?id=${id}`}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="lab">

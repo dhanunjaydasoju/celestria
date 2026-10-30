@@ -38,28 +38,14 @@ describe('layoutOrbits', () => {
     expect(map.get('b').radius).toBeGreaterThan(1)
     expect(map.get('b').radius).toBeLessThan(map.get('c').radius)
     expect(map.get('c').radius).toBeLessThan(map.get('h').radius)
-    expect([...map.values()].every((v) => v.basis === 'semiMajorAxis')).toBe(true)
+    expect([...map.values()].every((v) => v.basis === 'distance')).toBe(true)
   })
 
-  it('derives distance from period when a is missing', () => {
-    const map = layoutOrbits([
-      { id: 'inner', aAU: 0.05, periodDays: 4 },
-      { id: 'noA', periodDays: 32 },
-    ])
-    expect(map.get('noA').basis).toBe('period')
-    expect(map.get('noA').radius).toBeGreaterThan(map.get('inner').radius)
-  })
-
-  it('uses star mass for Kepler III calibration', () => {
-    const map = layoutOrbits([{ id: 'x', periodDays: 365.25 }, { id: 'y', aAU: 0.5 }], { starMassSun: 1 })
-    expect(map.get('x').basis).toBe('period')
-    expect(map.get('x').radius).toBeGreaterThan(map.get('y').radius)
-  })
-
-  it('places planets with no orbital data last and flags them', () => {
-    const map = layoutOrbits([{ id: 'known', aAU: 1 }, { id: 'unknown' }])
-    expect(map.get('unknown').basis).toBe('order')
-    expect(map.get('unknown').radius).toBeGreaterThan(map.get('known').radius)
+  it('never infers distance itself: planets without aAU are arbitrary and placed last', () => {
+    const map = layoutOrbits([{ id: 'known', aAU: 1 }, { id: 'periodOnly', periodDays: 32 }, { id: 'none' }])
+    expect(map.get('periodOnly').basis).toBe('arbitrary')
+    expect(map.get('none').basis).toBe('arbitrary')
+    expect(map.get('periodOnly').radius).toBeGreaterThan(map.get('known').radius)
   })
 
   it('never lets neighbouring planets overlap', () => {
@@ -73,7 +59,7 @@ describe('layoutOrbits', () => {
   it('handles an empty system and an all-null system', () => {
     expect(layoutOrbits([]).size).toBe(0)
     const map = layoutOrbits([{ id: 'p' }, { id: 'q' }])
-    expect(map.get('p').basis).toBe('order')
+    expect(map.get('p').basis).toBe('arbitrary')
     expect(map.get('q').radius).toBeGreaterThan(map.get('p').radius)
   })
 })

@@ -1,0 +1,113 @@
+/* owner: LEAD */
+.viewport--system {
+  min-height: 320px;
+}
+
+.sv-labels {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sv-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1px 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity 180ms var(--ease), color 180ms var(--ease);
+  will-change: transform;
+}
+
+.sv-label.is-active {
+  color: var(--color-text);
+}
+
+.sv-label.is-selected {
+  color: var(--color-accent);
+  font-size: 12px;
+}
+
+.sv-label__sub {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-estimated);
+}
+
+.sv-notes {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  max-width: 300px;
+  pointer-events: none;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  text-align: right;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.sv-notes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sv-notes__kicker {
+  margin: 0 0 var(--space-2);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.sv-legend {
+  margin-bottom: var(--space-2) !important;
+}
+
+.sv-legend li {
+  display: grid;
+  grid-template-columns: 1fr 22px;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: 2px;
+  color: var(--color-text);
+}
+
+.sv-legend__line {
+  flex: none;
+  width: 22px;
+  border-top: 1.5px solid rgba(201, 214, 232, 0.7);
+}
+
+.sv-legend__line--dashed {
+  border-top-style: dashed;
+}
+
+.sv-legend__line--dotted {
+  border-top-style: dotted;
+}
+
+@media (max-width: 640px) {
+  .sv-notes {
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-3);
+    max-width: none;
+    font-size: 10px;
+  }
+  .sv-notes__list li:not(:first-child) {
+    display: none;
+  }
+}

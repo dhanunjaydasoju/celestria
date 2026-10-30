@@ -6,6 +6,7 @@ import { Canvas } from '@react-three/fiber'
 import { useMemo } from 'react'
 import ProceduralPlanet from '../planet/ProceduralPlanet.jsx'
 import { visualParams } from '../planet/visualParams.js'
+import { SPACE_BACKGROUND } from '../shared/space.js'
 
 const GAP = 2.7
 const LIGHT_OFFSET = [-10, 3, 3.5]
@@ -31,6 +32,7 @@ export default function LabGallery({ planets, onPick }) {
 
   return (
     <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 2 + COLS * GAP * 1.2], fov: 40 }}>
+      <color attach="background" args={[SPACE_BACKGROUND]} />
       {items.map(({ planet, params, position, light }) => (
         <group key={planet.id}>
           <ProceduralPlanet

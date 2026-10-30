@@ -32,6 +32,8 @@
  * @property {(id: string|null) => void} [onSelectPlanet]
  * @property {boolean} [paused=false]
  * @property {number} [timeScale=1]          multiplier on the default time compression
+ * @property {number} [resetToken=0]         increment to fly back to the overview
+ * @property {boolean} [reducedMotion=false] cut instead of animating camera moves
  */
 
 /**

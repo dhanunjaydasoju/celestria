@@ -42,48 +42,26 @@ export function starDisplayRadius(radiusSun, { base = 1.4, exponent = 0.4, min =
 }
 
 /**
- * Lay out orbit radii for one system on a log scale.
+ * Lay out display orbit radii for one system on a log scale.
  *
- * Distance basis per planet, best first:
- * - 'semiMajorAxis': measured/calculated a
- * - 'period': a derived from P via Kepler III (a ∝ P^(2/3) for one star),
- *   calibrated from the star mass or from planets that have both a and P
- * - 'order': nothing usable; placed outside the others, position arbitrary
- *   (scenes must label these)
+ * Takes physical semi-major axes (AU) that the caller has already resolved
+ * and labelled (NASA value or Kepler's third law; see three/system/
+ * systemModel.js). Entries without one are placed outside the others with
+ * basis 'arbitrary' and must be labelled as such. Orbits are pushed apart so
+ * neighbouring planets never overlap. Output radii are display units only;
+ * they are never physical distances.
  *
- * Orbits are pushed apart so neighbouring planets never overlap.
- *
- * @param {{ id: string, aAU?: number|null, periodDays?: number|null, displayRadius?: number|null }[]} entries
- * @param {{ starRadius?: number, starMassSun?: number|null, innerGap?: number, span?: number, minGap?: number }} [opts]
- * @returns {Map<string, { radius: number, basis: 'semiMajorAxis'|'period'|'order' }>}
+ * @param {{ id: string, aAU?: number|null, displayRadius?: number|null }[]} entries
+ * @param {{ starRadius?: number, innerGap?: number, span?: number, minGap?: number }} [opts]
+ * @returns {Map<string, { radius: number, basis: 'distance'|'arbitrary' }>}
  */
-export function layoutOrbits(entries, { starRadius = 1.4, starMassSun = null, innerGap = 1.2, span = 9, minGap = 0.6 } = {}) {
-  // a [AU] = c · P[days]^(2/3)
-  let c = null
-  if (isPositive(starMassSun)) {
-    c = Math.cbrt(starMassSun) / 365.25 ** (2 / 3)
-  } else {
-    const ratios = entries
-      .filter((e) => isPositive(e.aAU) && isPositive(e.periodDays))
-      .map((e) => e.aAU / e.periodDays ** (2 / 3))
-      .sort((x, y) => x - y)
-    if (ratios.length) c = ratios[Math.floor(ratios.length / 2)]
-  }
-  // No a anywhere: P^(2/3) is still a consistent relative distance within one system.
-  if (c == null && !entries.some((e) => isPositive(e.aAU))) c = 1
-
-  const placed = []
-  const unplaced = []
-  for (const e of entries) {
-    if (isPositive(e.aAU)) placed.push({ e, x: e.aAU, basis: 'semiMajorAxis' })
-    else if (isPositive(e.periodDays) && c != null) placed.push({ e, x: c * e.periodDays ** (2 / 3), basis: 'period' })
-    else unplaced.push(e)
-  }
-  placed.sort((p, q) => p.x - q.x)
+export function layoutOrbits(entries, { starRadius = 1.4, innerGap = 1.2, span = 9, minGap = 0.6 } = {}) {
+  const placed = entries.filter((e) => isPositive(e.aAU)).sort((p, q) => p.aAU - q.aAU)
+  const unplaced = entries.filter((e) => !isPositive(e.aAU))
 
   const inner = starRadius + innerGap
-  const xMin = placed.length ? placed[0].x : 1
-  const decades = placed.length ? Math.log10(placed[placed.length - 1].x / xMin) : 0
+  const aMin = placed.length ? placed[0].aAU : 1
+  const decades = placed.length ? Math.log10(placed[placed.length - 1].aAU / aMin) : 0
   const k = decades > 0 ? clamp(span / decades, 2, 12) : 0
 
   const result = new Map()
@@ -94,8 +72,8 @@ export function layoutOrbits(entries, { starRadius = 1.4, starMassSun = null, in
     result.set(e.id, { radius: r, basis })
     prev = { radius: r, size: own }
   }
-  for (const p of placed) place(p.e, inner + k * Math.log10(p.x / xMin), p.basis)
-  for (const e of unplaced) place(e, 0, 'order')
+  for (const e of placed) place(e, inner + k * Math.log10(e.aAU / aMin), 'distance')
+  for (const e of unplaced) place(e, 0, 'arbitrary')
   return result
 }
 
