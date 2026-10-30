@@ -1,0 +1,21 @@
+/* Shared viewport frame — owner: LEAD. Fills whatever box the page gives it. */
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.viewport__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}

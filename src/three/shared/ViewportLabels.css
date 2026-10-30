@@ -1,0 +1,58 @@
+/* owner: LEAD */
+.vp-labels {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-4);
+  max-width: min(420px, calc(100% - 2 * var(--space-4)));
+  pointer-events: none;
+  color: var(--color-text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.vp-labels p,
+.vp-labels ul {
+  margin: 0;
+}
+
+.vp-labels__kicker {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.vp-labels__type {
+  margin-top: 2px !important;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.vp-labels__type span {
+  color: var(--color-text-muted);
+}
+
+.vp-labels__coverage {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  pointer-events: auto;
+  cursor: help;
+}
+
+.vp-labels__basis {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-2) !important;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.vp-labels--compact {
+  left: var(--space-3);
+  bottom: var(--space-3);
+}
+
+.vp-labels--compact .vp-labels__type {
+  font-size: 15px;
+}

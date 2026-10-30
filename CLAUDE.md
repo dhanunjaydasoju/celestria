@@ -96,6 +96,7 @@ celestria/
 │  ├─ routes/astronomer.js      [AI]
 │  ├─ ai/featherless.js         [AI]    OpenAI-compatible client
 │  └─ ai/prompts.js             [AI]    system + task prompts
+├─ scripts/build-lab-fixtures.js [LEAD] real NASA rows → src/three/lab/fixtures.json (lab only)
 ├─ public/models/               [LEAD]  optional GLBs (spacecraft), Draco-compressed
 └─ src/
    ├─ main.jsx, App.jsx         [LEAD]  router + providers (integration point)
@@ -123,7 +124,7 @@ celestria/
    │  ├─ scenes/                SystemScene, StarMapScene, SizeCompareScene, OrbitScene, JourneyScene, HeroScene
    │  ├─ shared/                Starfield, OrbitPath, CameraRig, Spacecraft, Lighting
    │  ├─ hooks/                 useOrbitClock, useCameraFocus
-   │  ├─ lab/                   dev-only /lab sandbox: mount any viewport against any fixture
+   │  ├─ lab/                   dev-only /lab sandbox (/lab/planet?id=…, /lab/gallery) + lab fixtures
    │  └─ scale.js               display-scale functions (documented)
    ├─ science/
    │  ├─ constants.js           [DATA]  G, AU, R_earth, R_sun, pc→ly, …

@@ -24,7 +24,7 @@ export default defineConfig([
   },
   {
     // Node code: Express server, scripts, tool configs.
-    files: ['server/**/*.js', '*.config.js'],
+    files: ['server/**/*.js', 'scripts/**/*.js', '*.config.js'],
     extends: [js.configs.recommended],
     languageOptions: { globals: globals.node },
     rules: { 'no-unused-vars': unusedVars },
