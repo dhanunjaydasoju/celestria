@@ -111,8 +111,8 @@ export function orbitalElements(planet) {
   const gm = starMass != null ? starMass * GM_SUN : null
 
   // Semi-major axis: catalog, else Kepler III, else a normalised orbit (a = 1).
-  let a = null
-  let aSource = null
+  let a
+  let aSource
   if (isScientific(planet.semiMajorAxisAU) && planet.semiMajorAxisAU.value > 0) {
     a = planet.semiMajorAxisAU.value
     aSource = 'catalog'

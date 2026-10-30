@@ -1,0 +1,433 @@
+/* owner: LEAD (M3) */
+.os {
+  /* Fixed to the viewport (not flex-grown), so controls stay on screen. */
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: calc(100vh - var(--header-height));
+  min-height: 560px;
+  background: var(--color-bg);
+}
+
+.os-stage {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 0;
+}
+
+.os-stage > .viewport {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+}
+
+.os-head {
+  position: absolute;
+  top: var(--space-6);
+  left: var(--space-6);
+  max-width: min(440px, 50%);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+}
+
+.os-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.os-back:hover {
+  color: var(--color-accent);
+}
+
+.os-kicker {
+  margin: var(--space-4) 0 0;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.os-title {
+  margin: var(--space-1) 0 0;
+  font-size: clamp(26px, 3.4vw, 42px);
+  line-height: 1.05;
+}
+
+.os-sub {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Time-mode box: real dates vs illustrative time must never be confused. */
+.os-time {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  width: 270px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-left: 2px solid var(--color-missing);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.os-time.is-real {
+  border-left-color: var(--color-accent);
+}
+
+.os-time p {
+  margin: 0;
+}
+
+.os-time__mode {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.os-time.is-real .os-time__mode {
+  color: var(--color-accent);
+}
+
+.os-time__value {
+  margin-top: 4px !important;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.os-time__note {
+  margin-top: 4px !important;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.os-time__note--warn {
+  color: var(--color-estimated);
+}
+
+.os-today {
+  margin-top: var(--space-2);
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-accent);
+  font: 12px var(--font-ui);
+  cursor: pointer;
+}
+
+.os-today:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────── */
+.os-controls {
+  grid-column: 1;
+  grid-row: 2;
+  padding: var(--space-4) var(--space-6) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  background: #07090e;
+}
+
+.os-timeline {
+  position: relative;
+  padding-bottom: 32px;
+}
+
+.os-timeline input[type='range'] {
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.os-timeline input[type='range']::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(90deg, #ffc98a, #7fc4dc 50%, #ffc98a);
+  opacity: 0.55;
+}
+
+.os-timeline input[type='range']::-moz-range-track {
+  height: 2px;
+  background: linear-gradient(90deg, #ffc98a, #7fc4dc 50%, #ffc98a);
+  opacity: 0.55;
+}
+
+.os-timeline input[type='range']::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -7px;
+  border: 2px solid var(--color-bg);
+  border-radius: 50%;
+  background: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-accent);
+  appearance: none;
+}
+
+.os-timeline input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-bg);
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.os-timeline input[type='range']:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.os-markers {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 14px;
+  height: 22px;
+  pointer-events: none;
+}
+
+.os-marker {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.os-marker.is-stacked {
+  top: 12px;
+}
+
+.os-marker.is-stacked i {
+  height: 19px;
+  margin-top: -12px;
+}
+
+.os-marker i {
+  width: 1px;
+  height: 7px;
+  margin-bottom: 2px;
+  background: currentColor;
+}
+
+.os-marker--peri {
+  color: #ffc98a;
+  transform: translateX(0);
+  align-items: flex-start;
+}
+
+.os-marker--apo {
+  color: #8fd3e8;
+}
+
+.os-marker--transit {
+  color: var(--color-text);
+}
+
+.os-marker--now {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.os-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.os-buttons button {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 32px;
+  padding: 0 9px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-text-muted);
+  font: 12px var(--font-mono);
+  cursor: pointer;
+}
+
+.os-buttons button:hover {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.os-buttons button.is-active {
+  color: var(--color-bg);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.os-buttons .os-play {
+  min-width: 44px;
+  color: var(--color-text);
+  border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+}
+
+.os-speeds {
+  display: flex;
+  gap: 2px;
+  margin-left: var(--space-3);
+}
+
+.os-rate {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* ── Panel ─────────────────────────────────────────────────────────────── */
+.os-panel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  border-left: 1px solid var(--color-border);
+  background: #07090e;
+  overflow-y: auto;
+}
+
+.os-panel__title {
+  margin: var(--space-6) 0 var(--space-2);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.os-panel__title:first-child {
+  margin-top: 0;
+}
+
+.os-live {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4) var(--space-3);
+  margin: 0;
+}
+
+.os-live dt {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.os-live dd {
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.os-live dd span {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.os-facts {
+  margin: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.os-facts .mrow__src {
+  max-width: 120px;
+}
+
+.os-assumptions {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--color-estimated);
+}
+
+.os-method {
+  margin: var(--space-6) 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.os-unavailable {
+  max-width: 560px;
+  padding: var(--space-8) var(--space-6);
+}
+
+/* ── Tablet / mobile: scene, then controls, then panel ─────────────────── */
+@media (max-width: 960px) {
+  .os {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+  .os-stage {
+    display: flex;
+    flex-direction: column;
+  }
+  .os-stage > .viewport {
+    position: relative;
+    inset: auto;
+    height: 56vh;
+    min-height: 340px;
+  }
+  .os-head {
+    top: var(--space-4);
+    left: var(--space-4);
+    max-width: calc(100% - 2 * var(--space-4));
+  }
+  /* Below the scene on small screens so it never hides the orbit. */
+  .os-time {
+    position: static;
+    width: auto;
+    margin: 0;
+    border-radius: 0;
+    border-right: 0;
+    border-top: 0;
+    backdrop-filter: none;
+    background: #07090e;
+  }
+  .os-stage .ov-notes {
+    display: none;
+  }
+  .os-controls {
+    padding: var(--space-3) var(--space-4);
+  }
+  .os-rate {
+    width: 100%;
+    margin: var(--space-1) 0 0;
+  }
+  .os-speeds {
+    margin-left: auto;
+  }
+  .os-panel {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-4) var(--space-4) var(--space-8);
+    overflow: visible;
+  }
+}

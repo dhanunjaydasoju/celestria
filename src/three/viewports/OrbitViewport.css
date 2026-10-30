@@ -1,0 +1,64 @@
+/* owner: LEAD (M3) */
+.viewport--orbit {
+  min-height: 320px;
+}
+
+.ov-label {
+  color: var(--color-text-muted);
+}
+
+.ov-label--peri {
+  color: #ffc98a;
+}
+
+.ov-label--apo {
+  color: #8fd3e8;
+}
+
+.ov-label .sv-label__sub {
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.ov-notes {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-4);
+  max-width: 320px;
+  pointer-events: none;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ov-notes p {
+  margin: 0;
+}
+
+.ov-notes__legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px !important;
+}
+
+.ov-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  margin-left: 6px;
+}
+
+.ov-swatch:first-child {
+  margin-left: 0;
+}
+
+.ov-swatch--slow {
+  background: #7fc4dc;
+}
+
+.ov-swatch--fast {
+  background: #ffc98a;
+}

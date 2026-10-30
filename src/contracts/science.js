@@ -49,30 +49,18 @@
  */
 /** @typedef {(planets: Planet[]) => CatalogStats} ComputeCatalogStats */
 
-// ── LEAD: src/science/kepler.js ─────────────────────────────────────────────
-/**
- * @typedef {Object} OrbitalElements
- * @property {number} P            period, days
- * @property {number|null} a       semi-major axis, AU (null → normalized orbit only)
- * @property {number} e            eccentricity (0 when assumed)
- * @property {number|null} i       inclination, deg
- * @property {number} omega        argument of periastron, deg (90 when assumed)
- * @property {number} tp           time of periastron, BJD (0 when unanchored)
- * @property {number|null} starMassSun
- * @property {string[]} assumptions  human-readable, shown as banners
- * @property {boolean} anchored      true when phase is tied to real time
- *
- * @typedef {Object} OrbitState
- * @property {number} x            orbital-plane coords, AU (or units of a when normalized)
- * @property {number} y
- * @property {number} z
- * @property {number} rAU          distance from star
- * @property {number|null} speedKmS  null when a or star mass unknown
- * @property {number} trueAnomaly  rad
- * @property {number} phase        0–1, mean-anomaly fraction since periastron
- */
-/** @typedef {(planet: Planet) => OrbitalElements|null} GetOrbitalElements */
-/** @typedef {(el: OrbitalElements, tDays: number) => OrbitState} GetOrbitState */
+// ── LEAD: src/science/kepler.js (M3, implemented) ──────────────────────────
+// orbitalElements(planet) → elements | null (null when no period). Fields:
+//   P, periodErr, a, aSource ('catalog'|'kepler'|'normalised'), e,
+//   eStatus ('measured'|'assumed'|'missing'), omega (rad), omegaStatus,
+//   inclinationDeg, starMassSun, gm, starRadiusAU, transits,
+//   anchor { kind: 'transit'|'periastron'|'none', tp, epoch, epochErr,
+//            approximate, consistency }, assumptions [{ key, text }]
+// orbitState(el, t) → { meanAnomaly, phase, eccentricAnomaly, trueAnomaly,
+//   rAU, x, y, vDir, speedKmS|null }
+// orbitExtremes(el), transitPhase(el), timingUncertainty(el, t),
+// realDateReliability(el, t) → { ok, reason, uncertainty }
+// See kepler.js for formulas and conventions.
 
 // ── LEAD: src/science/travel.js ─────────────────────────────────────────────
 /** @typedef {(distancePc: number|null) => { label: string, speedKmS: number, years: number }[]|null} TravelTimes */

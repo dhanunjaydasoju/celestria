@@ -1,16 +1,25 @@
-// owner: LEAD (M3). Dedicated orbital simulator: host star, planet, orbit only.
-import { Link, useParams } from 'react-router'
+// owner: LEAD (M3). Orbital Simulator over the store's catalog.
+import { useParams } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../store/useCelestria.js'
+import OrbitSimulator from './orbit/OrbitSimulator.jsx'
 
 export default function OrbitPage() {
   const { id } = useParams()
+  const status = useCelestria((s) => s.catalogStatus)
   const planet = useCelestria((s) => s.byId[id])
-  return (
-    <PagePlaceholder title={`Orbital Simulator: ${planet?.name ?? id}`} owner="LEAD" deliverable="M3 Orbital Simulator">
-      <p>
-        <Link to={`/planet/${id}`}>Back to profile</Link>
-      </p>
-    </PagePlaceholder>
-  )
+  const reducedMotion = useCelestria((s) => s.reducedMotion)
+
+  if (!planet) {
+    return (
+      <PagePlaceholder title="Orbital simulator" owner="LEAD" deliverable="M3 Orbital Simulator">
+        <p>
+          {status === 'loading' || status === 'idle'
+            ? 'Loading catalog…'
+            : `No planet with id "${id}" in the catalog. The live NASA catalog arrives with D3.4.`}
+        </p>
+      </PagePlaceholder>
+    )
+  }
+  return <OrbitSimulator planet={planet} profileHref={`/planet/${id}`} reducedMotion={reducedMotion} />
 }

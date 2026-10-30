@@ -6,10 +6,12 @@
 //   /lab/gallery                 all fixtures in one canvas
 //   /lab/system?host=<host>      SystemExplorer over lab fixtures + synthetic test system
 //   /lab/profile?id=<planet-id>  PlanetProfile (planet page template) over lab fixtures
+//   /lab/orbit?id=<planet-id>    Orbital Simulator over lab fixtures
 
 import { useEffect, useMemo, useState } from 'react'
 import SystemExplorer from '../../pages/explore/SystemExplorer.jsx'
 import PlanetProfile from '../../pages/planet/PlanetProfile.jsx'
+import OrbitSimulator from '../../pages/orbit/OrbitSimulator.jsx'
 import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router'
 import { visualParams } from '../planet/visualParams.js'
 import PlanetViewport from '../viewports/PlanetViewport.jsx'
@@ -25,6 +27,7 @@ const MODES = [
   { key: 'gallery', label: 'Gallery' },
   { key: 'system', label: 'SystemViewport' },
   { key: 'profile', label: 'Profile' },
+  { key: 'orbit', label: 'Orbit' },
 ]
 
 export default function LabPage() {
@@ -70,6 +73,10 @@ export default function LabPage() {
     )
   }
 
+  if (viewport === 'orbit') {
+    return <OrbitSimulator planet={planet} profileHref={`/lab/profile?id=${planet.id}`} />
+  }
+
   if (viewport === 'profile') {
     return (
       <PlanetProfile
@@ -77,7 +84,7 @@ export default function LabPage() {
         planets={labPlanets}
         planetHref={(id) => `/lab/profile?id=${id}`}
         systemHref={(host) => `/lab/system?host=${encodeURIComponent(host)}`}
-        orbitHref={(id) => `/planet/${id}/orbit`}
+        orbitHref={(id) => `/lab/orbit?id=${id}`}
         closeHref={`/lab/system?host=${encodeURIComponent(planet.host)}`}
         onSelectPlanet={(id) => navigate(`/lab/profile?id=${id}`)}
       />
