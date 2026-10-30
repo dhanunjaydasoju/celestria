@@ -1,0 +1,33 @@
+/* Design tokens — owner: UI (D2.1). M0 placeholder values; replace freely.
+   Components use these variables only, never raw hex values. */
+:root {
+  color-scheme: dark;
+
+  --color-bg: #05070c;
+  --color-surface: #0b0f17;
+  --color-border: #1c2433;
+  --color-text: #e9eef5;
+  --color-text-muted: #8a95a8;
+  --color-accent: #8fd3e8;
+
+  /* Provenance (CLAUDE.md §1.2) */
+  --color-measured: #e9eef5;
+  --color-calculated: #9fc6ff;
+  --color-estimated: #d9b77a;
+  --color-missing: #5b6577;
+
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-ui: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius: 4px;
+  --header-height: 56px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
