@@ -53,6 +53,11 @@ describe('visualParams on real NASA fixtures', () => {
       'gj-436-b': ['neptune', 'hot'],
       'hd-209458-b': ['giant', 'scorching'],
       'kepler-167-e': ['giant', 'cold'],
+      'kepler-452-b': ['subNeptune', 'temperate'], // 1.63 R⊕, just above the 1.6 R⊕ boundary
+      '51-peg-b': ['giant', 'scorching'],
+      'hr-8799-b': ['giant', 'scorching'],
+      'kepler-16-b': ['giant', 'temperate'],
+      'hd-189733-b': ['giant', 'scorching'],
     }
     for (const [id, [type, band]] of Object.entries(expected)) {
       const v = visualParams(byId[id])
@@ -70,6 +75,23 @@ describe('visualParams on real NASA fixtures', () => {
       const v = visualParams(p)
       if (v.archetype === 'rocky') expect(v.atmosphere).toBeNull()
     }
+  })
+})
+
+describe('lab collection', () => {
+  it('holds 19 NASA planets and 2 synthetic test planets with unique ids', () => {
+    expect(labPlanets.filter((p) => !p.synthetic)).toHaveLength(19)
+    expect(labPlanets.filter((p) => p.synthetic).map((p) => p.id)).toEqual(['test-all-missing', 'test-insolation-only'])
+    expect(new Set(labPlanets.map((p) => p.id)).size).toBe(labPlanets.length)
+  })
+
+  it('includes all ten featured planets', () => {
+    const featured = ['proxima-cen-b', 'kepler-452-b', 'k2-18-b', '51-peg-b', 'wasp-12-b', '55-cnc-e', 'gj-1214-b', 'hr-8799-b', 'kepler-16-b', 'hd-189733-b']
+    for (const id of featured) expect(byId[id], id).toBeDefined()
+  })
+
+  it('produces render params for every planet', () => {
+    for (const p of labPlanets) expect(() => visualParams(p), p.id).not.toThrow()
   })
 })
 

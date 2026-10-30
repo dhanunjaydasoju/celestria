@@ -7,11 +7,12 @@ import { useMemo } from 'react'
 import ProceduralPlanet from '../planet/ProceduralPlanet.jsx'
 import { visualParams } from '../planet/visualParams.js'
 
-const COLS = 4
 const GAP = 2.7
 const LIGHT_OFFSET = [-10, 3, 3.5]
 
 export default function LabGallery({ planets, onPick }) {
+  // Roughly 4:3 grid that grows with the collection.
+  const COLS = Math.max(4, Math.ceil(Math.sqrt(planets.length * 1.25)))
   const items = useMemo(
     () =>
       planets.map((planet, i) => {
@@ -25,12 +26,11 @@ export default function LabGallery({ planets, onPick }) {
           light: position.map((v, k) => v + LIGHT_OFFSET[k]),
         }
       }),
-    [planets],
+    [planets, COLS],
   )
-  const rows = Math.ceil(planets.length / COLS)
 
   return (
-    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 6 + rows * 2.6], fov: 40 }}>
+    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 2 + COLS * GAP * 1.2], fov: 40 }}>
       {items.map(({ planet, params, position, light }) => (
         <group key={planet.id}>
           <ProceduralPlanet

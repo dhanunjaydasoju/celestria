@@ -3,9 +3,13 @@
 // (D3.1). The production normalizer is server/nasa/normalize.js (DATA); this
 // script follows the same provenance rules (CLAUDE.md §5) in a minimal form.
 //
+// Append-only: planets already in fixtures.json are never re-fetched or
+// rewritten, so lab results stay stable. To add planets, append names to a
+// list below and re-run.
+//
 // Usage: node scripts/build-lab-fixtures.js
 
-import { writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
@@ -29,6 +33,21 @@ const PLANETS = [
   'HD 80606 b', // eccentric giant (orbit tests)
   'Proxima Cen b', // no radius: classified by minimum mass
   'OGLE-2005-BLG-390L b', // microlensing: sparse
+]
+
+// Featured planets requested for the demo collection (2026-10-31). Names
+// already in PLANETS above are skipped automatically.
+const FEATURED = [
+  'Proxima Cen b',
+  'Kepler-452 b',
+  'K2-18 b',
+  '51 Peg b',
+  'WASP-12 b',
+  '55 Cnc e',
+  'GJ 1214 b',
+  'HR 8799 b',
+  'Kepler-16 b', // circumbinary: catalog star values describe the primary
+  'HD 189733 b',
 ]
 
 // field → [column, unit]; *_reflink, *err1/2, *lim are fetched alongside.
@@ -137,27 +156,40 @@ function normalize(row) {
   return planet
 }
 
-const where = PLANETS.map((n) => `'${n.replace(/'/g, "''")}'`).join(',')
+const existing = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null
+const have = new Set(existing?.planets.map((p) => p.name) ?? [])
+const wanted = [...new Set([...PLANETS, ...FEATURED])]
+const toFetch = wanted.filter((n) => !have.has(n))
+
+if (toFetch.length === 0) {
+  console.log(`Nothing to add: all ${wanted.length} planets already in ${path.relative(process.cwd(), OUT)}`)
+  process.exit(0)
+}
+
+const where = toFetch.map((n) => `'${n.replace(/'/g, "''")}'`).join(',')
 const adql = `select ${[...new Set(columns)].join(',')} from pscomppars where pl_name in (${where})`
 const res = await fetch(`${TAP}?query=${encodeURIComponent(adql)}&format=json`)
 if (!res.ok) throw new Error(`NASA TAP ${res.status}: ${(await res.text()).slice(0, 300)}`)
 const rows = await res.json()
 
 const found = new Set(rows.map((r) => r.pl_name))
-const notFound = PLANETS.filter((n) => !found.has(n))
+const notFound = toFetch.filter((n) => !found.has(n))
 if (notFound.length) console.warn('Not in pscomppars:', notFound.join(', '))
 
-const planets = PLANETS.filter((n) => found.has(n)).map((n) => normalize(rows.find((r) => r.pl_name === n)))
-writeFileSync(
-  OUT,
-  JSON.stringify(
-    {
+const added = toFetch.filter((n) => found.has(n)).map((n) => normalize(rows.find((r) => r.pl_name === n)))
+const now = new Date().toISOString()
+const out = existing
+  ? {
+      ...existing,
+      // Existing entries are copied through untouched; additions are logged.
+      planets: [...existing.planets, ...added],
+      additions: [...(existing.additions ?? []), { retrievedAt: now, planets: added.map((p) => p.name) }],
+    }
+  : {
       source: 'NASA Exoplanet Archive, pscomppars (https://exoplanetarchive.ipac.caltech.edu)',
-      generatedAt: new Date().toISOString(),
-      planets,
-    },
-    null,
-    1,
-  ) + '\n',
-)
-console.log(`Wrote ${planets.length} planets to ${path.relative(process.cwd(), OUT)}`)
+      generatedAt: now,
+      planets: added,
+    }
+
+writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n')
+console.log(`Added ${added.length} (${added.map((p) => p.name).join(', ')}); total ${out.planets.length} in ${path.relative(process.cwd(), OUT)}`)
