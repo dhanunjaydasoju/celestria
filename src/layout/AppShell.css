@@ -45,9 +45,26 @@
 
 @media (max-width: 600px) {
   .app-header {
+    gap: var(--space-3);
     padding: 0 var(--space-4);
   }
+  .app-wordmark {
+    flex: none;
+    font-size: 15px;
+    letter-spacing: 0.24em;
+  }
+  /* Never widen the page: if links still don't fit, the nav scrolls itself. */
   .app-nav {
-    gap: var(--space-4);
+    min-width: 0;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .app-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .app-nav a {
+    flex: none;
+    font-size: 13px;
   }
 }
