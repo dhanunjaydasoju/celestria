@@ -82,8 +82,9 @@ export function createLimiter(limits, { now = Date.now } = {}) {
    * Admit a question that will call the model: global budget, spend headroom
    * and a concurrency slot. Resolves with a ticket; the caller must release().
    * @param {AbortSignal} [signal]
+   * @param {{ onQueued?: (position: number) => void }} [opts]  called if the request has to wait
    */
-  function admit(signal) {
+  function admit(signal, { onQueued } = {}) {
     rollDay()
     if (questionsToday >= limits.AI_DAILY_REQUEST_BUDGET) {
       return Promise.reject(new LimitError('BUDGET_EXHAUSTED', 'The AI astronomer has reached its daily question budget. It will be back tomorrow.', { status: 503, retryAfterS: secondsToMidnight() }))
@@ -126,6 +127,7 @@ export function createLimiter(limits, { now = Date.now } = {}) {
       entry.onAbort = () => leave(new LimitError('BUSY', 'Request cancelled while waiting.', { status: 503 }))
       signal?.addEventListener('abort', entry.onAbort, { once: true })
       queue.push(entry)
+      onQueued?.(queue.length)
     })
   }
 
