@@ -52,7 +52,8 @@ async function call(pathname, { method = 'GET', body, timeoutMs = 90000, stream 
           /* non-JSON error body */
         }
       }
-      return { ok: res.ok, status: res.status, ms, json, text: config.redact(text).slice(0, stream ? 20000 : 600) }
+      // Streams are parsed in full; only non-stream bodies are shortened for the report.
+      return { ok: res.ok, status: res.status, ms, json, text: stream ? config.redact(text) : config.redact(text).slice(0, 600) }
     } catch (err) {
       return { ok: false, status: 0, ms: Math.round(performance.now() - t0), error: config.redact(err.name === 'AbortError' ? 'timeout' : err.message) }
     } finally {
@@ -105,6 +106,9 @@ const chat = (model, messages, extra = {}) =>
   call('/chat/completions', { method: 'POST', body: { model, messages, temperature: 0.2, max_tokens: 400, ...extra } })
 
 const msg0 = (r) => r.json?.choices?.[0]?.message ?? {}
+const finish = (r) => r.json?.choices?.[0]?.finish_reason ?? null
+// HTTP 200 with {"error": …} and no choices: a provider-side failure.
+const providerError = (r) => (r.ok && !r.json?.choices?.length ? config.redact(JSON.stringify(r.json?.error ?? r.text ?? '')).slice(0, 160) : undefined)
 const toolCalls = (r) => msg0(r).tool_calls ?? []
 const argsValid = (tc, required = []) => {
   try {
@@ -129,7 +133,7 @@ async function probeModel(model) {
   console.log(`\n▶ ${model}`)
 
   const basic = await chat(model, [{ role: 'user', content: 'Reply with the single word OK.' }], { max_tokens: 200 })
-  log('basic', { status: basic.status, ms: basic.ms, thinkTags: hasThink(basic), usage: basic.json?.usage ?? null, error: basic.ok ? undefined : basic.text || basic.error })
+  log('basic', { status: basic.status, ms: basic.ms, finish: finish(basic), thinkTags: hasThink(basic), usage: basic.json?.usage ?? null, error: basic.ok ? providerError(basic) : basic.text || basic.error })
   if (!basic.ok) return r
 
   const noThink = await chat(model, [{ role: 'system', content: `${SYSTEM} /no_think` }, { role: 'user', content: 'Reply with the single word OK.' }], { max_tokens: 200 })
@@ -140,7 +144,7 @@ async function probeModel(model) {
   for (let i = 0; i < RUNS; i++) {
     const res = await chat(model, [{ role: 'system', content: SYSTEM }, { role: 'user', content: 'What is the radius of TRAPPIST-1 e?' }], { tools: TOOLS })
     const tcs = toolCalls(res)
-    auto.push({ status: res.status, ms: res.ms, called: tcs.map((t) => t.function?.name), valid: tcs.length > 0 && tcs.every((t) => argsValid(t, t.function?.name === 'get_planet' ? ['id_or_name'] : [])), textToolCall: /tool_call|"name"\s*:\s*"get_planet"/.test(msg0(res).content ?? '') && tcs.length === 0 })
+    auto.push({ status: res.status, ms: res.ms, finish: finish(res), providerError: providerError(res), called: tcs.map((t) => t.function?.name), valid: tcs.length > 0 && tcs.every((t) => argsValid(t, t.function?.name === 'get_planet' ? ['id_or_name'] : [])), textToolCall: /tool_call|"name"\s*:\s*"get_planet"/.test(msg0(res).content ?? '') && tcs.length === 0 })
   }
   log('toolsAuto', {
     runs: RUNS,
@@ -149,6 +153,8 @@ async function probeModel(model) {
     validArgs: auto.filter((a) => a.valid).length,
     toolCallAsTextInstead: auto.filter((a) => a.textToolCall).length,
     errors: auto.filter((a) => a.status !== 200).map((a) => a.status),
+    providerErrors: auto.filter((a) => a.providerError).length,
+    finishReasons: [...new Set(auto.map((a) => a.finish))],
     latencyMs: stats(auto.map((a) => a.ms)),
   })
 
@@ -169,13 +175,13 @@ async function probeModel(model) {
   const tc = first && toolCalls(first)[0]
   if (tc) {
     const followUp = await chat(model, [
-      { role: 'system', content: `${SYSTEM} /no_think` },
+      { role: 'system', content: `${SYSTEM} Name the source given in the tool data for every value. /no_think` },
       { role: 'user', content: 'What is the radius of TRAPPIST-1 e?' },
       msg0(first),
       { role: 'tool', tool_call_id: tc.id, name: tc.function.name, content: JSON.stringify({ name: 'TRAPPIST-1 e', radiusEarth: { value: 0.92, err: [0.013, -0.012], unit: 'R⊕', status: 'measured', source: 'Agol et al. 2021' } }) },
     ], { tools: TOOLS })
     const text = msg0(followUp).content ?? ''
-    log('roundTrip', { status: followUp.status, ms: followUp.ms, usesToolValue: /0\.92/.test(text), citesSource: /Agol/.test(text), thinkTags: /<think>/.test(text), answerStart: text.replace(/<think>[\s\S]*?<\/think>/g, '').trim().slice(0, 120) })
+    log('roundTrip', { status: followUp.status, ms: followUp.ms, finish: finish(followUp), usesToolValue: /0\.92/.test(text), citesSource: /Agol/.test(text), thinkTags: /<think>/.test(text), answerStart: text.replace(/<think>[\s\S]*?<\/think>/g, '').trim().slice(0, 120) })
   } else {
     log('roundTrip', { skipped: 'no tool call to answer' })
   }
@@ -197,7 +203,8 @@ async function probeModel(model) {
   })
   const deltas = (stream.text ?? '').split('\n').filter((l) => l.startsWith('data: ') && !l.includes('[DONE]'))
   const streamedTool = deltas.some((l) => l.includes('"tool_calls"'))
-  log('streamingWithTools', { status: stream.status, events: deltas.length, toolCallDeltas: streamedTool, error: stream.ok ? undefined : (stream.text || stream.error)?.slice(0, 200) })
+  const streamFinish = deltas.map((l) => /"finish_reason"\s*:\s*"([a-z_]+)"/.exec(l)?.[1]).filter(Boolean).at(-1) ?? null
+  log('streamingWithTools', { status: stream.status, events: deltas.length, toolCallDeltas: streamedTool, finish: streamFinish, error: stream.ok ? undefined : (stream.text || stream.error)?.slice(0, 200) })
   return r
 }
 
@@ -214,15 +221,13 @@ const plan = await call('/plan')
 report.plan = { status: plan.status, body: plan.ok ? safeView(plan.json) : plan.text || plan.error }
 console.log(`  ${JSON.stringify(report.plan)}`)
 
+// /v1/models was retired by Featherless (404 "Gone", found in Phase 0), so
+// availability is shown by the basic chat call per model instead.
 console.log('\n▶ Model availability (/v1/models)')
 const models = await call('/models', { timeoutMs: 60000 })
 const list = models.json?.data ?? []
-report.models = MODELS.map((id) => {
-  const m = list.find((x) => x.id === id)
-  return { id, listed: Boolean(m), info: m ? safeView({ ...m, id: undefined }) : null }
-})
-console.log(`  status ${models.status}, ${list.length} models listed`)
-for (const m of report.models) console.log(`  ${m.id}: ${m.listed ? 'listed' : 'NOT listed'} ${m.info ? JSON.stringify(m.info) : ''}`)
+report.models = { status: models.status, retired: models.status === 404, listed: MODELS.filter((id) => list.some((x) => x.id === id)) }
+console.log(`  status ${models.status}${models.status === 404 ? ' (endpoint retired; availability is checked per model below)' : `, ${list.length} models listed`}`)
 
 report.results = []
 for (const id of MODELS) report.results.push(await probeModel(id))
