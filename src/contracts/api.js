@@ -7,6 +7,8 @@
 //   GET  /api/planets/:id     → PlanetResponse (full record: uncertainties + sources)
 //   GET  /api/systems/:host   → { host, planets: Planet[] } (full records)
 //   POST /api/ask             AskRequest → AskResponse (M5; replaces /api/astronomer)
+//                             With `Accept: application/x-ndjson`: AskProgress lines, then
+//                             { type: 'result', result } or { type: 'error', error }
 //   GET  /api/ask/status      → { available: boolean, model: string|null }
 //   POST /api/astronomer      AstronomerRequest → AstronomerResponse (superseded by /api/ask, not built)
 //
@@ -74,6 +76,8 @@
  * @typedef {Object} AskRequest
  * @property {string} question             ≤ AI_MAX_INPUT_CHARS
  * @property {string} [planetId]           page context (e.g. the open profile)
+ * @property {string} [host]               page context: the system on the System View
+ * @property {string[]} [compareIds]       page context: planets being compared (≤ 4)
  * @property {{ role: 'user'|'assistant', content: string }[]} [history]  earlier turns (not cached)
  */
 
@@ -105,6 +109,14 @@
  * Errors: 400 BAD_REQUEST · 429 RATE_LIMITED | DAILY_LIMIT (Retry-After) ·
  * 503 AI_UNAVAILABLE | BUSY | BUDGET_EXHAUSTED | SPEND_EXHAUSTED ·
  * 502 PROVIDER_ERROR · 504 TIMEOUT
+ */
+
+/**
+ * One streamed stage, sent only when the server actually reaches it.
+ * stage: queued {position} · admitted · cached · retrieved {tools} ·
+ * model {call, model, purpose: draft|repair|final} · tools {tools} ·
+ * fallback {from, to, reason} · validating · repair {attempt, of, issues}
+ * @typedef {{ type: 'progress', stage: string, at: number } & Record<string, unknown>} AskProgress
  */
 
 export const API_ERROR = Object.freeze({

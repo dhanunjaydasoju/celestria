@@ -1,9 +1,10 @@
 // App frame: header with side-drawer navigation, page outlet — owner: UI
 // (D2.2; drawer implemented by LEAD on request).
 
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, Telescope, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NavLink, Outlet } from 'react-router'
+import AstronomerDrawer from '../components/ai/AstronomerDrawer.jsx'
 import { FEATURED_PLANET_IDS } from '../data/featured.js'
 import { useCelestria } from '../store/useCelestria.js'
 import './AppShell.css'
@@ -31,6 +32,11 @@ export default function AppShell() {
   }, [byId])
   const menuButton = useRef(null)
   const firstLink = useRef(null)
+  const astronomerButton = useRef(null)
+  const astronomerOpen = useCelestria((st) => st.astronomerOpen)
+  const astronomerBusy = useCelestria((st) => st.astronomerTurns.some((t) => t.status === 'pending'))
+  const openAstronomer = useCelestria((st) => st.openAstronomer)
+  const closeAstronomer = useCelestria((st) => st.closeAstronomer)
 
   // Escape closes; focus moves into the drawer and back to the button.
   useEffect(() => {
@@ -64,7 +70,21 @@ export default function AppShell() {
         <NavLink to="/" className="app-wordmark">
           CELESTRIA
         </NavLink>
+        <button
+          ref={astronomerButton}
+          type="button"
+          className="ai-trigger"
+          aria-expanded={astronomerOpen}
+          aria-controls="astronomer"
+          aria-label="Ask the Astronomer"
+          onClick={() => (astronomerOpen ? closeAstronomer() : openAstronomer())}
+        >
+          <Telescope size={16} strokeWidth={1.6} aria-hidden="true" />
+          <span className="ai-trigger__label">Ask the Astronomer</span>
+          {astronomerBusy && <span className="ai-trigger__dot" aria-label="answering" />}
+        </button>
       </header>
+      <AstronomerDrawer returnFocusRef={astronomerButton} />
 
       <div className={`app-backdrop${open ? ' is-open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
       <nav
@@ -133,6 +153,16 @@ export default function AppShell() {
             </li>
           ))}
         </ul>
+        <button
+          type="button"
+          className="app-drawer__ask"
+          onClick={() => {
+            setOpen(false)
+            openAstronomer()
+          }}
+        >
+          <Telescope size={16} strokeWidth={1.6} aria-hidden="true" /> Ask the Astronomer
+        </button>
         {import.meta.env.DEV && (
           <NavLink to="/lab" className="app-drawer__dev" onClick={() => setOpen(false)}>
             3D Lab (development)

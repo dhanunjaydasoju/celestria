@@ -4,6 +4,7 @@
 
 import { API_ERROR, ApiError } from '../contracts/api.js'
 import { fixturePlanets } from '../data/fixtures/index.js'
+import { getAskStatus, streamAsk } from './astronomerClient.js'
 
 const USE_FIXTURES = import.meta.env.MODE === 'test' || import.meta.env.VITE_USE_FIXTURES === 'true'
 const TIMEOUT_MS = 20000
@@ -70,10 +71,19 @@ export async function getPlanet(id) {
 }
 
 /**
- * Owner of the endpoint: AI (D4.3). Not built yet.
- * @param {import('../contracts/api.js').AstronomerRequest} _req
- * @returns {Promise<import('../contracts/api.js').AstronomerResponse>}
+ * Ask the AI astronomer (POST /api/ask, streamed progress). Fixture mode has
+ * no AI: it reports the astronomer as unavailable instead of inventing answers.
+ * @param {import('../contracts/api.js').AskRequest} req
+ * @param {{ onProgress?: (event: object) => void, signal?: AbortSignal }} [opts]
+ * @returns {Promise<import('../contracts/api.js').AskResponse>}
  */
-export async function askAstronomer(_req) {
-  throw new ApiError(API_ERROR.NOT_IMPLEMENTED, 'AI astronomer not available yet (D4.3).')
+export async function askAstronomer(req, opts) {
+  if (USE_FIXTURES) throw new ApiError('AI_UNAVAILABLE', 'The AI astronomer is not available in fixture mode.', 503)
+  return streamAsk(req, opts)
+}
+
+/** @returns {Promise<{ available: boolean, model: string|null }>} */
+export async function getAstronomerStatus() {
+  if (USE_FIXTURES) return { available: false, model: null }
+  return getAskStatus()
 }

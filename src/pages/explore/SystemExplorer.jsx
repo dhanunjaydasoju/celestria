@@ -3,7 +3,7 @@
 // ExplorePage (store catalog) and /lab/system (lab fixtures).
 
 import { Pause, Play, Scan } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { scienceValue } from '../../contracts/planet.js'
 import { sig } from '../../three/shared/format.js'
@@ -39,8 +39,9 @@ function starLine(star, distancePc) {
  * @param {(host: string) => void} props.onHostChange
  * @param {(id: string) => string} props.profileHref
  * @param {boolean} [props.reducedMotion]
+ * @param {(focus: { host: string, planetId: string|null }) => void} [props.onFocusChange]  shown system and selected planet (e.g. for the AI astronomer's page context)
  */
-export default function SystemExplorer({ planets, host, onHostChange, profileHref, reducedMotion = false }) {
+export default function SystemExplorer({ planets, host, onHostChange, profileHref, reducedMotion = false, onFocusChange }) {
   const systems = useMemo(() => groupByHost(planets), [planets])
   const system = systems.find((s) => s.host === host) ?? systems[0]
   return (
@@ -51,11 +52,12 @@ export default function SystemExplorer({ planets, host, onHostChange, profileHre
       onHostChange={onHostChange}
       profileHref={profileHref}
       reducedMotion={reducedMotion}
+      onFocusChange={onFocusChange}
     />
   )
 }
 
-function SystemExplorerInner({ system, systems, onHostChange, profileHref, reducedMotion }) {
+function SystemExplorerInner({ system, systems, onHostChange, profileHref, reducedMotion, onFocusChange }) {
   // Systems as picker items; before searching, the largest systems are listed.
   const systemItems = useMemo(
     () => systems.map((s) => ({ id: s.host, name: s.host, host: `${s.planets.length} planet${s.planets.length === 1 ? '' : 's'}` })),
@@ -69,6 +71,9 @@ function SystemExplorerInner({ system, systems, onHostChange, profileHref, reduc
   const model = useMemo(() => buildSystemModel(system.planets), [system])
   const selected = model.planets.find((p) => p.id === selectedId) ?? null
   const distancePc = scienceValue(system.planets[0].system?.distancePc)
+  useEffect(() => {
+    onFocusChange?.({ host: system.host, planetId: selectedId })
+  }, [onFocusChange, system.host, selectedId])
 
   return (
     <div className="sx">

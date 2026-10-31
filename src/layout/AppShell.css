@@ -253,6 +253,32 @@
   transform: none;
 }
 
+.app-drawer__ask {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-6) var(--space-2) 0;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+  background: none;
+  color: var(--color-text-muted);
+  font: 15px var(--font-ui);
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.app-drawer__ask svg {
+  color: var(--color-accent);
+}
+
+.app-drawer__ask:hover,
+.app-drawer__ask:focus-visible {
+  color: var(--color-text);
+  outline: none;
+}
+
 .app-drawer__dev {
   margin-top: var(--space-6);
   padding: 0 var(--space-2);

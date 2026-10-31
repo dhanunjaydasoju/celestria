@@ -10,6 +10,7 @@ export default function ExplorePage() {
   const status = useCelestria((s) => s.catalogStatus)
   const planets = useCelestria((s) => s.planets)
   const reducedMotion = useCelestria((s) => s.reducedMotion)
+  const setPageFocus = useCelestria((s) => s.setPageFocus)
 
   if (status !== 'ready' || planets.length === 0) {
     return (
@@ -32,6 +33,7 @@ export default function ExplorePage() {
       onHostChange={(h) => navigate(`/explore/${encodeURIComponent(h)}`)}
       profileHref={(id) => `/planet/${id}`}
       reducedMotion={reducedMotion}
+      onFocusChange={setPageFocus}
     />
   )
 }

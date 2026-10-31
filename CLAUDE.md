@@ -233,6 +233,7 @@ NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians f
 - `server/ai/`: `config.js` (limits, key in a closure), `featherless.js` (client, typed retryable errors incl. HTTP 200 error bodies), `limits.js` (per-client minute/day, global daily questions and USD spend with per-call reservation, concurrency + bounded queue; synchronous check-and-reserve), `orchestrator.js` (pre-retrieval → tool loop → validate → repair → safe reply), `prompts.js`, `validate.js`, `tools/` (7 read-only tools), `knowledge/concepts.js`.
 - Primary `Qwen/Qwen3-32B` with `/no_think`; `Qwen/Qwen3-14B` only after a retryable provider failure, validated identically.
 - Nothing the model writes is shown unless `validate.js` accepts it; clarification / not-found / insufficient-data / unverified replies are fixed text built from tool results.
+- Phase 3 frontend: `src/components/ai/` (AstronomerDrawer, AnswerView, ProgressLog + pure `astronomerContext.js`, `progress.js`, `answerFormat.js`), `src/services/astronomerClient.js` (NDJSON progress stream), `src/store/astronomerSlice.js` (session conversation). Header button + menu entry in AppShell; non-modal right drawer on desktop, full screen ≤ 760 px. Progress shows only server-confirmed stages and a real elapsed clock.
 
 ## 6. Feature specs (condensed)
 
