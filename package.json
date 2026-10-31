@@ -2,7 +2,7 @@
   "name": "celestria",
   "private": true,
   "version": "0.0.0",
-  "description": "CELESTRIA — Explore Worlds Beyond Our Solar System",
+  "description": "CELESTRIA \u2014 Explore Worlds Beyond Our Solar System",
   "type": "module",
   "engines": {
     "node": ">=22"
@@ -16,7 +16,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "data:snapshot": "node server/scripts/fetch-snapshot.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
