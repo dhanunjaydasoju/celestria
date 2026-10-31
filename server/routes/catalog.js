@@ -49,5 +49,33 @@ export function catalogRouter(store) {
     sendJson(req, res, { host: req.params.host, planets }, { etag: `system-${req.params.host}-${s.version}` })
   })
 
+  // Coverage and median tables (no per-planet values).
+  r.get('/stats', (req, res) => {
+    const s = ready(res)
+    if (!s) return
+    const fields = Object.keys(s.analysis.summary)
+    const coverage = Object.fromEntries(
+      fields.map((f) => {
+        const get = (p) => (f.startsWith('star.') ? p.star?.[f.slice(5)] : p[f])
+        const present = s.planets.filter((p) => get(p)?.value != null).length
+        return [f, { present, missing: s.planets.length - present, ...s.analysis.summary[f] }]
+      }),
+    )
+    sendJson(req, res, { generatedAt: s.meta.retrievedAt, count: s.planets.length, coverage, medians: s.analysis.table }, { etag: `stats-${s.version}`, cacheKey: `stats-${s.version}` })
+  })
+
+  // Analysis-only imputation layer, deliberately separate from planet
+  // records. Consumers must treat every entry per its `method`/`label`.
+  r.get('/analysis/imputations', (req, res) => {
+    const s = ready(res)
+    if (!s) return
+    sendJson(
+      req,
+      res,
+      { catalogVersion: s.analysis.catalogVersion, policy: 'CLAUDE.md §5a: analysis only; never for profiles, readouts, orbital physics, habitability or AI', imputations: s.analysis.imputations },
+      { etag: `imputations-${s.version}`, cacheKey: `imputations-${s.version}` },
+    )
+  })
+
   return r
 }

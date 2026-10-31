@@ -25,6 +25,19 @@
   color: var(--color-missing);
 }
 
+/* Median-imputed (analysis views only): amber, dashed — never mistaken for data. */
+.prov--imputed {
+  padding: 1px 5px;
+  border: 1px dashed var(--color-estimated);
+  border-radius: 2px;
+  color: var(--color-estimated);
+}
+
+.mrow--imputed .mrow__number {
+  color: color-mix(in srgb, var(--color-text) 55%, var(--color-estimated));
+  font-style: italic;
+}
+
 .mrow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

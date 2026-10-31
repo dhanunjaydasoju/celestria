@@ -16,9 +16,10 @@ import './data.css'
  * @param {string} [props.unit]
  * @param {string} [props.secondary]      e.g. a unit conversion, shown under the value
  * @param {string} [props.unavailableReason]
+ * @param {boolean} [props.allowImputed]  analysis views only (CLAUDE.md §5a)
  */
-export default function MeasurementRow({ label, q, unit, secondary, unavailableReason }) {
-  const kind = provenanceKey(q)
+export default function MeasurementRow({ label, q, unit, secondary, unavailableReason, allowImputed = false }) {
+  const kind = provenanceKey(q, { allowImputed })
   const known = kind !== 'missing'
   const f = known ? formatMeasurement(q.value, q.err) : null
 

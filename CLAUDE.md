@@ -198,7 +198,7 @@ NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians f
 3. Consumers must opt in. Allowed: similarity/clustering/ML features, catalog-wide charts with an imputation toggle, 3D visual stand-ins. **Forbidden:** planet profiles and Key Features, System View cards, scientific readouts, Orbital Simulator physics (`kepler.js`), habitability scoring, AI astronomer prompts and answers, fun facts. `scienceValue()` / `isScientific()` reject imputed values, and badges show them as Unavailable unless a component explicitly passes `allowImputed`.
 4. Label: **"Estimated — Median Imputed"**, visually distinct from Estimated.
 
-**Physics before medians.** If a gap can be computed from measured values it is `calculated` with a stated basis, never imputed: Teq from Teff, R★ and a; insolation from L★ and a; a from Kepler III; density from M and R.
+**Physics before medians.** If a gap can be computed from measured values it is `calculated` with a stated basis, never imputed: Teq from Teff, R★ and a, else from insolation (Teq = 278.6 K·S^¼); insolation from L★ and a, else from Teq; a from Kepler III; density from M and R.
 
 **Which fields**
 
@@ -209,13 +209,14 @@ NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians f
 | densityGcc | size class (from known R, else known M) → global |
 | eccentricity | period bin (<10 d, 10–100 d, >100 d) → global |
 | eqTempK, insolationEarth (only if physics can't) | period bin × spectral class → period bin → global |
-| star teff, massSun, radiusSun, metallicity, ageGyr | spectral class letter → global |
+| star teff, radiusSun, metallicity, ageGyr | spectral class letter → star mass bin → global |
+| star massSun | spectral class letter → star Teff bin → global |
 
 **Never imputed:** identifiers and names, host, discovery year/method/facility/telescope, spectral type and other categories, flags, orbital period, semi-major axis (Kepler III or unavailable), inclination, argument and time of periastron, transit midpoint, uncertainties and limits, sources, coordinates, distance, magnitudes, M sin i (not missing: a lower limit), atmosphere.
 
 **Medians use only valid source values:** measured or NASA-calculated; never missing, limits (`<`/`>`), eccentricity fixed at 0, model-based estimates (e.g. NASA's mass–radius masses) or other imputed values (no chaining).
 
-**Selection bias.** Catalog medians inherit discovery bias (transit surveys favour short periods and large radii; RV favours massive planets; imaged planets are young giants with model masses). Grouping by a covariate the planet actually has reduces this but does not remove it; every imputation records its group, fallback level, group size and IQR so analyses can weight or exclude it. Groups are never formed from the field being imputed.
+**Selection bias.** Catalog medians inherit discovery bias (transit surveys favour short periods and large radii; RV favours massive planets; imaged planets are young giants with model masses). Grouping by a covariate the planet actually has reduces this but does not remove it; every imputation records its group, fallback level, group size and IQR so analyses can weight or exclude it. Groups are never formed from the field being imputed. Measured on the Oct 2026 catalogue: before adding the star-mass fallback, ~89% of imputed stellar temperatures fell back to the global median (Kepler hosts often lack a spectral type), which would misplace M dwarfs by ~2000 K; stellar mass (present for 99.9% of hosts) now precedes global.
 
 **Tests** (`src/pipeline/imputation.test.js`) must keep proving: canonical data is unchanged and missing stays missing; imputed entries are labelled and traceable; forbidden fields are never imputed; medians use only valid inputs; fallback is recorded; physics wins; science functions ignore imputed values.
 

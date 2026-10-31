@@ -73,6 +73,19 @@ describe('catalogue API', () => {
     expect(trappist.planets).toHaveLength(7)
   })
 
+  it('serves coverage and medians, and keeps imputations out of planet records', async () => {
+    const stats = await (await fetch(`${base}/stats`)).json()
+    expect(stats.coverage.eccentricity.present + stats.coverage.eccentricity.missing).toBe(41)
+    expect(stats.medians.massEarth.global.n).toBeGreaterThan(0)
+    const { planet } = await (await fetch(`${base}/planets/hr-8799-b`)).json()
+    expect(planet.eccentricity).toEqual({ value: null, status: 'missing' })
+    const layer = await (await fetch(`${base}/analysis/imputations`)).json()
+    expect(layer.policy).toMatch(/analysis only/)
+    for (const entries of Object.values(layer.imputations)) {
+      for (const e of Object.values(entries)) expect(['median', 'calculated']).toContain(e.method)
+    }
+  })
+
   it('returns JSON errors for unknown planets, systems and routes', async () => {
     for (const url of [`${base}/planets/nope`, `${base}/systems/Nowhere`, `${base}/unknown`]) {
       const res = await fetch(url)

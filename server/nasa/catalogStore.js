@@ -3,6 +3,7 @@
 // in the background when older than maxAgeMs. A failed or invalid refresh
 // keeps serving the current data.
 
+import { imputeCatalog } from '../../src/pipeline/imputation.js'
 import { refreshSnapshot } from './refresh.js'
 import { readSnapshot } from './snapshot.js'
 
@@ -34,6 +35,7 @@ export function createCatalogStore({ snapshotPath, refresh = false, maxAgeMs = D
       byId.set(p.id, p)
       byHost.set(p.host, [...(byHost.get(p.host) ?? []), p])
     }
+    const version = `${dataset.meta.retrievedAt}|${dataset.planets.length}`
     state = {
       meta: dataset.meta,
       origin, // 'snapshot' (from disk) or 'live' (refreshed in this process)
@@ -41,7 +43,9 @@ export function createCatalogStore({ snapshotPath, refresh = false, maxAgeMs = D
       index: dataset.planets.map(toIndexPlanet),
       byId,
       byHost,
-      version: `${dataset.meta.retrievedAt}|${dataset.planets.length}`,
+      version,
+      // Analysis-only layer (CLAUDE.md §5a); never merged into planets.
+      analysis: imputeCatalog(dataset.planets, { catalogVersion: dataset.meta.retrievedAt }),
     }
   }
 

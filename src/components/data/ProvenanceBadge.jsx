@@ -9,6 +9,7 @@ const LABELS = {
   estimated: 'Estimated',
   minimum: 'Minimum mass',
   assumed: 'Assumed',
+  imputed: 'Estimated — Median Imputed',
   missing: 'Unavailable',
 }
 
@@ -18,6 +19,7 @@ const TITLES = {
   estimated: 'Model-based estimate, e.g. a mass–radius relation',
   minimum: 'M sin i: true mass is this value or larger (orbital tilt unknown)',
   assumed: 'Fixed by assumption in the source analysis, not measured',
+  imputed: 'Not measured: a median of similar planets, for analysis only',
   missing: 'Not available in the NASA Exoplanet Archive',
 }
 
