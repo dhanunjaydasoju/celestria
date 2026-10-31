@@ -82,7 +82,7 @@ describe('formatPlanet', () => {
       const out = formatPlanet(planet)
       expect(deepFind(out, (n) => n.status === 'imputed')).toEqual([])
     }
-  })
+  }, 30_000) // formats all ~6,500 planets; slower when the whole suite runs in parallel
 })
 
 describe('name resolution', () => {

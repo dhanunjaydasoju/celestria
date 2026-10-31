@@ -30,3 +30,6 @@ dist-ssr
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# Runtime NASA catalogue syncs (the committed seed is server/data/catalog.snapshot.json.gz)
+server/data/runtime/

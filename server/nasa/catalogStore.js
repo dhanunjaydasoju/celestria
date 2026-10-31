@@ -1,13 +1,10 @@
-// In-memory catalogue served by the API — owner: DATA (LEAD in M4).
-// Loads the committed snapshot at start-up; optionally refreshes it from NASA
-// in the background when older than maxAgeMs. A failed or invalid refresh
-// keeps serving the current data.
+// In-memory catalogue served by the API — owner: DATA (LEAD in M4; M5 Phase A).
+// Loads the newest valid catalogue (runtime sync, backup or committed seed)
+// at start-up. Synchronisation with NASA lives in syncService.js; a sync
+// only reaches this store through replace() after full validation.
 
 import { imputeCatalog } from '../../src/pipeline/imputation.js'
-import { refreshSnapshot } from './refresh.js'
 import { readSnapshot } from './snapshot.js'
-
-const DAY_MS = 24 * 60 * 60 * 1000
 
 // Detail-only keys, omitted from the catalogue index to keep it light. Pages
 // that display uncertainties or sources (profile, simulator) fetch
@@ -25,7 +22,12 @@ export function toIndexPlanet(planet) {
   return strip(planet)
 }
 
-export function createCatalogStore({ snapshotPath, refresh = false, maxAgeMs = DAY_MS, log = () => {} } = {}) {
+/**
+ * In-memory catalogue served by the API.
+ * @param {{ storage?: ReturnType<typeof import('./catalogStorage.js').createCatalogStorage>, snapshotPath?: string, log?: (m: string) => void }} opts
+ *   storage: seed + runtime files (production); snapshotPath: a single file (tests)
+ */
+export function createCatalogStore({ storage = null, snapshotPath = null, log = () => {} } = {}) {
   let state = null
 
   const install = (dataset, origin) => {
@@ -36,9 +38,10 @@ export function createCatalogStore({ snapshotPath, refresh = false, maxAgeMs = D
       byHost.set(p.host, [...(byHost.get(p.host) ?? []), p])
     }
     const version = `${dataset.meta.retrievedAt}|${dataset.planets.length}`
+    // One object swap: requests in flight keep the state they started with.
     state = {
       meta: dataset.meta,
-      origin, // 'snapshot' (from disk) or 'live' (refreshed in this process)
+      origin, // 'seed' | 'runtime' | 'backup' (from disk) or 'live' (synced in this process)
       planets: dataset.planets,
       index: dataset.planets.map(toIndexPlanet),
       byId,
@@ -47,35 +50,27 @@ export function createCatalogStore({ snapshotPath, refresh = false, maxAgeMs = D
       // Analysis-only layer (CLAUDE.md §5a); never merged into planets.
       analysis: imputeCatalog(dataset.planets, { catalogVersion: dataset.meta.retrievedAt }),
     }
-  }
-
-  async function load() {
-    const snap = await readSnapshot(snapshotPath)
-    if (!snap) throw new Error(`No catalogue snapshot at ${snapshotPath}. Run npm run data:snapshot.`)
-    install(snap, 'snapshot')
-    log(`Catalogue: ${snap.planets.length} planets from snapshot (${snap.meta.retrievedAt})`)
-    if (refresh && Date.now() - Date.parse(snap.meta.retrievedAt) > maxAgeMs) refreshInBackground()
     return state
   }
 
-  let refreshing = null
-  function refreshInBackground() {
-    if (refreshing) return refreshing
-    log('Catalogue snapshot is stale; refreshing from NASA in the background…')
-    refreshing = refreshSnapshot(snapshotPath, { log })
-      .then((r) => {
-        if (r.replaced) install(r.dataset, 'live')
-      })
-      .catch((err) => log(`Background refresh failed: ${err.message}`))
-      .finally(() => {
-        refreshing = null
-      })
-    return refreshing
+  async function load() {
+    if (storage) {
+      const best = await storage.loadBest()
+      install(best.dataset, best.origin)
+      log(`Catalogue: ${best.dataset.planets.length} planets from ${best.origin} (${best.dataset.meta.retrievedAt})`)
+      return state
+    }
+    const snap = await readSnapshot(snapshotPath)
+    if (!snap) throw new Error(`No catalogue snapshot at ${snapshotPath}. Run npm run data:snapshot.`)
+    install(snap, 'seed')
+    log(`Catalogue: ${snap.planets.length} planets from snapshot (${snap.meta.retrievedAt})`)
+    return state
   }
 
   return {
     load,
-    refreshInBackground,
+    /** Serve a newly synced, validated catalogue. */
+    replace: (dataset) => install(dataset, 'live'),
     get: () => state,
   }
 }

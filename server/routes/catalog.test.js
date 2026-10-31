@@ -34,7 +34,7 @@ const hasKey = (node, key) =>
 describe('catalogue API', () => {
   it('reports health with the data origin', async () => {
     const h = await (await fetch(`${base}/health`)).json()
-    expect(h).toEqual({ ok: true, catalog: { count: 41, generatedAt: '2026-10-31T00:00:00Z', source: 'snapshot' } })
+    expect(h).toEqual({ ok: true, catalog: { count: 41, generatedAt: '2026-10-31T00:00:00Z', source: 'seed' } })
   })
 
   it('serves the index without per-value sources or uncertainties, gzipped on request', async () => {
