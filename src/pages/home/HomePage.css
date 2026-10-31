@@ -1,0 +1,118 @@
+/* owner: UI */
+.home {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  align-items: center;
+  height: calc(100vh - var(--header-height));
+  min-height: 480px;
+  overflow: hidden;
+}
+
+.home > .viewport {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+}
+
+/* Scrim keeps the text legible over the planet. */
+.home::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(5, 7, 12, 0.7) 0%, rgba(5, 7, 12, 0.35) 38%, transparent 60%);
+}
+
+.home-hero {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  padding: 0 var(--space-6) 0 clamp(24px, 8vw, 128px);
+  animation: home-in 900ms var(--ease) both;
+}
+
+@keyframes home-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.home-kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.home-title {
+  margin: var(--space-4) 0 0;
+  font-size: clamp(46px, 8vw, 104px);
+  letter-spacing: 0.2em;
+  line-height: 1;
+}
+
+.home-tagline {
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.home-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+  padding: 13px 22px;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  color: var(--color-accent);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+
+.home-cta:hover,
+.home-cta:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.home-credit {
+  position: absolute;
+  z-index: 1;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-missing);
+}
+
+@media (max-width: 640px) {
+  .home {
+    align-items: start;
+  }
+  .home::after {
+    background: linear-gradient(180deg, rgba(5, 7, 12, 0.92) 0%, rgba(5, 7, 12, 0.7) 42%, transparent 66%);
+  }
+  .home-hero {
+    padding: 18vh var(--space-4) 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero {
+    animation: none;
+  }
+}

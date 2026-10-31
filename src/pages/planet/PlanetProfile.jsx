@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, Orbit, Telescope, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router'
 import MeasurementRow from '../../components/data/MeasurementRow.jsx'
+import PlanetPicker from '../../components/ui/PlanetPicker.jsx'
 import ProvenanceBadge from '../../components/data/ProvenanceBadge.jsx'
 import { sourceLabel } from '../../components/data/sourceLabel.js'
 import { isScientific, scienceValue } from '../../contracts/planet.js'
@@ -109,11 +110,6 @@ export default function PlanetProfile({
   const index = planets.findIndex((p) => p.id === planet.id)
   const prev = index > 0 ? planets[index - 1] : planets.at(-1)
   const next = index >= 0 && index < planets.length - 1 ? planets[index + 1] : planets[0]
-  const hosts = useMemo(() => {
-    const m = new Map()
-    for (const p of planets) m.set(p.host, [...(m.get(p.host) ?? []), p])
-    return [...m.entries()]
-  }, [planets])
 
   const star = planet.star ?? {}
   const d = planet.discovery ?? {}
@@ -147,6 +143,9 @@ export default function PlanetProfile({
       <section className="pp-visual" aria-label={`3D view of ${planet.name}`}>
         <PlanetViewport planet={planet} size="hero" autoRotate={!reducedMotion} />
         <div key={planet.id} className="pp-visual__fade" aria-hidden="true" />
+        <div className="pp-visual__picker">
+          <PlanetPicker planets={planets} value={planet.id} onChange={onSelectPlanet} />
+        </div>
       </section>
 
       <article className="pp-info">
@@ -155,22 +154,6 @@ export default function PlanetProfile({
             <Link to={planetHref(prev.id)} className="pp-iconbtn" aria-label={`Previous planet: ${prev.name}`} title={prev.name}>
               <ArrowLeft size={15} />
             </Link>
-            <select
-              className="pp-select"
-              value={planet.id}
-              onChange={(e) => onSelectPlanet(e.target.value)}
-              aria-label="Choose a planet"
-            >
-              {hosts.map(([host, list]) => (
-                <optgroup key={host} label={host}>
-                  {list.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
             <Link to={planetHref(next.id)} className="pp-iconbtn" aria-label={`Next planet: ${next.name}`} title={next.name}>
               <ArrowRight size={15} />
             </Link>

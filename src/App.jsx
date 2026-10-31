@@ -17,11 +17,14 @@ const routes = [
     ErrorBoundary: RouteError,
     HydrateFallback: AppLoading,
     children: [
-      { index: true, lazy: page(() => import('./pages/LandingPage.jsx')) },
+      { index: true, lazy: page(() => import('./pages/home/HomePage.jsx')) },
       { path: 'explore/:host?', lazy: page(() => import('./pages/ExplorePage.jsx')) },
-      { path: 'catalog', lazy: page(() => import('./pages/CatalogPage.jsx')) },
       { path: 'planet/:id', lazy: page(() => import('./pages/PlanetPage.jsx')) },
       { path: 'planet/:id/orbit', lazy: page(() => import('./pages/OrbitPage.jsx')) },
+      { path: 'orbit', lazy: page(() => import('./pages/OrbitIndexPage.jsx')) },
+      { path: 'about', lazy: page(() => import('./pages/AboutPage.jsx')) },
+      // Catalog (CatalogPage.jsx) and Compare are kept in the codebase but not
+      // routed or linked until they are designed.
       { path: 'compare', lazy: page(() => import('./pages/ComparePage.jsx')) },
       // Dev-only 3D sandbox; excluded from production builds.
       ...(import.meta.env.DEV ? [{ path: 'lab/:viewport?', lazy: page(() => import('./three/lab/LabPage.jsx')) }] : []),

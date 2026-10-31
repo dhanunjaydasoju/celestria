@@ -21,8 +21,7 @@
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-.sx-kicker,
-.sx-card__kicker {
+.sx-kicker {
   margin: 0;
   font-size: 10px;
   letter-spacing: 0.2em;
@@ -114,46 +113,13 @@
   border-right: 1px solid var(--color-border);
 }
 
-.sx-card {
-  position: absolute;
-  left: var(--space-6);
-  bottom: var(--space-6);
-  width: 280px;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--color-bg) 84%, transparent);
-  backdrop-filter: blur(6px);
-}
-
-.sx-card__title {
-  margin: var(--space-1) 0 var(--space-3);
-  font-size: 22px;
-}
-
-.sx-card dl {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 4px var(--space-3);
-  margin: 0;
-  font-size: 12px;
-}
-
-.sx-card dt {
-  color: var(--color-text-muted);
-}
-
-.sx-card dd {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-.sx-card__link {
-  display: inline-block;
-  margin-top: var(--space-3);
-  font-size: 12px;
-  color: var(--color-accent);
+/* Medium widths: keep playback controls clear of the planet panel (left). */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .sx-controls {
+    left: auto;
+    right: var(--space-6);
+    transform: none;
+  }
 }
 
 @media (max-width: 760px) {
@@ -185,13 +151,6 @@
   /* Viewport notes sit above the controls bar on small screens. */
   .sx .sv-notes {
     bottom: 58px;
-  }
-  .sx-card {
-    left: var(--space-3);
-    right: var(--space-3);
-    bottom: 128px;
-    width: auto;
-    padding: var(--space-3);
   }
   .sx-card__title {
     font-size: 18px;

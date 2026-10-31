@@ -22,6 +22,14 @@
   min-height: 0;
 }
 
+.pp-visual__picker {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+}
+
 .pp-visual__fade {
   position: absolute;
   inset: 0;
@@ -319,7 +327,15 @@
   .pp-content {
     animation: none;
   }
-  .pp-visual__fade {
+  .pp-visual__picker {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+}
+
+.pp-visual__fade {
     opacity: 0;
   }
 }

@@ -1,4 +1,4 @@
-/* owner: UI (D2.2). M0 placeholder. */
+/* owner: UI (D2.2; drawer by LEAD) */
 .app-shell {
   display: flex;
   flex-direction: column;
@@ -6,13 +6,34 @@
 }
 
 .app-header {
+  position: relative;
+  z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3);
   height: var(--header-height);
-  padding: 0 var(--space-6);
+  padding: 0 var(--space-4);
   border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.app-menu-btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 150ms var(--ease), background 150ms var(--ease);
+}
+
+.app-menu-btn:hover,
+.app-menu-btn:focus-visible {
+  color: var(--color-text);
+  background: var(--color-surface);
 }
 
 .app-wordmark {
@@ -22,19 +43,116 @@
   text-decoration: none;
 }
 
-.app-nav {
-  display: flex;
-  gap: var(--space-6);
-}
-
-.app-nav a {
-  color: var(--color-text-muted);
-  text-decoration: none;
+.app-wordmark--small {
   font-size: 14px;
 }
 
-.app-nav a.active {
+/* ── Drawer ──────────────────────────────────────────────────────────── */
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(2, 3, 6, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms var(--ease);
+}
+
+.app-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.app-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: min(320px, 86vw);
+  padding: var(--space-3) var(--space-4) var(--space-6);
+  border-right: 1px solid var(--color-border);
+  background: #07090e;
+  transform: translateX(-102%);
+  transition: transform 320ms var(--ease);
+}
+
+.app-drawer.is-open {
+  transform: none;
+  box-shadow: 24px 0 60px rgba(0, 0, 0, 0.45);
+}
+
+.app-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--header-height) - var(--space-3));
+  padding-left: var(--space-2);
+}
+
+.app-drawer__list {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-drawer__list a {
+  display: block;
+  padding: 13px var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 150ms var(--ease), padding 200ms var(--ease);
+}
+
+.app-drawer__list a:hover,
+.app-drawer__list a:focus-visible {
   color: var(--color-text);
+  padding-left: var(--space-4);
+  outline: none;
+}
+
+.app-drawer__list a.active {
+  color: var(--color-text);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+/* Staggered entrance of menu items. */
+.app-drawer__list li {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease);
+  transition-delay: calc(80ms + var(--i) * 40ms);
+}
+
+.app-drawer.is-open .app-drawer__list li {
+  opacity: 1;
+  transform: none;
+}
+
+.app-drawer__dev {
+  margin-top: var(--space-6);
+  padding: 0 var(--space-2);
+  font-size: 12px;
+  color: var(--color-missing);
+  text-decoration: none;
+}
+
+.app-drawer__dev:hover {
+  color: var(--color-text-muted);
+}
+
+.app-drawer__foot {
+  margin: auto 0 0;
+  padding: 0 var(--space-2);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--color-text-muted);
 }
 
 .app-main {
@@ -45,26 +163,19 @@
 
 @media (max-width: 600px) {
   .app-header {
-    gap: var(--space-3);
-    padding: 0 var(--space-4);
+    padding: 0 var(--space-3);
+    gap: var(--space-2);
   }
   .app-wordmark {
-    flex: none;
     font-size: 15px;
     letter-spacing: 0.24em;
   }
-  /* Never widen the page: if links still don't fit, the nav scrolls itself. */
-  .app-nav {
-    min-width: 0;
-    gap: var(--space-3);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .app-nav::-webkit-scrollbar {
-    display: none;
-  }
-  .app-nav a {
-    flex: none;
-    font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-drawer,
+  .app-backdrop,
+  .app-drawer__list li {
+    transition: none;
   }
 }
