@@ -7,6 +7,8 @@
 //   /lab/system?host=<host>      SystemExplorer over lab fixtures + synthetic test system
 //   /lab/profile?id=<planet-id>  PlanetProfile (planet page template) over lab fixtures
 //   /lab/orbit?id=<planet-id>    Orbital Simulator over lab fixtures
+//   /lab/earth?t=<s>&still=1     homepage Earth hero on its own (craft at t seconds; still = no motion)
+//   /lab/soyuz                   close-up of the Soyuz-inspired spacecraft
 
 import { useEffect, useMemo, useState } from 'react'
 import SystemExplorer from '../../pages/explore/SystemExplorer.jsx'
@@ -16,7 +18,9 @@ import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router'
 import { visualParams } from '../planet/visualParams.js'
 import PlanetViewport from '../viewports/PlanetViewport.jsx'
 import { labPlanets, labSource } from './fixtures.js'
+import EarthHeroScene from '../viewports/EarthHeroScene.jsx'
 import LabGallery from './LabGallery.jsx'
+import LabSoyuz from './LabSoyuz.jsx'
 import { labTestSystemPlanets } from './testSystems.js'
 
 const SYSTEM_PLANETS = [...labPlanets.filter((p) => !p.synthetic), ...labTestSystemPlanets]
@@ -28,6 +32,8 @@ const MODES = [
   { key: 'system', label: 'SystemViewport' },
   { key: 'profile', label: 'Profile' },
   { key: 'orbit', label: 'Orbit' },
+  { key: 'earth', label: 'Earth hero' },
+  { key: 'soyuz', label: 'Soyuz' },
 ]
 
 export default function LabPage() {
@@ -69,6 +75,23 @@ export default function LabPage() {
           onHostChange={(host) => setSearch({ host }, { replace: true })}
           profileHref={(id) => `/lab/profile?id=${id}`}
         />
+      </div>
+    )
+  }
+
+  if (viewport === 'earth' || viewport === 'soyuz') {
+    return (
+      <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - var(--header-height))' }}>
+        <nav className="lab__modes lab__modes--floating" style={{ zIndex: 2 }}>
+          {MODES.map((m) => (
+            <NavLink key={m.key} to={`/lab/${m.key}`}>
+              {m.label}
+            </NavLink>
+          ))}
+        </nav>
+        <div style={{ position: 'absolute', inset: 0 }}>
+          {viewport === 'earth' ? <EarthHeroScene key={search.get('t')} startTime={Number(search.get('t')) || 0} reducedMotion={search.get('still') === '1'} /> : <LabSoyuz />}
+        </div>
       </div>
     )
   }

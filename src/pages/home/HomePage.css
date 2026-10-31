@@ -99,6 +99,11 @@
   color: var(--color-missing);
 }
 
+/* Earth hero: a lighter scrim so Earth stays the focus; the text keeps its own contrast. */
+.home--earth::after {
+  background: linear-gradient(90deg, rgba(5, 7, 12, 0.78) 0%, rgba(5, 7, 12, 0.42) 30%, transparent 52%);
+}
+
 @media (max-width: 640px) {
   .home {
     align-items: start;
@@ -108,6 +113,12 @@
   }
   .home-hero {
     padding: 18vh var(--space-4) 0;
+  }
+  .home--earth::after {
+    background: linear-gradient(180deg, rgba(5, 7, 12, 0.9) 0%, rgba(5, 7, 12, 0.55) 30%, transparent 46%);
+  }
+  .home--earth .home-hero {
+    padding-top: 7vh;
   }
 }
 

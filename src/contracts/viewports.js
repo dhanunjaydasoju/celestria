@@ -10,8 +10,18 @@
 /** @typedef {import('./planet.js').Planet} Planet */
 
 /**
- * Landing-page background. No props; uses built-in showcase parameters.
+ * Previous landing-page background (kept as fallback, /?scene=classic). No
+ * props; uses built-in showcase parameters.
  * @typedef {{}} HeroSceneProps
+ */
+
+/**
+ * Landing-page background: NASA-textured Earth lit by the Sun's real position,
+ * with a Soyuz-inspired spacecraft on a 51.6° orbit (not to scale; labelled).
+ * Decorative (aria-hidden); pauses when off screen; quality tiers per device.
+ * @typedef {Object} EarthHeroSceneProps
+ * @property {boolean} [reducedMotion]  no orbit motion, cloud drift or camera sway
+ * @property {number} [startTime]       seconds into the orbit at mount (lab inspection)
  */
 
 /**
