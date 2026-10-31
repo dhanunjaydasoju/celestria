@@ -6,6 +6,9 @@
 //   GET  /api/planets         → alias of /api/catalog (M0 contract)
 //   GET  /api/planets/:id     → PlanetResponse (full record: uncertainties + sources)
 //   GET  /api/systems/:host   → { host, planets: Planet[] } (full records)
+//   GET  /api/sync/status     → SyncStatus
+//   POST /api/sync/check      → 202 { accepted, reason, status } | 429 SYNC_COOLDOWN / RATE_LIMITED
+//   (an admin-only forced sync exists server-side; see server/routes/sync.js — never called from the browser)
 //   POST /api/ask             AskRequest → AskResponse (M5; replaces /api/astronomer)
 //                             With `Accept: application/x-ndjson`: AskProgress lines, then
 //                             { type: 'result', result } or { type: 'error', error }
@@ -21,9 +24,24 @@
 /** @typedef {import('./planet.js').Planet} Planet */
 
 /**
- * 'live' = refreshed from NASA during this server run; 'snapshot' = loaded
- * from the committed snapshot file; 'fixtures' = local dev fixtures.
- * @typedef {'live'|'snapshot'|'fixtures'} CatalogSource
+ * 'live' = synced from NASA during this server run; 'runtime' = the latest
+ * validated sync on disk; 'backup' = the last-known-good copy; 'seed' = the
+ * committed snapshot; 'fixtures' = local dev fixtures.
+ * @typedef {'live'|'runtime'|'backup'|'seed'|'fixtures'} CatalogSource
+ */
+
+/**
+ * GET /api/sync/status. lastSuccessAt (a sync completed with a valid NASA
+ * catalogue) and lastAttemptAt (any sync finished, including failures) are
+ * deliberately separate.
+ * @typedef {Object} SyncStatus
+ * @property {string} source
+ * @property {{ count: number, retrievedAt: string, origin: CatalogSource }|null} catalog
+ * @property {{ enabled: boolean, running: boolean, runningSince: string|null, lastSuccessAt: string|null,
+ *   lastAttemptAt: string|null, lastAttemptResult: 'updated'|'unchanged'|'failed'|'rejected'|null,
+ *   lastChangeAt: string|null, lastChanges: { added: number, removed: number, updated: number, examples: object }|null,
+ *   lastError: { at: string, stage: string, message: string }|null, consecutiveFailures: number,
+ *   nextScheduledAt: string|null, intervalHours: number, checkAvailableInS: number|null }} sync
  */
 
 /**

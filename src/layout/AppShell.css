@@ -291,8 +291,23 @@
   color: var(--color-text-muted);
 }
 
-.app-drawer__foot {
+.app-drawer__foot-wrap {
   margin: auto 0 0;
+}
+
+.app-drawer__freshness {
+  display: block;
+  padding: 0 var(--space-2);
+  text-decoration: none;
+}
+
+.app-drawer__freshness:hover .sync-line,
+.app-drawer__freshness:focus-visible .sync-line {
+  color: var(--color-text);
+}
+
+.app-drawer__foot {
+  margin: 0;
   padding: 0 var(--space-2);
   font-family: var(--font-display);
   font-style: italic;

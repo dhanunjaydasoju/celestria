@@ -70,6 +70,37 @@ export async function getPlanet(id) {
   return res
 }
 
+/** Forget cached planet details (after the server switched to newer NASA data). */
+export function clearPlanetCache() {
+  detailCache.clear()
+}
+
+/**
+ * NASA synchronisation status (last success vs last attempt, changes, next sync).
+ * Fixture mode has no server: returns null.
+ * @returns {Promise<import('../contracts/api.js').SyncStatus|null>}
+ */
+export async function getSyncStatus() {
+  if (USE_FIXTURES) return null
+  const res = await fetch('/api/sync/status', { headers: { Accept: 'application/json' } }).catch(() => null)
+  if (!res?.ok) return null
+  return res.json()
+}
+
+/**
+ * Anonymous "check NASA for updates". The server applies a global cooldown and
+ * a per-device limit; no credentials are involved.
+ * @returns {Promise<{ accepted: boolean, reason: string, retryAfterS?: number, status?: object, message?: string }>}
+ */
+export async function requestSyncCheck() {
+  if (USE_FIXTURES) return { accepted: false, reason: 'unavailable', message: 'Not available in fixture mode.' }
+  const res = await fetch('/api/sync/check', { method: 'POST', headers: { Accept: 'application/json' } }).catch(() => null)
+  if (!res) return { accepted: false, reason: 'network', message: 'Could not reach the CELESTRIA server.' }
+  const body = await res.json().catch(() => ({}))
+  if (res.ok) return body
+  return { accepted: false, reason: body.error?.code === 'SYNC_COOLDOWN' ? 'cooldown' : 'rate_limited', retryAfterS: body.retryAfterS ?? (Number(res.headers.get('retry-after')) || null), message: body.error?.message, status: body.status }
+}
+
 /**
  * Ask the AI astronomer (POST /api/ask, streamed progress). Fixture mode has
  * no AI: it reports the astronomer as unavailable instead of inventing answers.

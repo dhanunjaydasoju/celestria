@@ -194,6 +194,13 @@ celestria/
 - API: `/api/health`, `/api/catalog` (alias `/api/planets`; index without per-value sources/uncertainties), `/api/planets/:id` (full record), `/api/systems/:host`, `/api/stats`, `/api/analysis/imputations`. Gzip via `node:zlib`, hashed ETags; no compression dependency.
 - Client: `services/api.js` (live), store `loadDetail(id)` for full records; lists are search-first above 300 items.
 
+### NASA synchronisation (M5 Phase A, implemented)
+- Files: committed seed `server/data/catalog.snapshot.json.gz` (read only by the server; rebuilt deliberately with `npm run data:snapshot`); runtime syncs in `server/data/runtime/` (git-ignored; `NASA_DATA_DIR` overrides): `catalog.current.json.gz`, `catalog.previous.json.gz` (last-known-good backup), `sync-status.json`. Start-up serves the newest valid of current → backup → seed.
+- `server/nasa/syncService.js`: 24 h schedule (hourly tick, first check 30 s after boot), single flight, backoff 1/2/4/6 h after failures, unchanged data detected by content fingerprint. `NASA_SYNC=off` disables it.
+- A candidate must pass raw-row checks (`ingest.js`) and processed-record checks (`validateProcessed.js`: canonical statuses only — never `imputed` — value/uncertainty/limit/source/kind shapes, unique ids, ≥ 99 % of current planets retained, key-field and source coverage within 5 points) and read back identically from disk before it replaces the served catalogue.
+- API: `GET /api/sync/status` (last success ≠ last attempt, count, changes, next sync, recent error), `POST /api/sync/check` (anonymous; one NASA sync per 15 min globally, 5 requests / 10 min per client), `POST /api/sync/refresh` (admin; `SYNC_ADMIN_TOKEN` ≥ 24 chars, server env only; constant-time check, lockout after 5 bad tokens; `npm run data:sync`).
+- UI: freshness line in the menu, full status + "Check NASA for updates" on About, notice when the server holds newer data than the session.
+
 ## 5a. Missing data and median imputation policy (M4)
 
 NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians for analysis only**, under these rules. They override convenience everywhere.
@@ -373,12 +380,12 @@ The system viewer (F1) uses the same `kepler.js` for its planets, with time comp
 npm run dev            # vite + server (concurrently)
 npm run dev:web        # vite only
 npm run dev:server     # node --watch --env-file=.env server/index.js
-npm run data:snapshot  # refresh server/data/catalog.snapshot.json.gz from NASA (chunked, validated;
-                       # leaves the existing snapshot untouched on any failure)
+npm run data:snapshot  # rebuild the committed SEED snapshot from NASA (chunked, validated; untouched on failure)
+npm run data:sync      # ask the running server to sync now (needs SYNC_ADMIN_TOKEN in .env)
 npm run test           # vitest (science/)
 npm run lint
 npm run build && npm start   # production: express serves dist + /api on $PORT
-NASA_REFRESH=on|off    # background refresh of a >24 h-old snapshot (default: on in production, off in dev)
+NASA_SYNC=on|off       # 24-hourly NASA sync into server/data/runtime (default on; NASA_REFRESH is the old name)
 VITE_USE_FIXTURES=true # run the frontend on local fixtures instead of the API
 ```
 

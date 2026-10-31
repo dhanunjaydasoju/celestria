@@ -5,6 +5,7 @@ import { ChevronDown, Menu, Telescope, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NavLink, Outlet } from 'react-router'
 import AstronomerDrawer from '../components/ai/AstronomerDrawer.jsx'
+import { DataFreshness, UpdateNotice } from '../components/sync/SyncStatus.jsx'
 import { FEATURED_PLANET_IDS } from '../data/featured.js'
 import { useCelestria } from '../store/useCelestria.js'
 import './AppShell.css'
@@ -84,6 +85,7 @@ export default function AppShell() {
           {astronomerBusy && <span className="ai-trigger__dot" aria-label="answering" />}
         </button>
       </header>
+      <UpdateNotice />
       <AstronomerDrawer returnFocusRef={astronomerButton} />
 
       <div className={`app-backdrop${open ? ' is-open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
@@ -168,7 +170,12 @@ export default function AppShell() {
             3D Lab (development)
           </NavLink>
         )}
-        <p className="app-drawer__foot">Explore Worlds Beyond Our Solar System.</p>
+        <div className="app-drawer__foot-wrap">
+          <NavLink to="/about" className="app-drawer__freshness" onClick={() => setOpen(false)}>
+            <DataFreshness />
+          </NavLink>
+          <p className="app-drawer__foot">Explore Worlds Beyond Our Solar System.</p>
+        </div>
       </nav>
 
       <main className="app-main">

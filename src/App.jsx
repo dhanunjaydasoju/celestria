@@ -38,9 +38,17 @@ const router = createBrowserRouter(routes)
 
 function Root() {
   const loadCatalog = useCelestria((s) => s.loadCatalog)
+  const loadSyncStatus = useCelestria((s) => s.loadSyncStatus)
   useEffect(() => {
     loadCatalog()
   }, [loadCatalog])
+  // NASA sync status: on start, every few minutes, and when the tab is shown again.
+  useEffect(() => {
+    loadSyncStatus()
+    const onVisible = () => document.visibilityState === 'visible' && loadSyncStatus()
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [loadSyncStatus])
   return <AppShell />
 }
 

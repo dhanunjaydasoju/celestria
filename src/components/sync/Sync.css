@@ -1,0 +1,175 @@
+/* NASA sync status — owner: LEAD (M5 Phase A). */
+
+.sync-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-muted);
+}
+
+.sync-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.sync-dot--ok {
+  background: var(--color-calculated);
+}
+
+.sync-dot--warn {
+  background: var(--color-estimated);
+}
+
+.sync-dot--off {
+  background: var(--color-missing);
+}
+
+.sync-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.sync-notice button {
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 60%, var(--color-border));
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-accent);
+  font: 12px var(--font-ui);
+  cursor: pointer;
+}
+
+.sync-notice .sync-notice__dismiss {
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.sync-panel {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.sync-panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.sync-muted {
+  margin: var(--space-2) 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.sync-grid {
+  margin: var(--space-4) 0 0;
+}
+
+.sync-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: var(--space-4);
+  padding: 11px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.sync-row dt {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.sync-row dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.sync-row__hint {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  color: var(--color-missing);
+}
+
+.sync-error {
+  color: var(--color-estimated);
+}
+
+.sync-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.sync-actions .sync-muted {
+  margin: 0;
+}
+
+.sync-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-text);
+  font: 13px var(--font-ui);
+  cursor: pointer;
+}
+
+.sync-check:hover:not(:disabled),
+.sync-check:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  outline: none;
+}
+
+.sync-check:disabled {
+  color: var(--color-missing);
+  cursor: default;
+}
+
+.sync-spin {
+  animation: sync-spin 1.2s linear infinite;
+}
+
+@keyframes sync-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .sync-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sync-spin {
+    animation: none;
+  }
+}

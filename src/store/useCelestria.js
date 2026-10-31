@@ -5,6 +5,7 @@
 import { create } from 'zustand'
 import { getCatalog, getPlanet } from '../services/api.js'
 import { createAstronomerSlice } from './astronomerSlice.js'
+import { createSyncSlice } from './syncSlice.js'
 
 const MAX_COMPARE = 4
 
@@ -109,6 +110,9 @@ export const useCelestria = create((set, get) => ({
 
   // ── AI astronomer (conversation, drawer, page focus) ──────────────────────
   ...createAstronomerSlice(set, get),
+
+  // ── NASA sync status (public server status, update notice) ───────────────
+  ...createSyncSlice(set, get),
 }))
 
 export { MAX_COMPARE }
