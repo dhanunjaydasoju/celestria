@@ -175,16 +175,8 @@
     top: var(--space-4);
     right: var(--space-4);
   }
-  .sx-switch span {
-    display: none;
-  }
-  .sx-switch .ppk__pop {
-  left: auto;
-  right: 0;
-}
-
-.sx-switch select {
-    max-width: 126px;
+  .sx-switch .ppk__button {
+    max-width: 150px;
   }
   .sx-controls {
     left: var(--space-3);

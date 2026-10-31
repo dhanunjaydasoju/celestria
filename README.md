@@ -21,8 +21,9 @@ npm run dev               # web on http://localhost:5173, API on :8787
 | `npm test` | unit tests (Vitest) |
 | `npm run lint` | ESLint |
 | `npm run build && npm start` | production build served by the API server on :8787 |
+| `npm run data:snapshot` | refresh the NASA catalogue snapshot (6,451 planets in Oct 2026) |
 
-The dev-only 3D sandbox is at `/lab`.
+The app reads the NASA Exoplanet Archive catalogue from a committed snapshot (`server/data/catalog.snapshot.json.gz`), so it works offline. The dev-only 3D sandbox is at `/lab`.
 
 ## Contributing
 

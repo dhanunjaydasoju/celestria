@@ -188,6 +188,12 @@ celestria/
 
 ---
 
+### M4 data pipeline (implemented)
+- `src/pipeline/` (pure, shared by server and tests): `nasaColumns.js` (column map), `normalize.js` (row → Planet), `entities.js`, `imputation.js` (§5a). `__fixtures__/raw-41.json` freezes the raw rows of the 41 regression planets; `normalize.test.js` proves they reproduce the lab fixtures.
+- `server/nasa/`: `http.js` (timeouts, exponential backoff), `ingest.js` (RA-chunked TAP fetch ≤ 600 rows/chunk, per-chunk and total count checks, `validateCatalog`), `snapshot.js` (compact gzipped snapshot, atomic write), `refresh.js`, `catalogStore.js`.
+- API: `/api/health`, `/api/catalog` (alias `/api/planets`; index without per-value sources/uncertainties), `/api/planets/:id` (full record), `/api/systems/:host`, `/api/stats`, `/api/analysis/imputations`. Gzip via `node:zlib`, hashed ETags; no compression dependency.
+- Client: `services/api.js` (live), store `loadDetail(id)` for full records; lists are search-first above 300 items.
+
 ## 5a. Missing data and median imputation policy (M4)
 
 NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians for analysis only**, under these rules. They override convenience everywhere.
@@ -360,10 +366,13 @@ The system viewer (F1) uses the same `kepler.js` for its planets, with time comp
 npm run dev            # vite + server (concurrently)
 npm run dev:web        # vite only
 npm run dev:server     # node --watch --env-file=.env server/index.js
-npm run data:snapshot  # refresh server/data/planets.snapshot.json from NASA
+npm run data:snapshot  # refresh server/data/catalog.snapshot.json.gz from NASA (chunked, validated;
+                       # leaves the existing snapshot untouched on any failure)
 npm run test           # vitest (science/)
 npm run lint
 npm run build && npm start   # production: express serves dist + /api on $PORT
+NASA_REFRESH=on|off    # background refresh of a >24 h-old snapshot (default: on in production, off in dev)
+VITE_USE_FIXTURES=true # run the frontend on local fixtures instead of the API
 ```
 
 ---
