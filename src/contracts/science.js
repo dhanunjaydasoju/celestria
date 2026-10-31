@@ -8,19 +8,23 @@
 
 // ── AI: src/science/habitability.js ─────────────────────────────────────────
 /**
- * @typedef {'favorable'|'uncertain'|'unfavorable'|'unknown'} FactorStatus
+ * @typedef {'favorable'|'uncertain'|'unfavorable'|'unknown'|'context'} FactorStatus   'context' = shown for information, no threshold (gravity, Teq)
  *
  * @typedef {Object} HabitabilityFactor
  * @property {string} key            'flux' | 'size' | 'mass' | 'gravity' | 'eqTemp' | 'star' | 'atmosphere'
  * @property {string} label
  * @property {FactorStatus} status
- * @property {{ label: string, quantity: Quantity, unit: string }[]} inputs
+ * @property {{ label: string, quantity: Quantity, unit: string }[]} inputs   canonical/calculated values only
  * @property {string} explanation    one line, plain language
+ * @property {string} rule           the threshold or method applied
+ * @property {{ label: string, url: string }|null} reference
  *
  * @typedef {Object} HabitabilityAssessment
  * @property {{ key: string, label: string }} tier   qualitative only — never a percentage
  * @property {HabitabilityFactor[]} factors
  * @property {string[]} notes        always includes the "HZ ≠ habitable" caveat
+ * @property {object} zone            habitable-zone evaluation (placement, bounds, flux, straddles, reason)
+ * Methodology and thresholds: docs/science/habitability.md
  */
 /** @typedef {(planet: Planet) => HabitabilityAssessment} AssessHabitability */
 
