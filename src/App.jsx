@@ -24,6 +24,7 @@ const routes = [
       { path: 'viewport/:id?', lazy: page(() => import('./pages/viewport/PlanetViewportPage.jsx')) },
       { path: 'orbit', lazy: page(() => import('./pages/OrbitIndexPage.jsx')) },
       { path: 'about', lazy: page(() => import('./pages/AboutPage.jsx')) },
+      { path: 'habitability', lazy: page(() => import('./pages/HabitabilityPage.jsx')) },
       // Catalog (CatalogPage.jsx) and Compare are kept in the codebase but not
       // routed or linked until they are designed.
       { path: 'compare', lazy: page(() => import('./pages/ComparePage.jsx')) },

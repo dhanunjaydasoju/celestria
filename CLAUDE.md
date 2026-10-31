@@ -201,6 +201,11 @@ celestria/
 - API: `GET /api/sync/status` (last success ≠ last attempt, count, changes, next sync, recent error), `POST /api/sync/check` (anonymous; one NASA sync per 15 min globally, 5 requests / 10 min per client), `POST /api/sync/refresh` (admin; `SYNC_ADMIN_TOKEN` ≥ 24 chars, server env only; constant-time check, lockout after 5 bad tokens; `npm run data:sync`).
 - UI: freshness line in the menu, full status + "Check NASA for updates" on About, notice when the server holds newer data than the session.
 
+### Habitability indicators (M5 Phase B, implemented; pending Teammate 4 review)
+- `src/science/habitableZone.js` (Kopparapu et al. 2014 boundaries, 2,600–7,200 K, coefficients verified against the authors' calculator) and `src/science/habitability.js` (indicators: flux/placement, size, mass, gravity and Teq as context, host star, atmosphere always unknown; qualitative tiers; no scores). Methodology, thresholds and open questions: `docs/science/habitability.md`.
+- UI: profile panel (`components/habitability/HabitabilityPanel.jsx`), `/habitability` dashboard (flux × Teff diagram with zone bands, clickable planets, sortable table). API: `GET /api/habitability` (server-side, full records, cached per catalogue version).
+- AI: `assess_habitability` tool; the validator accepts habitable-zone placement claims only when that tool's result for the planet supports them (basis calculated).
+
 ## 5a. Missing data and median imputation policy (M4)
 
 NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians for analysis only**, under these rules. They override convenience everywhere.

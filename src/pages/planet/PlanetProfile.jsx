@@ -24,6 +24,7 @@ import {
 import { visualParams } from '../../three/planet/visualParams.js'
 import { describeBasis, sig } from '../../three/shared/format.js'
 import PlanetViewport from '../../three/viewports/PlanetViewport.jsx'
+import HabitabilityPanel from '../../components/habitability/HabitabilityPanel.jsx'
 import './PlanetProfile.css'
 
 function TextRow({ label, value, note }) {
@@ -228,6 +229,8 @@ export default function PlanetProfile({
             <MeasurementRow label="Semi-major axis" q={planet.semiMajorAxisAU} unit="AU" />
             <MeasurementRow label="Equilibrium temperature" q={planet.eqTempK} unit="K" />
           </Section>
+
+          <HabitabilityPanel planet={planet} />
 
           <button
             type="button"

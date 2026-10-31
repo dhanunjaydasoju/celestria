@@ -1,0 +1,686 @@
+/* Habitability indicators and dashboard — owner: AI/UI (LEAD in M5 Phase B).
+   Status always carries an icon and a word, never colour alone. Zone bands
+   are neutral and recessive so the data marks stay readable. */
+
+.hab,
+.hz-dash {
+  --hab-favorable: var(--color-calculated);
+  --hab-uncertain: var(--color-estimated);
+  --hab-unfavorable: #d98c8c;
+  --hab-band-opt: color-mix(in srgb, var(--color-text) 7%, transparent);
+  --hab-band-cons: color-mix(in srgb, var(--color-text) 15%, transparent);
+  --hz-small: #3987e5;
+  --hz-mid: #d95926;
+  --hz-large: #199e70;
+}
+
+/* ── Planet panel ───────────────────────────────────────────────────── */
+.hab {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.hab-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.hab-title {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.hab-link {
+  font-size: 12px;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.hab-tier {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+.hab-tier--outside,
+.hab-tier--unknown {
+  color: var(--color-text-muted);
+}
+
+.hab-caveat {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.hab-muted {
+  margin: var(--space-3) 0 0;
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+}
+
+.hz-strip {
+  margin: var(--space-4) 0 0;
+}
+
+.hz-strip svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.hz-strip figcaption {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-missing);
+}
+
+.hz-band--opt {
+  fill: var(--hab-band-opt);
+}
+
+.hz-band--cons {
+  fill: var(--hab-band-cons);
+}
+
+.hz-band-label {
+  font: 9.5px var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--color-text-muted);
+}
+
+.hz-band-label--muted {
+  fill: var(--color-missing);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.hz-axis {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.hz-tick {
+  font: 9px var(--font-mono);
+  fill: var(--color-missing);
+}
+
+.hz-err {
+  stroke: var(--color-text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.hz-orbit {
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 3;
+}
+
+.hz-dot {
+  fill: var(--color-accent);
+  stroke: var(--color-bg);
+  stroke-width: 2;
+}
+
+.hz-dot--off {
+  fill: var(--color-text-muted);
+}
+
+.hab-factors {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hab-factor {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.hab-factor summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px var(--space-3);
+  padding: 11px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.hab-factor summary::-webkit-details-marker {
+  display: none;
+}
+
+.hab-factor__label {
+  font-size: 13px;
+}
+
+.hab-factor__text {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.hab-factor summary:hover .hab-factor__label,
+.hab-factor summary:focus-visible .hab-factor__label {
+  color: var(--color-accent);
+}
+
+.hab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hab-chip--favorable {
+  color: var(--hab-favorable);
+}
+.hab-chip--uncertain {
+  color: var(--hab-uncertain);
+}
+.hab-chip--unfavorable {
+  color: var(--hab-unfavorable);
+}
+.hab-chip--unknown,
+.hab-chip--context {
+  color: var(--color-missing);
+}
+
+.hab-factor__how {
+  padding: 0 0 var(--space-3) var(--space-3);
+  border-left: 1px solid var(--color-border);
+}
+
+.hab-how__head {
+  margin: 0 0 6px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-missing);
+}
+
+.hab-inputs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hab-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-2);
+  padding: 3px 0;
+  font-size: 12px;
+}
+
+.hab-input__label {
+  color: var(--color-text-muted);
+}
+
+.hab-input__value {
+  font-family: var(--font-mono);
+}
+
+.hab-input__basis,
+.hab-rule {
+  width: 100%;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-missing);
+}
+
+.hab-rule {
+  margin-top: 6px;
+}
+
+.hab-input__source,
+.hab-ref {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.hab-ref {
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.hab-notes {
+  margin: var(--space-3) 0 0;
+  padding-left: var(--space-4);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--color-missing);
+}
+
+/* ── Dashboard ──────────────────────────────────────────────────────── */
+.hz-dash {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-8);
+}
+
+.hz-kicker {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.hz-title {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.hz-lede {
+  max-width: 760px;
+  margin: var(--space-3) 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.hz-caveat {
+  max-width: 760px;
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 2px solid var(--color-estimated);
+  background: var(--color-surface);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.hz-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1px;
+  margin: var(--space-8) 0 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-border);
+}
+
+.hz-stat {
+  padding: var(--space-4);
+  background: var(--color-bg);
+}
+
+.hz-stat__n {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-stat__label {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.hz-section {
+  margin-top: var(--space-8);
+}
+
+.hz-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.hz-sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.hz-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-4);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+}
+
+.hz-filters fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hz-filters legend {
+  float: left;
+  margin-right: var(--space-2);
+  padding: 4px 0;
+  color: var(--color-missing);
+}
+
+.hz-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-text-muted);
+  font: 12px var(--font-ui);
+  cursor: pointer;
+}
+
+.hz-toggle[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--color-text) 40%, var(--color-border));
+  color: var(--color-text);
+}
+
+.hz-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sw);
+}
+
+.hz-swatch--hollow {
+  border: 1.5px solid var(--color-text-muted);
+  background: none;
+}
+
+.hz-chart-wrap {
+  position: relative;
+  margin-top: var(--space-3);
+}
+
+.hz-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: manipulation;
+}
+
+.hz-chart .grid {
+  stroke: color-mix(in srgb, var(--color-border) 70%, transparent);
+  stroke-width: 1;
+}
+
+.hz-chart .axis-label {
+  font: 11px var(--font-ui);
+  fill: var(--color-text-muted);
+}
+
+.hz-chart .tick {
+  font: 10px var(--font-mono);
+  fill: var(--color-missing);
+}
+
+.hz-chart .band-opt {
+  fill: var(--hab-band-opt);
+}
+
+.hz-chart .band-cons {
+  fill: var(--hab-band-cons);
+}
+
+.hz-chart .band-label {
+  font: 10px var(--font-ui);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--color-text-muted);
+}
+
+.hz-chart .pt {
+  stroke: var(--color-bg);
+  stroke-width: 1.5;
+}
+
+.hz-chart .pt--small {
+  fill: var(--hz-small);
+}
+.hz-chart .pt--mid {
+  fill: var(--hz-mid);
+}
+.hz-chart .pt--large {
+  fill: var(--hz-large);
+}
+.hz-chart .pt--unknown {
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+}
+
+.hz-chart .pt.is-hover {
+  stroke: var(--color-text);
+  stroke-width: 2;
+}
+
+.hz-chart .err {
+  stroke: color-mix(in srgb, var(--color-text) 35%, transparent);
+  stroke-width: 1;
+}
+
+.hz-chart .offchart {
+  font: 10.5px var(--font-ui);
+  fill: var(--color-missing);
+}
+
+.hz-tip {
+  position: absolute;
+  z-index: 2;
+  min-width: 210px;
+  max-width: 280px;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: #07090e;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+.hz-tip strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.hz-tip dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--space-3);
+  margin: 6px 0 0;
+}
+
+.hz-tip dt {
+  color: var(--color-missing);
+}
+
+.hz-tip dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+
+.hz-tip__hint {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--color-accent);
+}
+
+.hz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+}
+
+.hz-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hz-band-swatch {
+  width: 18px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--sw);
+}
+
+.hz-table-wrap {
+  margin-top: var(--space-4);
+  overflow-x: auto;
+}
+
+.hz-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.hz-table th {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--color-missing);
+  white-space: nowrap;
+}
+
+.hz-table th button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.hz-table th button:hover,
+.hz-table th[aria-sort] button {
+  color: var(--color-text);
+}
+
+.hz-table td {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
+  vertical-align: top;
+}
+
+.hz-table td.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.hz-table a {
+  color: var(--color-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hz-table a:hover,
+.hz-table a:focus-visible {
+  color: var(--color-accent);
+  outline: none;
+}
+
+.hz-prov {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--color-missing);
+}
+
+.hz-more {
+  margin-top: var(--space-3);
+}
+
+.hz-method {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.hz-method h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.hz-method p,
+.hz-method ul {
+  margin: 0;
+}
+
+.hz-method ul {
+  padding-left: var(--space-4);
+}
+
+.hz-method code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text);
+}
+
+@media (max-width: 700px) {
+  .hz-dash {
+    padding: var(--space-6) var(--space-4);
+  }
+  /* Keep the diagram legible: it scrolls sideways inside its frame, the page does not. */
+  .hz-chart-wrap {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  .hz-chart {
+    min-width: 640px;
+  }
+  .hz-stat__n {
+    font-size: 22px;
+  }
+}

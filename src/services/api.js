@@ -70,6 +70,15 @@ export async function getPlanet(id) {
   return res
 }
 
+/**
+ * Habitability dashboard data (computed server-side from full NASA records).
+ * Fixture mode computes it locally from the fixtures.
+ */
+export async function getHabitability() {
+  if (USE_FIXTURES) throw new ApiError(API_ERROR.NOT_IMPLEMENTED, 'The habitability dashboard needs the server.', 503)
+  return once('habitability', () => fetchJson('/api/habitability'))
+}
+
 /** Forget cached planet details (after the server switched to newer NASA data). */
 export function clearPlanetCache() {
   detailCache.clear()
