@@ -1,20 +1,30 @@
 // App frame: header with side-drawer navigation, page outlet — owner: UI
 // (D2.2; drawer implemented by LEAD on request).
 
-import { Menu, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { ChevronDown, Menu, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { NavLink, Outlet } from 'react-router'
+import { useCelestria } from '../store/useCelestria.js'
 import './AppShell.css'
 
+// `planets: true` marks the entry whose planet list can be expanded.
 const NAV = [
   { to: '/', label: 'Home', end: true },
-  { to: '/explore', label: 'Explore' },
+  { to: '/explore', label: 'System View' },
+  { to: '/viewport', label: 'Planet Viewport', planets: true },
   { to: '/orbit', label: 'Orbital Simulator' },
   { to: '/about', label: 'About' },
 ]
 
 export default function AppShell() {
   const [open, setOpen] = useState(false)
+  const [planetsOpen, setPlanetsOpen] = useState(false)
+  const planets = useCelestria((st) => st.planets)
+  const planetGroups = useMemo(() => {
+    const m = new Map()
+    for (const p of planets) m.set(p.host, [...(m.get(p.host) ?? []), p])
+    return [...m.entries()]
+  }, [planets])
   const menuButton = useRef(null)
   const firstLink = useRef(null)
 
@@ -69,9 +79,48 @@ export default function AppShell() {
         <ul className="app-drawer__list">
           {NAV.map((item, i) => (
             <li key={item.to} style={{ '--i': i }}>
-              <NavLink ref={i === 0 ? firstLink : undefined} to={item.to} end={item.end} onClick={() => setOpen(false)}>
-                {item.label}
-              </NavLink>
+              <div className="app-drawer__row">
+                <NavLink ref={i === 0 ? firstLink : undefined} to={item.to} end={item.end} onClick={() => setOpen(false)}>
+                  {item.label}
+                </NavLink>
+                {item.planets && (
+                  <button
+                    type="button"
+                    className={`app-drawer__expand${planetsOpen ? ' is-open' : ''}`}
+                    aria-expanded={planetsOpen}
+                    aria-controls="app-drawer-planets"
+                    aria-label={`${planetsOpen ? 'Hide' : 'Show'} planet list`}
+                    onClick={() => setPlanetsOpen((v) => !v)}
+                  >
+                    <ChevronDown size={18} strokeWidth={1.6} />
+                  </button>
+                )}
+              </div>
+              {item.planets && (
+                <div
+                  id="app-drawer-planets"
+                  className={`app-drawer__sub${planetsOpen ? ' is-open' : ''}`}
+                  aria-hidden={!planetsOpen}
+                  inert={!planetsOpen}
+                >
+                  <div className="app-drawer__sub-inner">
+                    {planetGroups.length === 0 ? (
+                      <p className="app-drawer__empty">Planets appear here once the catalog has loaded.</p>
+                    ) : (
+                      planetGroups.map(([host, list]) => (
+                        <div key={host} className="app-drawer__group">
+                          <p className="app-drawer__host">{host}</p>
+                          {list.map((p) => (
+                            <NavLink key={p.id} to={`/viewport/${p.id}`} onClick={() => setOpen(false)}>
+                              {p.name}
+                            </NavLink>
+                          ))}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
             </li>
           ))}
         </ul>

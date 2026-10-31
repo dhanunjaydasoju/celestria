@@ -1,11 +1,12 @@
 // Immersive planet profile — owner: UI (D2.4; implemented by LEAD on request).
-// Left: interactive PlanetViewport. Right: every catalog value with
-// uncertainty, unit and provenance. One template for every planet; all
+// Left: interactive PlanetViewport. Right: key features by default; "View
+// more" reveals every other catalog value. All with uncertainty, unit and
+// provenance. One template for every planet; all
 // content comes from the Planet object. Used by PlanetPage (store catalog)
 // and /lab/profile (lab fixtures).
 
-import { ArrowLeft, ArrowRight, Orbit, Telescope, X } from 'lucide-react'
-import { useMemo } from 'react'
+import { ArrowLeft, ArrowRight, ChevronDown, Orbit, Telescope, X } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import MeasurementRow from '../../components/data/MeasurementRow.jsx'
 import PlanetPicker from '../../components/ui/PlanetPicker.jsx'
@@ -24,10 +25,13 @@ import { describeBasis, sig } from '../../three/shared/format.js'
 import PlanetViewport from '../../three/viewports/PlanetViewport.jsx'
 import './PlanetProfile.css'
 
-function TextRow({ label, value }) {
+function TextRow({ label, value, note }) {
   return (
     <div className={`mrow mrow--${value ? 'measured' : 'missing'}`}>
-      <dt className="mrow__label">{label}</dt>
+      <dt className="mrow__label">
+        {label}
+        {note && <span className="mrow__basis">{note}</span>}
+      </dt>
       <dd className="mrow__value">
         {value ? <span className="mrow__number">{value}</span> : <span className="mrow__missing">Unavailable</span>}
         {!value && <ProvenanceBadge kind="missing" />}
@@ -101,6 +105,7 @@ export default function PlanetProfile({
   onSelectPlanet,
   reducedMotion = false,
 }) {
+  const [expanded, setExpanded] = useState(false)
   const params = useMemo(() => visualParams(planet), [planet])
   const gravity = useMemo(() => surfaceGravity(planet), [planet])
   const extremes = useMemo(() => orbitalExtremes(planet), [planet])
@@ -202,7 +207,13 @@ export default function PlanetProfile({
             </div>
           </header>
 
-          <Section title="Key parameters">
+          <Section title="Key features">
+            <TextRow label="Planet name" value={planet.name} />
+            <TextRow
+              label="Planet type"
+              value={`${params.archetypeLabel}${params.thermal !== 'unknown' ? ` · ${params.thermalLabel}` : ''}`}
+              note={params.sizeBasis ? `Visual class from ${describeBasis(params.sizeBasis)}` : undefined}
+            />
             <MeasurementRow label="Radius" q={withBasis(planet.radiusEarth, modelNote)} unit="R⊕" />
             <MeasurementRow
               label={planet.massEarth?.kind === 'Msini' ? 'Mass (M sin i)' : 'Mass'}
@@ -212,95 +223,105 @@ export default function PlanetProfile({
               )}
               unit="M⊕"
             />
-            <MeasurementRow label="Equilibrium temperature" q={planet.eqTempK} unit="K" />
             <MeasurementRow label="Orbital period" q={planet.periodDays} unit="days" />
-          </Section>
-
-          <Section title="Planet properties">
-            <MeasurementRow label="Density" q={planet.densityGcc} unit="g/cm³" />
-            <MeasurementRow
-              label="Surface gravity"
-              q={gravity}
-              unit="m/s²"
-              secondary={gravity ? `${sig(gravity.earthRatio)} × Earth` : undefined}
-              unavailableReason={massReason}
-            />
-            <MeasurementRow label="Insolation" q={planet.insolationEarth} unit="× Earth" />
-            <MeasurementRow label="Atmosphere" q={MISSING} unavailableReason="Composition is not part of the NASA catalog" />
-          </Section>
-
-          <Section title="Orbital properties">
             <MeasurementRow label="Semi-major axis" q={planet.semiMajorAxisAU} unit="AU" />
-            <MeasurementRow
-              label="Eccentricity"
-              q={
-                fixedCircular
-                  ? { ...planet.eccentricity, assumed: true, basis: 'Fixed at 0 (circular orbit) in the source fit; not measured' }
-                  : planet.eccentricity
-              }
-            />
-            <MeasurementRow label="Inclination" q={planet.inclinationDeg} unit="°" />
-            <MeasurementRow label="Periastron" q={extremes?.periastron ?? null} unit="AU" unavailableReason={extremesReason} />
-            <MeasurementRow label="Apoastron" q={extremes?.apoastron ?? null} unit="AU" unavailableReason={extremesReason} />
+            <MeasurementRow label="Equilibrium temperature" q={planet.eqTempK} unit="K" />
           </Section>
 
-          <Section title="Host star">
-            <TextRow label="Name" value={star.name} />
-            <TextRow label="Spectral type" value={star.spectralType} />
-            <MeasurementRow label="Effective temperature" q={star.teff} unit="K" />
-            <MeasurementRow label="Mass" q={star.massSun} unit="M☉" />
-            <MeasurementRow label="Radius" q={star.radiusSun} unit="R☉" />
-          </Section>
+          <button
+            type="button"
+            className="pp-toggle"
+            aria-expanded={expanded}
+            aria-controls="pp-details"
+            onClick={() => setExpanded((v) => !v)}
+          >
+            {expanded ? 'Show less' : 'View more'}
+            <ChevronDown size={15} className={expanded ? 'is-flipped' : undefined} aria-hidden="true" />
+          </button>
 
-          <Section title="Discovery">
-            <TextRow label="Year" value={d.year ? String(d.year) : null} />
-            <TextRow label="Method" value={d.method} />
-            <TextRow label="Facility" value={d.facility} />
-            <TextRow label="Instrument" value={d.telescope} />
-            <MeasurementRow
-              label="Distance from Earth"
-              q={planet.system?.distancePc}
-              unit="pc"
-              secondary={distanceLy ? `≈ ${sig(distanceLy.value)} light-years` : undefined}
-            />
-          </Section>
+          <div id="pp-details" className={`pp-expand${expanded ? ' is-open' : ''}`} aria-hidden={!expanded} inert={!expanded}>
+            <div className="pp-expand__inner">
+              <Section title="Planet properties">
+                <MeasurementRow label="Density" q={planet.densityGcc} unit="g/cm³" />
+                <MeasurementRow
+                  label="Surface gravity"
+                  q={gravity}
+                  unit="m/s²"
+                  secondary={gravity ? `${sig(gravity.earthRatio)} × Earth` : undefined}
+                  unavailableReason={massReason}
+                />
+                <MeasurementRow label="Insolation" q={planet.insolationEarth} unit="× Earth" />
+                <MeasurementRow label="Atmosphere" q={MISSING} unavailableReason="Composition is not part of the NASA catalog" />
+              </Section>
 
-          <details className="pp-more">
-            <summary>More measurements</summary>
-            <dl className="pp-section__list">
-              <MeasurementRow label="Argument of periastron" q={planet.periastronArgDeg} unit="°" />
-              <MeasurementRow label="Time of periastron" q={planet.periastronTimeJD} unit="BJD" />
-              <MeasurementRow label="Transit midpoint" q={planet.transitMidJD} unit="BJD" />
-              <MeasurementRow label="Star luminosity" q={star.lumLog} unit="log L/L☉" />
-              <MeasurementRow label="Star metallicity" q={star.metallicity} unit="[Fe/H] dex" />
-              <MeasurementRow label="Star age" q={star.ageGyr} unit="Gyr" />
-              <TextRow label="Stars in system" value={planet.system?.starCount != null ? String(planet.system.starCount) : null} />
-              <TextRow label="Known planets in system" value={planet.system?.planetCount != null ? String(planet.system.planetCount) : null} />
-            </dl>
-          </details>
+              <Section title="Orbital properties">
+                <MeasurementRow
+                  label="Eccentricity"
+                  q={
+                    fixedCircular
+                      ? { ...planet.eccentricity, assumed: true, basis: 'Fixed at 0 (circular orbit) in the source fit; not measured' }
+                      : planet.eccentricity
+                  }
+                />
+                <MeasurementRow label="Inclination" q={planet.inclinationDeg} unit="°" />
+                <MeasurementRow label="Periastron" q={extremes?.periastron ?? null} unit="AU" unavailableReason={extremesReason} />
+                <MeasurementRow label="Apoastron" q={extremes?.apoastron ?? null} unit="AU" unavailableReason={extremesReason} />
+                <MeasurementRow label="Argument of periastron" q={planet.periastronArgDeg} unit="°" />
+                <MeasurementRow label="Time of periastron" q={planet.periastronTimeJD} unit="BJD" />
+                <MeasurementRow label="Transit midpoint" q={planet.transitMidJD} unit="BJD" />
+              </Section>
 
-          <details className="pp-more">
-            <summary>Sources &amp; methods ({sources.length})</summary>
-            <ul className="pp-sources">
-              {sources.map((s) => (
-                <li key={`${s.label}${s.url}`}>
-                  {s.url ? (
-                    <a href={s.url} target="_blank" rel="noreferrer">
-                      {sourceLabel(s)}
-                    </a>
-                  ) : (
-                    sourceLabel(s)
-                  )}
-                  <span>{s.fields.join(', ')}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="pp-method">
-              Values come from the NASA Exoplanet Archive's Planetary Systems Composite Parameters table, which can
-              combine results from different publications. Surface gravity, periastron, apoastron and light-year
-              distance are calculated by CELESTRIA from catalog values, using the formula shown beside each.
-            </p>
-          </details>
+              <Section title="Host star">
+                <TextRow label="Name" value={star.name} />
+                <TextRow label="Spectral type" value={star.spectralType} />
+                <MeasurementRow label="Effective temperature" q={star.teff} unit="K" />
+                <MeasurementRow label="Mass" q={star.massSun} unit="M☉" />
+                <MeasurementRow label="Radius" q={star.radiusSun} unit="R☉" />
+                <MeasurementRow label="Luminosity" q={star.lumLog} unit="log L/L☉" />
+                <MeasurementRow label="Metallicity" q={star.metallicity} unit="[Fe/H] dex" />
+                <MeasurementRow label="Age" q={star.ageGyr} unit="Gyr" />
+              </Section>
+
+              <Section title="Discovery & system">
+                <TextRow label="Year" value={d.year ? String(d.year) : null} />
+                <TextRow label="Method" value={d.method} />
+                <TextRow label="Facility" value={d.facility} />
+                <TextRow label="Instrument" value={d.telescope} />
+                <MeasurementRow
+                  label="Distance from Earth"
+                  q={planet.system?.distancePc}
+                  unit="pc"
+                  secondary={distanceLy ? `≈ ${sig(distanceLy.value)} light-years` : undefined}
+                />
+                <TextRow label="Stars in system" value={planet.system?.starCount != null ? String(planet.system.starCount) : null} />
+                <TextRow label="Known planets in system" value={planet.system?.planetCount != null ? String(planet.system.planetCount) : null} />
+              </Section>
+
+              <section className="pp-section">
+                <h2 className="pp-section__title">Sources &amp; methods ({sources.length})</h2>
+                <ul className="pp-sources">
+                  {sources.map((s) => (
+                    <li key={`${s.label}${s.url}`}>
+                      {s.url ? (
+                        <a href={s.url} target="_blank" rel="noreferrer">
+                          {sourceLabel(s)}
+                        </a>
+                      ) : (
+                        sourceLabel(s)
+                      )}
+                      <span>{s.fields.join(', ')}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="pp-method">
+                  Values come from the NASA Exoplanet Archive&apos;s Planetary Systems Composite Parameters table, which
+                  can combine results from different publications. Surface gravity, periastron, apoastron and
+                  light-year distance are calculated by CELESTRIA from catalog values, using the formula shown beside
+                  each.
+                </p>
+              </section>
+            </div>
+          </div>
 
           <p className="pp-note">
             The 3D planet is an artistic impression based on {params.coverage.available} of {params.coverage.total} key

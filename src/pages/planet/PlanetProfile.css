@@ -214,8 +214,7 @@
   margin-top: clamp(32px, 5vh, 48px);
 }
 
-.pp-section__title,
-.pp-more summary {
+.pp-section__title {
   margin: 0 0 var(--space-1);
   font-family: var(--font-ui);
   font-size: 11px;
@@ -230,26 +229,9 @@
   border-top: 1px solid var(--color-border);
 }
 
-.pp-more {
-  margin-top: var(--space-8);
-}
 
-.pp-more summary {
-  padding: var(--space-2) 0;
-  cursor: pointer;
-  list-style: none;
-}
 
-.pp-more summary::before {
-  content: '+';
-  display: inline-block;
-  width: 16px;
-  color: var(--color-accent);
-}
 
-.pp-more[open] summary::before {
-  content: '−';
-}
 
 .pp-sources {
   margin: 0;
@@ -291,6 +273,58 @@
   color: var(--color-text-muted);
 }
 
+/* Key features → View more / Show less */
+.pp-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding: 9px 16px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-accent);
+  font: 13px var(--font-ui);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 150ms var(--ease), color 150ms var(--ease);
+}
+
+.pp-toggle:hover,
+.pp-toggle:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.pp-toggle svg {
+  transition: transform 220ms var(--ease);
+}
+
+.pp-toggle .is-flipped {
+  transform: rotate(180deg);
+}
+
+.pp-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms var(--ease);
+}
+
+.pp-expand.is-open {
+  grid-template-rows: 1fr;
+}
+
+.pp-expand__inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+
+.pp-expand.is-open .pp-expand__inner {
+  opacity: 1;
+}
+
 /* ── Tablet / mobile: planet above, information below ─────────────────── */
 @media (max-width: 960px) {
   .pp {
@@ -326,6 +360,10 @@
   .pp-visual__fade,
   .pp-content {
     animation: none;
+  }
+  .pp-expand,
+  .pp-expand__inner {
+    transition: none;
   }
   .pp-visual__picker {
   position: absolute;

@@ -4,15 +4,22 @@
 
 import { Pause, Play, Scan } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router'
 import { scienceValue } from '../../contracts/planet.js'
 import { sig } from '../../three/shared/format.js'
 import { buildSystemModel, groupByHost } from '../../three/system/systemModel.js'
 import SystemViewport from '../../three/viewports/SystemViewport.jsx'
-import PlanetInfoPanel from './PlanetInfoPanel.jsx'
 import './SystemExplorer.css'
 
 const SPEEDS = [0.25, 1, 4, 16]
 const PC_TO_LY = 3.26156
+
+function distanceText(entry) {
+  const { aAU, source, status } = entry.distance
+  if (source === 'catalog') return `${sig(aAU)} AU (${status})`
+  if (source === 'kepler') return `≈ ${sig(aAU)} AU (calculated, Kepler's third law)`
+  return 'Unknown'
+}
 
 function starLine(star, distancePc) {
   const parts = [
@@ -119,7 +126,30 @@ function SystemExplorerInner({ system, systems, onHostChange, profileHref, reduc
         </button>
       </div>
 
-      {selected && <PlanetInfoPanel key={selected.id} entry={selected} profileHref={profileHref(selected.id)} />}
+      {selected && (
+        <aside className="sx-card" aria-live="polite">
+          <p className="sx-card__kicker">
+            {selected.params.archetypeLabel}
+            {selected.params.thermal !== 'unknown' && ` · ${selected.params.thermalLabel}`}
+          </p>
+          <h2 className="sx-card__title">{selected.planet.name}</h2>
+          <dl>
+            <dt>Orbital distance</dt>
+            <dd>{distanceText(selected)}</dd>
+            <dt>Orbital period</dt>
+            <dd>{selected.periodDays != null ? `${sig(selected.periodDays)} days` : 'Unknown'}</dd>
+            <dt>Radius</dt>
+            <dd>
+              {scienceValue(selected.planet.radiusEarth) != null
+                ? `${sig(selected.planet.radiusEarth.value)} R⊕ (${selected.planet.radiusEarth.status})`
+                : 'Unknown'}
+            </dd>
+          </dl>
+          <Link to={profileHref(selected.id)} className="sx-card__link">
+            Open planet
+          </Link>
+        </aside>
+      )}
     </div>
   )
 }

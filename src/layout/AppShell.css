@@ -98,6 +98,107 @@
   list-style: none;
 }
 
+.app-drawer {
+  overflow-y: auto;
+}
+
+.app-drawer__row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+
+.app-drawer__row > a {
+  flex: 1;
+}
+
+.app-drawer__list .app-drawer__row > a {
+  border-bottom: 0;
+}
+
+.app-drawer__expand {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 150ms var(--ease), background 150ms var(--ease);
+}
+
+.app-drawer__expand:hover,
+.app-drawer__expand:focus-visible {
+  color: var(--color-text);
+  background: var(--color-surface);
+  outline: none;
+}
+
+.app-drawer__expand svg {
+  transition: transform 220ms var(--ease);
+}
+
+.app-drawer__expand.is-open svg {
+  transform: rotate(180deg);
+  color: var(--color-accent);
+}
+
+/* Collapsible planet list under Planet Viewport. */
+.app-drawer__sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms var(--ease);
+}
+
+.app-drawer__sub.is-open {
+  grid-template-rows: 1fr;
+}
+
+.app-drawer__sub-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-drawer__sub.is-open .app-drawer__sub-inner {
+  max-height: 42vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+
+.app-drawer__group {
+  padding: var(--space-2) 0 var(--space-1) var(--space-4);
+}
+
+.app-drawer__host {
+  margin: 0 0 2px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-missing);
+}
+
+.app-drawer__list .app-drawer__group a {
+  padding: 6px var(--space-2);
+  border: 0;
+  font-family: var(--font-ui);
+  font-size: 14px;
+}
+
+.app-drawer__list .app-drawer__group a:hover,
+.app-drawer__list .app-drawer__group a:focus-visible {
+  padding-left: var(--space-3);
+}
+
+.app-drawer__empty {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
 .app-drawer__list a {
   display: block;
   padding: 13px var(--space-2);
