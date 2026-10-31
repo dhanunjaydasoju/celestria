@@ -265,6 +265,7 @@ Priority: **P0** = must ship for the demo, **P1** = expected, **P2** = only if t
 - **One shared `SphereGeometry`** per detail level (64 segments for the hero planet, 24 in system view). **One `ShaderMaterial` per archetype**, driven by uniforms: 3D simplex fbm noise for rocky surfaces, latitude bands + turbulence for giants, a fresnel atmosphere shell for planets above about 1.6 R⊕. Colours come from palettes per archetype × temperature band.
 - **Deterministic seed** = hash(`pl_name`). The same planet always looks the same.
 - No texture downloads (all procedural) → instant load and no asset pipeline. Optional Blender GLB only for the spacecraft (`useGLTF`, lazy, Draco).
+- **Exception — Earth only (homepage scene).** Earth is the one body with real global imagery, so the homepage Earth (`src/three/earth/`) uses NASA public-domain textures in `public/textures/earth/`: Blue Marble Next Generation (day), Black Marble 2016 (night lights), Blue Marble 2002 clouds — sources, credit lines and checksums in `public/textures/earth/CREDITS.md`, credited on screen ("NASA Earth Observatory"). Rules: only verified NASA (or equally clear public-domain) sources; local files, no hotlinking; credit kept on screen; sized per quality tier. **This exception does not extend to exoplanets**: every exoplanet stays procedural and labelled as an artistic impression; no Earth texture may be reused to depict an exoplanet. The homepage spacecraft is procedural (`src/three/earth/Soyuz.jsx`), Soyuz-inspired, without agency marks, and labelled with its scale exaggerations.
 - Star colour from `st_teff` via a blackbody→sRGB approximation. Star size from `st_rad`, using the neutral solar default *visually only* if missing (imputed, labelled).
 - Every planet view shows the badge "Artistic impression based on [N of M] available measurements."
 
@@ -453,7 +454,8 @@ settings:  { paused, timeScale, reducedMotion, setPaused(b), setTimeScale(n) }
 
 **3D viewports** [LEAD], `src/three/viewports/`. Each one owns its own `<Canvas>`, Suspense and error fallback, and fills its parent box (the parent sets the size):
 ```
-<HeroScene />                                                   // landing background
+<HeroScene />                                                   // previous landing background (fallback: /?scene=classic)
+<EarthHeroScene reducedMotion? startTime? />                    // landing background: NASA-textured Earth + Soyuz-inspired craft
 <PlanetViewport planet size="hero"|"card" autoRotate? interactive? />
 <SystemViewport host planets selectedId onSelectPlanet paused timeScale />
 <StarMapViewport hosts onSelectHost />
