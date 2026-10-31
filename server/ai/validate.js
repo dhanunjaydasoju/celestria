@@ -164,7 +164,7 @@ const CONSTANTS = [[365.25, 'days'], [5.51, 'g/cm³'], [317.83, 'M⊕'], [11.209
  * @param {{ name: string, args?: object, result: object }[]} toolResults
  */
 export function buildEvidence(toolResults, { question = '' } = {}) {
-  const ev = { numbers: [], strings: new Set(), names: new Set(), planets: new Map(), sources: new Map(), urls: new Set(), types: new Map() }
+  const ev = { numbers: [], strings: new Set(), names: new Set(), planets: new Map(), sources: new Map(), urls: new Set(), types: new Map(), hz: new Map(), hzHosts: new Map() }
   const addNumber = (value, unit, status, extra = {}) => {
     if (typeof value === 'number' && Number.isFinite(value)) ev.numbers.push({ value, unit: canonUnit(unit), status, ...extra })
   }
@@ -195,6 +195,12 @@ export function buildEvidence(toolResults, { question = '' } = {}) {
     for (const k of ['name', 'host', 'planet']) if (typeof node[k] === 'string') ev.names.add(node[k])
     if (typeof node.label === 'string' && typeof node.url === 'string') addSource(node.label, node.url)
     // CELESTRIA's size/temperature class per planet ("Rocky world · Temperate").
+    // Habitable-zone results of assess_habitability, per planet.
+    if (typeof node.planet === 'string' && node.habitableZone && typeof node.habitableZone === 'object') {
+      ev.hz.set(node.planet, node.habitableZone)
+      // The zone belongs to the star, so claims about "the habitable zone of <host>" use it too.
+      if (typeof node.host === 'string' && !ev.hzHosts.has(node.host)) ev.hzHosts.set(node.host, node.habitableZone)
+    }
     const typeLabel = typeof node.type === 'string' ? node.type : node.type?.label
     if (typeof node.name === 'string' && typeof typeLabel === 'string') ev.types.set(node.name, typeLabel)
 
@@ -262,6 +268,30 @@ const COMPOSITION = /\b(rocky (planet|world|surface|composition|core)|is rocky|a
 // Any planet-specific mention of the habitable zone ("in", "near the inner
 // edge of", "outside"): the tools do not compute zone boundaries.
 const HZ_PLACEMENT = /\b(habitable|goldilocks)[- ]zones?\b|\bHZ\b/i
+// What a claim says about placement → the placements that make it true.
+const ZONE_PHRASES = [
+  { kind: 'near', re: /\b(near|close to|at|on|straddl\w*)\s+(the\s+)?(its\s+)?(inner|outer)?\s*(edge|boundary|boundaries)|straddl\w+/ },
+  { re: /\b(inside|within|in|lies in|falls in|sits in)\s+(the\s+|its\s+(star'?s?\s+)?)?conservative\s+(habitable|goldilocks)[- ]zone/, set: ['conservative'] },
+  { re: /\b(inside|within|in|lies in|falls in|sits in)\s+(the\s+|its\s+(star'?s?\s+)?)?optimistic\s+(habitable|goldilocks)[- ]zone/, set: ['optimistic_inner', 'conservative', 'optimistic_outer'] },
+  { re: /\b(outside|beyond)\s+(the\s+|its\s+(star'?s?\s+)?)?conservative\s+(habitable|goldilocks)[- ]zone/, set: ['hot', 'optimistic_inner', 'optimistic_outer', 'cold'] },
+  { re: /\b(outside|beyond)\s+(the\s+|its\s+(star'?s?\s+)?)?(optimistic\s+)?(habitable|goldilocks)[- ]zone/, set: ['hot', 'cold'] },
+  { re: /\b(more (starlight|flux|stellar flux|irradiation)|closer)\s+than\s+(the\s+)?(optimistic\s+)?(inner edge|inner boundary|habitable[- ]zone)|interior to the (optimistic\s+)?(inner edge|habitable[- ]zone)|too (hot|close)/, set: ['hot'] },
+  { re: /\b(less (starlight|flux|stellar flux|irradiation)|farther|further)\s+than\s+(the\s+)?(optimistic\s+)?(outer edge|outer boundary|habitable[- ]zone)|beyond the (optimistic\s+)?outer edge|too (cold|far)/, set: ['cold'] },
+  { re: /\b(inside|within|in|lies in|falls in|sits in)\s+(the\s+|its\s+(star'?s?\s+)?)?(habitable|goldilocks)[- ]zone/, set: ['conservative'] }, // unqualified = conservative
+]
+
+function claimedPlacements(lower) {
+  const out = []
+  let text = lower
+  for (const p of ZONE_PHRASES) {
+    const m = p.re.exec(text)
+    if (!m) continue
+    out.push(p.kind === 'near' ? { kind: 'near', text: m[0] } : { set: p.set, text: m[0] })
+    text = text.replace(m[0], ' ') // a phrase counts once (more specific phrases first)
+  }
+  return out
+}
+
 const HABITABLE_DENIAL = /\b((is|are)\s+not\s+habitable|uninhabitable|(cannot|could not|can't)\s+(support|host|harbou?r)\s+life)\b/i
 // Interpretation inside a data claim belongs in a separate hypothesis claim.
 const INFERENCE = /\b(suggest(s|ing)?|indicat(es|ing)|impl(y|ies|ying)|which means|meaning (that )?it|making it (likely|probably|possibl[ey])|consistent with|likely|probably|so it (is|has|must))\b/i
@@ -479,8 +509,11 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     }
     if (has('classification')) checkClassTerms(raw, where)
     if (HZ_PLACEMENT.test(raw) && !negated(raw, HZ_PLACEMENT)) {
-      const generic = has('established') && !mentionsPlanet && !dataBasis
-      if (!generic && !speculative) fail(where, 'habitable-zone', 'Habitable-zone placement is not computed by the tools; state it only as a hedged hypothesis')
+      const supported = checkZoneClaim(raw, bases, where)
+      if (supported === null) {
+        const generic = has('established') && !mentionsPlanet && !dataBasis
+        if (!generic && !speculative) fail(where, 'habitable-zone', 'Habitable-zone placement comes only from assess_habitability; call it, or state it only as a hedged hypothesis')
+      }
     }
     if (HABITABLE_DENIAL.test(raw) && !speculative) {
       fail(where, 'habitability', 'Do not claim a planet is uninhabitable either; the catalogue cannot establish it')
@@ -502,6 +535,47 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
       if (!has('hypothesis') && !(has('established') && !mentionsPlanet)) fail(where, 'life', 'Statements about life must be labelled hypothesis and hedged')
       else if (has('hypothesis') && !HEDGE.test(raw)) fail(where, 'life', 'A hypothesis about life must be hedged (might, could, unknown…)')
     }
+  }
+
+  /**
+   * Habitable-zone placement claims for a planet with an assess_habitability
+   * result must match it. Returns null when no such result applies (the
+   * strict default rule then decides), true when supported, false on failure.
+   */
+  function checkZoneClaim(raw, bases, where) {
+    const lower = raw.toLowerCase()
+    // Planets first; a host star only when no planet is named (matched with its exact capitalisation).
+    let named = [...ev.hz.keys()].filter((n) => containsName(lower, n)).map((n) => [n, ev.hz.get(n)])
+    if (!named.length) named = [...ev.hzHosts.keys()].filter((h) => containsName(raw, h, true)).map((h) => [h, ev.hzHosts.get(h)])
+    // "It lies within…": only a claim that refers to a planet, never a general statement.
+    if (!named.length && ev.hz.size === 1 && /\b(it|its|this planet|the planet)\b/.test(lower) && !mentionsAnyPlanet(lower)) named = [...ev.hz.entries()]
+    if (!named.length) return null
+    const claimed = claimedPlacements(lower)
+    if (!claimed.length) return true // describes the zone (e.g. its boundaries); numbers are checked separately
+    if (!bases.some((b) => b === 'calculated' || b === 'hypothesis')) {
+      fail(where, 'habitable-zone', 'Habitable-zone placement is a calculated estimate: label the claim calculated')
+      return false
+    }
+    for (const [n, hz] of named) {
+      for (const c of claimed) {
+        const ok =
+          c.kind === 'near'
+            ? hz.straddles || hz.orbit?.crossesBoundary
+            : hz.placement != null && c.set.includes(hz.placement)
+        if (!ok) {
+          fail(where, 'habitable-zone', `${n}: the claim "${c.text}" does not match assess_habitability (${hz.placementLabel ?? hz.reason ?? 'placement unavailable'}${hz.straddles ? '; straddles a boundary within uncertainties' : ''})`)
+          return false
+        }
+      }
+    }
+    return true
+  }
+
+  function containsName(text, name, exactCase = false) {
+    return new RegExp(`(^|[^\\p{L}\\p{N}])${esc(exactCase ? name : name.toLowerCase())}($|[^\\p{L}\\p{N}])`, 'u').test(text)
+  }
+  function mentionsAnyPlanet(lower) {
+    return [...ev.names].some((n) => n.length > 3 && /\d|\s[a-z]$/.test(n) && containsName(lower, n))
   }
 
   // A classification may only use the class the tools assigned to the planet named.
@@ -559,9 +633,11 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     URL_RE.lastIndex = 0
     if (CITATION_RE.test(title)) fail(where, 'citation', 'Section titles must not contain citations')
     CITATION_RE.lastIndex = 0
-    for (const [re, rule] of [[HABITABLE_ASSERT, 'habitability'], [EARTH_LIKE, 'habitability'], [HZ_PLACEMENT, 'habitable-zone'], [COMPOSITION, 'composition']]) {
+    for (const [re, rule] of [[HABITABLE_ASSERT, 'habitability'], [EARTH_LIKE, 'habitability'], [COMPOSITION, 'composition']]) {
       if (re.test(title) && !negated(title, re)) fail(where, rule, 'Section titles must not make scientific claims')
     }
+    // A heading may name the habitable zone, but not place a planet in or out of it.
+    if (claimedPlacements(title.toLowerCase()).length) fail(where, 'habitable-zone', 'Section titles must not state a habitable-zone placement')
   }
 
   function checkUncertainty(n, candidates, where) {

@@ -301,6 +301,7 @@ describe('read-only tools', () => {
       compute_orbit: { name: 'Testa b', at: 'next_transit' },
       catalog_facts: { field: 'radius' },
       explain_concept: { concept: 'transit' },
+      assess_habitability: { name: 'Testa b' },
     }
     expect(Object.keys(calls).sort()).toEqual([...TOOL_NAMES].sort())
     for (const [name, args] of Object.entries(calls)) expect(runTool(ctx, name, args).result.status, name).not.toBe('error')

@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { askRouter } from './routes/ask.js'
 import { catalogRouter } from './routes/catalog.js'
+import { habitabilityRouter } from './routes/habitability.js'
 import { syncRouter } from './routes/sync.js'
 
 /**
@@ -25,6 +26,7 @@ export function createApp({ store, distDir = null, ai = null, trustProxy = false
   app.use(express.json({ limit: '32kb' }))
 
   app.use('/api', catalogRouter(store))
+  app.use('/api', habitabilityRouter(store))
   app.use('/api', syncRouter(sync ?? { sync: null }))
   app.use('/api', askRouter(ai ?? { astronomer: null, config: { configured: false, model: '' } }))
   app.use('/api', (_req, res) => {

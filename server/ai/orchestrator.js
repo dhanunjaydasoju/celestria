@@ -38,6 +38,7 @@ export class AskError extends Error {
 
 const ANSWER_TYPES = new Set(['answer', 'clarification', 'insufficient_data'])
 const MAX_PRE_PLANETS = 4
+const HABITABILITY_QUESTION = /\b(habitab\w*|life|alive|liv(e|ing) on|goldilocks|temperate|liquid water)\b/i
 const MAX_PRE_SYSTEMS = 2
 const CACHE_MAX = 200
 const TOOLS_CHARS = JSON.stringify(TOOL_DEFINITIONS).length
@@ -78,6 +79,8 @@ export function toolLabel({ name, args, result }) {
       return 'Catalogue search'
     case 'catalog_facts':
       return 'Catalogue statistics'
+    case 'assess_habitability':
+      return `Habitability indicators: ${ok ? result.planet : args?.name ?? '?'}`
     case 'explain_concept':
       return `Reference: ${ok ? result.title : args?.concept ?? '?'}`
     default:
@@ -141,6 +144,8 @@ export function createAstronomer({ config, client, limiter, getToolContext, log 
     const context = [planetId, ...(compareIds ?? [])].map((id) => (id ? ctx.byId.get(id) : null))
     for (const p of [...context, ...mentions.planets]) if (p && !planets.includes(p)) planets.push(p)
     for (const p of planets.slice(0, MAX_PRE_PLANETS)) calls.push(['get_planet', { name: p.id }])
+    // Habitability questions get the deterministic indicators up front.
+    if (HABITABILITY_QUESTION.test(question)) for (const p of planets.slice(0, 2)) calls.push(['assess_habitability', { name: p.id }])
     const covered = new Set(planets.map((p) => p.host))
     // The page's system is always retrieved (its sibling planets matter);
     // systems merely mentioned are skipped when one of their planets is.

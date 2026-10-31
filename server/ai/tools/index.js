@@ -10,6 +10,7 @@ import { CONCEPTS, findConcept, REVIEW_STATUS } from '../knowledge/concepts.js'
 import { createToolContext } from './catalog.js'
 import { computeOrbit, comparePlanets, getPlanet, getSystem } from './planets.js'
 import { DISCOVERY_METHODS, PRESETS, RANGE_FIELDS, SPECTRAL_CLASSES, catalogFacts, searchPlanets } from './search.js'
+import { assessHabitabilityTool } from './habitability.js'
 import { validateArgs } from './schema.js'
 import { UNITS } from './format.js'
 
@@ -102,6 +103,12 @@ const TOOLS = {
       },
     },
     run: catalogFacts,
+  },
+  assess_habitability: {
+    description:
+      "Deterministic habitability indicators for one planet: estimated habitable-zone placement from stellar flux (Kopparapu et al. 2014), size, mass, star, and why. The only source for habitable-zone placement; it never claims habitability or life.",
+    parameters: { type: 'object', additionalProperties: false, required: ['name'], properties: { name: NAME } },
+    run: assessHabitabilityTool,
   },
   explain_concept: {
     description: 'Get a reviewed explanation of a general astronomy concept (e.g. transit method, habitable zone, M sin i, hot Jupiter) with a reference.',
