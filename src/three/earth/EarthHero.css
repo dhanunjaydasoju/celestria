@@ -1,0 +1,70 @@
+/* Homepage Earth hero — owner: LEAD. */
+
+.earth-hero {
+  background: var(--color-bg);
+}
+
+/* The canvas fades in once the first Earth textures are on screen. */
+.earth-hero__canvas {
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+
+.earth-hero.is-ready .earth-hero__canvas {
+  opacity: 1;
+}
+
+/* Loading / no-WebGL poster: a softly lit limb where Earth will appear. */
+.earth-poster {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 80% 52%, rgba(64, 120, 210, 0.16) 0 26%, rgba(64, 120, 210, 0.05) 29%, transparent 40%),
+    var(--color-bg);
+  transition: opacity 1.2s var(--ease);
+}
+
+.earth-hero.is-ready .earth-poster {
+  opacity: 0;
+}
+
+.earth-hero__credit {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  z-index: 1;
+  max-width: min(560px, calc(100% - 2 * var(--space-4)));
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.5;
+  text-align: right;
+  color: color-mix(in srgb, var(--color-text-muted) 80%, transparent);
+  pointer-events: none;
+}
+
+.earth-hero__credit span {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .earth-poster {
+    background:
+      radial-gradient(circle at 50% 66%, rgba(64, 120, 210, 0.16) 0 36%, rgba(64, 120, 210, 0.05) 39%, transparent 48%),
+      var(--color-bg);
+  }
+  .earth-hero__credit {
+    left: var(--space-4);
+    right: var(--space-4);
+    max-width: none;
+    font-size: 9.5px;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .earth-hero__canvas,
+  .earth-poster {
+    transition: none;
+  }
+}
