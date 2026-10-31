@@ -17,7 +17,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "data:snapshot": "node server/scripts/fetch-snapshot.js"
+    "data:snapshot": "node server/scripts/fetch-snapshot.js",
+    "ai:probe": "node --env-file-if-exists=.env server/scripts/featherless-probe.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
