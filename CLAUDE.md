@@ -228,6 +228,12 @@ NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians f
 
 ---
 
+### M5 AI astronomer backend (implemented, Phase 2)
+- `POST /api/ask { question, planetId?, history? }` → `AskResponse` (`src/contracts/api.js`); supersedes `/api/astronomer`. `GET /api/ask/status`.
+- `server/ai/`: `config.js` (limits, key in a closure), `featherless.js` (client, typed retryable errors incl. HTTP 200 error bodies), `limits.js` (per-client minute/day, global daily questions and USD spend with per-call reservation, concurrency + bounded queue; synchronous check-and-reserve), `orchestrator.js` (pre-retrieval → tool loop → validate → repair → safe reply), `prompts.js`, `validate.js`, `tools/` (7 read-only tools), `knowledge/concepts.js`.
+- Primary `Qwen/Qwen3-32B` with `/no_think`; `Qwen/Qwen3-14B` only after a retryable provider failure, validated identically.
+- Nothing the model writes is shown unless `validate.js` accepts it; clarification / not-found / insufficient-data / unverified replies are fixed text built from tool results.
+
 ## 6. Feature specs (condensed)
 
 Priority: **P0** = must ship for the demo, **P1** = expected, **P2** = only if time allows.

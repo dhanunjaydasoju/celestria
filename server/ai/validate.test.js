@@ -62,6 +62,12 @@ describe('validateAnswer: numbers', () => {
     expect(rules(one('Testa b has an equilibrium temperature of 2500 K.', 'measured'))).toEqual(['number'])
   })
 
+  it('requires every number in a data claim to match, even small integers with unknown units', () => {
+    expect(rules(one('The surface pressure on Testa b is about 1 bar.', 'measured'))).toEqual(['unit'])
+    expect(rules(one('Testa b has a radius of about 1 R⊕.', 'measured'))).not.toEqual([])
+    expect(one('Testa b is one of 2 planets around Testa.', 'catalog').ok).toBe(true) // narrative counts are only warned
+  })
+
   it('rejects over-rounded values but accepts faithful rounding', () => {
     expect(one('Testa b has a radius of 1.1 R⊕.', 'measured').ok).toBe(true)
     expect(one('Testa b has a radius of 1 R⊕.', 'measured').ok).toBe(false) // 1 is in the data, but only as other quantities
@@ -126,12 +132,18 @@ describe('validateAnswer: scientific claims', () => {
   it('rejects composition stated as fact, but allows hedged hypotheses and size classes', () => {
     expect(rules(one('Testa b has an iron core.', 'measured'))).toContain('composition')
     expect(rules(one('Testa b is a water world.', 'established'))).toContain('composition')
+    expect(rules(one('The atmosphere of Testa b is mostly nitrogen.', 'measured'))).toContain('composition')
     expect(one('Testa b might have a rocky surface, but its composition is unknown.', 'hypothesis').ok).toBe(true)
     expect(rules(one('Testa b is a Rocky world.', 'classification'))).toEqual(['classification'])
+    expect(rules(one('Testa b has a radius of 1.1 R⊕, suggesting it is not rocky.', 'measured'))).toEqual(expect.arrayContaining(['composition', 'interpretation']))
+    expect(rules(one('Testa b has a radius of 1.1 R⊕, so it is probably small.', 'measured'))).toEqual(['interpretation'])
+    expect(one('Testa b has a radius of 1.1 R⊕, making it slightly larger than Earth.', 'measured').ok).toBe(true)
   })
 
   it('rejects habitable-zone placement unless hedged', () => {
     expect(rules(one('Testa b lies in the habitable zone.', 'measured'))).toContain('habitable-zone')
+    expect(rules(one('It receives 0.9 ±0.1 S⊕, placing it near the inner edge of the habitable zone.', 'measured'))).toContain('habitable-zone')
+    expect(rules(one('Testa b orbits outside the habitable zone.', 'established'))).toContain('habitable-zone')
     expect(one('Testa b could lie within the habitable zone, depending on the model used.', 'hypothesis').ok).toBe(true)
   })
 
@@ -139,6 +151,7 @@ describe('validateAnswer: scientific claims', () => {
     expect(rules(one('Testa b is potentially habitable.', 'hypothesis'))).toContain('habitability')
     expect(rules(one('Testa b is habitable.', 'established'))).toContain('habitability')
     expect(rules(one('Testa b is an Earth-like planet.', 'established'))).toContain('habitability')
+    expect(rules(one('Testa b is not habitable.', 'established'))).toContain('habitability')
     expect(rules(one('Testa b has life.', 'hypothesis'))).toEqual(expect.arrayContaining(['habitability', 'life']))
     expect(one('Testa b is not known to be habitable, and there is no evidence of life.', 'established').ok).toBe(true)
     expect(one('If Testa b has an atmosphere, it might be able to host life, but this is speculative.', 'hypothesis').ok).toBe(true)

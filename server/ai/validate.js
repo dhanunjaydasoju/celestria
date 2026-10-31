@@ -63,7 +63,13 @@ const UNIT_ALIASES = [
   ['g/cm³', ['g/cm³', 'g/cm3', 'g cm⁻³', 'g cm^-3', 'g/cc', 'grams per cubic centimetre', 'grams per cubic centimeter']],
   ['m/s²', ['m/s²', 'm/s2', 'm s⁻²', 'm s^-2']],
   ['km/s', ['km/s', 'kilometres per second', 'kilometers per second']],
+  // Units no tool returns: any value in them was converted or invented.
+  ['pressure', ['bar', 'bars', 'atm', 'atmospheres', 'Pa', 'kPa', 'MPa', 'psi', 'mbar']],
+  ['power', ['W/m²', 'W/m2', 'watts', 'W']],
+  ['speed', ['km/h', 'mph', 'm/s']],
+  ['mass', ['kg', 'tonnes', 'tons']],
   ['%', ['%', 'percent', 'per cent']],
+  ['×', ['g', "Earth's gravity", 'Earth gravity']],
   ['×', ['×', 'times', 'x']],
   ['°', ['°', 'degrees', 'deg']],
   ['dex', ['dex']],
@@ -240,9 +246,16 @@ function stripNames(text, names) {
 const normLabel = (s) => s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
 
 const HEDGE = /\b(might|may|could|possibly|perhaps|if\b|would|speculat\w*|hypothe\w*|uncertain|unknown|not (yet )?known|unconfirmed|cannot (be )?(say|determine|confirm)|no (direct )?evidence)/i
-const NEGATION = /\b(not|no|cannot|can't|isn't|aren't|unknown|unclear|without|never|neither|nor|doesn't|does not|don't|unconfirmed|undetermined|unproven)\b/i
-const COMPOSITION = /\b(rocky (planet|world|surface|composition|core)|is rocky|are rocky|iron[- ](core|rich)|metallic core|silicate|(global |surface |deep )?ocean(s)?\b|water[- ]?world|water-rich|hycean|lava (world|ocean|planet)|magma ocean|molten surface|ice giant composition|made (mostly )?of|composed (mostly )?of|its composition|hydrogen(-rich)? (envelope|atmosphere)|thick atmosphere|has an atmosphere|atmosphere (of|contains|rich))/i
-const HZ_PLACEMENT = /\b(in|within|inside|lies in|located in|orbits (in|within)|sits in|falls in)\s+(the\s+|its\s+(star'?s?\s+)?)?(conservative\s+|optimistic\s+)?(habitable|goldilocks)\s+zone\b/i
+// Only epistemic negations excuse a science term ("unknown", "no evidence",
+// "does not mean"); a plain "not" is itself a claim ("it is not rocky").
+const NEGATION = /\b(unknown|not (yet )?known|unclear|no (direct )?(data|information|measurements?|evidence)|not in the (nasa )?catalog(ue)?|not computed|cannot be (determined|confirmed|known|said|measured)|can't be (determined|confirmed|known)|unavailable|undetermined|unconfirmed|unproven|not (yet )?(confirmed|established|measured)|does not (mean|imply|make|indicate)|doesn't (mean|imply|make|indicate)|not evidence|is not a property|not a property)\b/i
+const COMPOSITION = /\b(rocky (planet|world|surface|composition|core)|is rocky|are rocky|iron[- ](core|rich)|metallic core|silicate|(global |surface |deep )?ocean(s)?\b|water[- ]?world|water-rich|hycean|lava (world|ocean|planet)|magma ocean|molten surface|ice giant composition|made (mostly )?of|composed (mostly )?of|its composition|hydrogen(-rich)? (envelope|atmosphere)|thick atmosphere|has an atmosphere|atmosphere (of|contains|rich)|nitrogen|oxygen|carbon dioxide|\bco2\b|methane|water vapou?r|ammonia|\brocky\b|gaseous|gas-rich|solid surface|volatile-rich|envelope)/i
+// Any planet-specific mention of the habitable zone ("in", "near the inner
+// edge of", "outside"): the tools do not compute zone boundaries.
+const HZ_PLACEMENT = /\b(habitable|goldilocks)[- ]zones?\b|\bHZ\b/i
+const HABITABLE_DENIAL = /\b((is|are)\s+not\s+habitable|uninhabitable|(cannot|could not|can't)\s+(support|host|harbou?r)\s+life)\b/i
+// Interpretation inside a data claim belongs in a separate hypothesis claim.
+const INFERENCE = /\b(suggest(s|ing)?|indicat(es|ing)|impl(y|ies|ying)|which means|meaning (that )?it|making it (likely|probably|possibl[ey])|consistent with|likely|probably|so it (is|has|must))\b/i
 const HABITABLE_ASSERT = /\b((is|are|be|being|was)\s+(a\s+)?(potentially\s+|likely\s+|probably\s+|possibly\s+)?habitable|habitable\s+(planet|world|exoplanet)|(has|have|harbou?rs?|supports?|hosts?|sustains?)\s+(alien\s+|extraterrestrial\s+)?life)\b/i
 const LIFE = /\b(life|living organisms|biosignatures?|inhabited|aliens?|extraterrestrial)\b/i
 const EARTH_LIKE = /\b(earth[- ](like|twin)|second earth|earth 2\.0)\b(?!\s+(size|radius|mass|in size|in radius|in mass))/i
@@ -257,9 +270,10 @@ const negated = (text, re) => sentences(text).filter((s) => re.test(s)).every((s
 /**
  * @param {{ sections: { title?: string, claims: { text: string, basis: string, refs?: string[] }[] }[], planets?: string[] }} answer
  * @param {{ name: string, args?: object, result: object }[]} toolResults
- * @param {{ question?: string }} [opts]
+ * @param {{ question?: string, requireReferences?: boolean }} [opts]
+ *   requireReferences: 'established' claims need a curated concept (explain_concept) in the evidence
  */
-export function validateAnswer(answer, toolResults, { question = '' } = {}) {
+export function validateAnswer(answer, toolResults, { question = '', requireReferences = false } = {}) {
   const errors = []
   const warnings = []
   const fail = (where, rule, message) => errors.push({ ...where, rule, message })
@@ -275,11 +289,14 @@ export function validateAnswer(answer, toolResults, { question = '' } = {}) {
   const evidenceStrings = [...ev.strings, ...ev.names, ...ev.sources.keys()].filter((s) => s.length >= 3 && !/^(ok|unavailable)$/i.test(s)).map((s) => s.toLowerCase())
   const usedSources = new Map()
   const referenced = new Set()
+  const concepts = toolResults.filter((r) => r.name === 'explain_concept' && r.result?.status === 'ok')
+  for (const c of concepts) for (const ref of c.result.references ?? []) usedSources.set(ref.label, { label: ref.label, url: ref.url ?? null })
   let checked = 0
 
   answer.sections.forEach((section, si) => {
     const claims = section?.claims
     if (!Array.isArray(claims) || !claims.length) return fail({ section: si }, 'schema', 'Each section needs a non-empty "claims" array')
+    if (section.title != null) checkTitle(section.title, { section: si, text: String(section.title).slice(0, 80) })
     if (claims.length > LIMITS.claimsPerSection) fail({ section: si }, 'schema', `At most ${LIMITS.claimsPerSection} claims per section`)
     claims.forEach((claim, ci) => {
       const where = { section: si, claim: ci, text: typeof claim?.text === 'string' ? claim.text.slice(0, 160) : undefined }
@@ -345,7 +362,8 @@ export function validateAnswer(answer, toolResults, { question = '' } = {}) {
           fail(where, 'unit', `${n.str} ${n.unit}: the data has this number in ${otherUnits.join(', ')}, not ${n.unit}`)
         } else if (n.unit && !ev.numbers.some((e) => e.unit === unitWanted)) {
           fail(where, 'unit', `${n.str} ${n.unit}: no tool returned values in ${n.unit}; do not convert units yourself`)
-        } else if (!n.unit && Number.isInteger(n.value) && Math.abs(n.value) <= 12 && !n.str.includes('.')) {
+        } else if (!n.unit && Number.isInteger(n.value) && Math.abs(n.value) <= 12 && !n.str.includes('.') && !bases.some((b) => DATA_BASES.has(b))) {
+          // Small counts in narrative claims ("two planets") are only warned; data claims must match.
           warn(where, 'small-number', `${n.str} could not be checked against the data`)
         } else {
           fail(where, 'number', `${n.str}${n.unit ? ` ${n.unit}` : ''} is not in the tool results (numbers must be copied from tools, not calculated or recalled)`)
@@ -394,6 +412,9 @@ export function validateAnswer(answer, toolResults, { question = '' } = {}) {
     if (dataBasis && !nums.length && !evidenceStrings.some((s) => lower.includes(s))) {
       fail(where, 'unsupported', `Claim labelled ${bases.join('/')} contains no value or catalogue reference from the tool results`)
     }
+    if (requireReferences && has('established') && !has('hypothesis') && !concepts.length) {
+      fail(where, 'reference', 'General-science claims need a reference: call explain_concept for the concept, or remove the claim')
+    }
     if (has('unavailable') && !/unavailable|not (available|known|measured|reported|in the (nasa )?catalog(ue)?)|unknown|no (value|data|measurement)|missing|has not been measured/i.test(raw)) {
       fail(where, 'unavailable', 'A claim labelled unavailable must say the value is unavailable or unknown')
     }
@@ -413,8 +434,14 @@ export function validateAnswer(answer, toolResults, { question = '' } = {}) {
       fail(where, 'classification', 'A classification must say it is a size/temperature class, not a measured composition')
     }
     if (HZ_PLACEMENT.test(raw) && !negated(raw, HZ_PLACEMENT)) {
-      const generic = has('established') && !mentionsPlanet
+      const generic = has('established') && !mentionsPlanet && !dataBasis
       if (!generic && !speculative) fail(where, 'habitable-zone', 'Habitable-zone placement is not computed by the tools; state it only as a hedged hypothesis')
+    }
+    if (HABITABLE_DENIAL.test(raw) && !speculative) {
+      fail(where, 'habitability', 'Do not claim a planet is uninhabitable either; the catalogue cannot establish it')
+    }
+    if ((dataBasis || has('classification')) && INFERENCE.test(raw)) {
+      fail(where, 'interpretation', 'Interpretations ("suggesting", "likely"…) are not data: move them to a separate, hedged hypothesis claim')
     }
     if (HABITABLE_ASSERT.test(raw) && !negated(raw, HABITABLE_ASSERT) && !speculative) {
       fail(where, 'habitability', 'Do not claim a planet is habitable or has life; no catalogue data supports it')
@@ -425,6 +452,21 @@ export function validateAnswer(answer, toolResults, { question = '' } = {}) {
     if (LIFE.test(raw) && !negated(raw, LIFE)) {
       if (!has('hypothesis') && !(has('established') && !mentionsPlanet)) fail(where, 'life', 'Statements about life must be labelled hypothesis and hedged')
       else if (has('hypothesis') && !HEDGE.test(raw)) fail(where, 'life', 'A hypothesis about life must be hedged (might, could, unknown…)')
+    }
+  }
+
+  // Titles are headings, not claims: no numbers, links, citations or science assertions.
+  function checkTitle(title, where) {
+    if (typeof title !== 'string' || title.length > 80) return fail(where, 'schema', 'Section titles must be strings of at most 80 characters')
+    const plain = stripNames(title, ev.names)
+    if (extractNumbers(plain).length) fail(where, 'title', 'Section titles must not contain values; put numbers in claims')
+    if (MD_LINK_RE.test(title) || URL_RE.test(title)) fail(where, 'link', 'Section titles must not contain links')
+    MD_LINK_RE.lastIndex = 0
+    URL_RE.lastIndex = 0
+    if (CITATION_RE.test(title)) fail(where, 'citation', 'Section titles must not contain citations')
+    CITATION_RE.lastIndex = 0
+    for (const [re, rule] of [[HABITABLE_ASSERT, 'habitability'], [EARTH_LIKE, 'habitability'], [HZ_PLACEMENT, 'habitable-zone'], [COMPOSITION, 'composition']]) {
+      if (re.test(title) && !negated(title, re)) fail(where, rule, 'Section titles must not make scientific claims')
     }
   }
 

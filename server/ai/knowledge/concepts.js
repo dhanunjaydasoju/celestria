@@ -169,3 +169,25 @@ for (const [key, c] of Object.entries(CONCEPTS)) {
 export function findConcept(query) {
   return INDEX.get(norm(query)) ?? null
 }
+
+const HABITABILITY_WORDS = /\b(habitab\w*|life|alive|liv(e|ing) on|inhabit\w*|goldilocks)\b/i
+
+/**
+ * Concepts named in free text (for pre-retrieval). Habitability or life
+ * questions always pull in the habitable-zone reference so its caveats can
+ * be stated with a source.
+ * @returns {string[]} concept keys, at most `max`
+ */
+export function findConceptsIn(text, max = 2) {
+  const t = ` ${norm(text)} `
+  const found = []
+  if (HABITABILITY_WORDS.test(String(text ?? ''))) found.push('habitable_zone')
+  const phrases = [...INDEX.keys()].filter((k) => k.length >= 4).sort((a, b) => b.length - a.length)
+  for (const phrase of phrases) {
+    if (t.includes(` ${phrase} `)) {
+      const key = INDEX.get(phrase)
+      if (!found.includes(key)) found.push(key)
+    }
+  }
+  return found.slice(0, max)
+}

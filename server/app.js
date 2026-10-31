@@ -4,17 +4,26 @@
 import express from 'express'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
+import { askRouter } from './routes/ask.js'
 import { catalogRouter } from './routes/catalog.js'
 
 /**
- * @param {{ store: ReturnType<typeof import('./nasa/catalogStore.js').createCatalogStore>, distDir?: string|null }} opts
+ * @param {{
+ *   store: ReturnType<typeof import('./nasa/catalogStore.js').createCatalogStore>,
+ *   distDir?: string|null,
+ *   ai?: { astronomer: object|null, config: { configured: boolean, model: string } } | null,
+ *   trustProxy?: boolean|number,
+ * }} opts
  */
-export function createApp({ store, distDir = null }) {
+export function createApp({ store, distDir = null, ai = null, trustProxy = false }) {
   const app = express()
   app.disable('x-powered-by')
+  // Behind a hosting proxy, per-client AI limits need the real client IP.
+  if (trustProxy) app.set('trust proxy', trustProxy)
   app.use(express.json({ limit: '32kb' }))
 
   app.use('/api', catalogRouter(store))
+  app.use('/api', askRouter(ai ?? { astronomer: null, config: { configured: false, model: '' } }))
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Unknown API route.' } })
   })
