@@ -188,6 +188,39 @@ celestria/
 
 ---
 
+## 5a. Missing data and median imputation policy (M4)
+
+NASA rows are often incomplete. CELESTRIA may fill gaps with **grouped medians for analysis only**, under these rules. They override convenience everywhere.
+
+**Separation (non-negotiable)**
+1. The canonical dataset is NASA's: a missing value stays `{ value: null, status: 'missing' }` in the snapshot, the API's planet records, the store and every UI readout. Imputation never writes into a Quantity.
+2. Imputed values live in a separate layer produced by `src/pipeline/imputation.js` (`imputations[planetId][field]`), each carrying `method: 'median'`, `label: 'Estimated — Median Imputed'`, `group`, `groupLevel`, `groupSize`, `iqr`, `catalogVersion`.
+3. Consumers must opt in. Allowed: similarity/clustering/ML features, catalog-wide charts with an imputation toggle, 3D visual stand-ins. **Forbidden:** planet profiles and Key Features, System View cards, scientific readouts, Orbital Simulator physics (`kepler.js`), habitability scoring, AI astronomer prompts and answers, fun facts. `scienceValue()` / `isScientific()` reject imputed values, and badges show them as Unavailable unless a component explicitly passes `allowImputed`.
+4. Label: **"Estimated — Median Imputed"**, visually distinct from Estimated.
+
+**Physics before medians.** If a gap can be computed from measured values it is `calculated` with a stated basis, never imputed: Teq from Teff, R★ and a; insolation from L★ and a; a from Kepler III; density from M and R.
+
+**Which fields**
+
+| Imputable (analysis only) | Grouped by (fallback order; ≥ 20 values per group) |
+|---|---|
+| radiusEarth | mass bin → discovery method → global |
+| massEarth | radius bin (≤1.6, 1.6–4, 4–8, >8 R⊕) → discovery method → global |
+| densityGcc | size class (from known R, else known M) → global |
+| eccentricity | period bin (<10 d, 10–100 d, >100 d) → global |
+| eqTempK, insolationEarth (only if physics can't) | period bin × spectral class → period bin → global |
+| star teff, massSun, radiusSun, metallicity, ageGyr | spectral class letter → global |
+
+**Never imputed:** identifiers and names, host, discovery year/method/facility/telescope, spectral type and other categories, flags, orbital period, semi-major axis (Kepler III or unavailable), inclination, argument and time of periastron, transit midpoint, uncertainties and limits, sources, coordinates, distance, magnitudes, M sin i (not missing: a lower limit), atmosphere.
+
+**Medians use only valid source values:** measured or NASA-calculated; never missing, limits (`<`/`>`), eccentricity fixed at 0, model-based estimates (e.g. NASA's mass–radius masses) or other imputed values (no chaining).
+
+**Selection bias.** Catalog medians inherit discovery bias (transit surveys favour short periods and large radii; RV favours massive planets; imaged planets are young giants with model masses). Grouping by a covariate the planet actually has reduces this but does not remove it; every imputation records its group, fallback level, group size and IQR so analyses can weight or exclude it. Groups are never formed from the field being imputed.
+
+**Tests** (`src/pipeline/imputation.test.js`) must keep proving: canonical data is unchanged and missing stays missing; imputed entries are labelled and traceable; forbidden fields are never imputed; medians use only valid inputs; fallback is recorded; physics wins; science functions ignore imputed values.
+
+---
+
 ## 6. Feature specs (condensed)
 
 Priority: **P0** = must ship for the demo, **P1** = expected, **P2** = only if time allows.
@@ -260,7 +293,7 @@ Each factor: `favorable | uncertain | unfavorable | unknown`, the inputs with pr
 
 ### F9 Missing-data system (P0, cross-cutting)
 - Provenance lives in the Quantity model (§5). `<Measurement>` renders all five statuses distinctly: measured = solid, calculated = "calc" badge, estimated = "est." badge and muted, imputed = never shown as a value, missing = "Unavailable" in a muted dashed style.
-- `three/` reads `visualParams(planet)`. That function may substitute catalog medians (computed once, stored with `status: "imputed"`) to choose a look. Those substitutions are surfaced in the "N of M measurements" badge.
+- `three/` reads `visualParams(planet)`. That function may substitute visual stand-ins (status `imputed`) to choose a look; they are surfaced in the "N of M measurements" badge. Catalog median imputation follows §5a.
 - Renderer and orbit sim must not crash on any combination of nulls. Unit tests cover all-null planets.
 
 ### F10 Soundscape (P2) — `src/audio/soundscape.js`
