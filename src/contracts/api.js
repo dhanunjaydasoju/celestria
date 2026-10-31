@@ -2,17 +2,23 @@
 // and the browser. Mirrors CLAUDE.md §11.2.
 //
 //   GET  /api/health          → HealthResponse
-//   GET  /api/planets         → CatalogResponse
-//   GET  /api/planets/:id     → PlanetResponse
-//   POST /api/astronomer      AstronomerRequest → AstronomerResponse
+//   GET  /api/catalog         → CatalogResponse (index: no per-value `source` or `err`)
+//   GET  /api/planets         → alias of /api/catalog (M0 contract)
+//   GET  /api/planets/:id     → PlanetResponse (full record: uncertainties + sources)
+//   GET  /api/systems/:host   → { host, planets: Planet[] } (full records)
+//   POST /api/astronomer      AstronomerRequest → AstronomerResponse (not built yet)
+//
+// Large responses are gzipped when the client accepts it and carry ETags.
+// Index planets omit `err` and `source`; fetch /api/planets/:id where
+// uncertainties or citations are displayed.
 //
 // Every error response: { error: { code, message } } with a proper HTTP status.
 
 /** @typedef {import('./planet.js').Planet} Planet */
 
 /**
- * 'live' = fetched from NASA this server run; 'snapshot' = committed file;
- * 'fixtures' = local dev fixtures (no server data yet).
+ * 'live' = refreshed from NASA during this server run; 'snapshot' = loaded
+ * from the committed snapshot file; 'fixtures' = local dev fixtures.
  * @typedef {'live'|'snapshot'|'fixtures'} CatalogSource
  */
 
