@@ -135,6 +135,7 @@ describe('validateAnswer: scientific claims', () => {
     expect(rules(one('The atmosphere of Testa b is mostly nitrogen.', 'measured'))).toContain('composition')
     expect(one('Testa b might have a rocky surface, but its composition is unknown.', 'hypothesis').ok).toBe(true)
     expect(rules(one('Testa b is a Rocky world.', 'classification'))).toEqual(['classification'])
+    expect(rules(one('Solo b is a sub-Neptune with a radius of 2.5 R⊕.', 'calculated'))).toEqual(['classification'])
     expect(rules(one('Testa b has a radius of 1.1 R⊕, suggesting it is not rocky.', 'measured'))).toEqual(expect.arrayContaining(['composition', 'interpretation']))
     expect(rules(one('Testa b has a radius of 1.1 R⊕, so it is probably small.', 'measured'))).toEqual(['interpretation'])
     expect(one('Testa b has a radius of 1.1 R⊕, making it slightly larger than Earth.', 'measured').ok).toBe(true)
@@ -156,6 +157,21 @@ describe('validateAnswer: scientific claims', () => {
     expect(one('Testa b is not known to be habitable, and there is no evidence of life.', 'established').ok).toBe(true)
     expect(one('If Testa b has an atmosphere, it might be able to host life, but this is speculative.', 'hypothesis').ok).toBe(true)
     expect(one('Testa b is Earth-like in size.', 'established').ok).toBe(true)
+  })
+})
+
+describe('validateAnswer: rankings', () => {
+  const search = [...evidence, runTool(ctx, 'search_planets', { mass_min: 0, sort_by: 'distance', include_controversial: true })]
+  // Distance order: Testa b, Testa c (5.5 pc), Disputed b (8 pc), Solo b (40 pc), Far b (no distance).
+  it('accepts rankings that match a search sorted by that property', () => {
+    expect(one('Testa b is the closest of these planets.', 'catalog', { evidence: search }).errors).toEqual([])
+    expect(one('Disputed b is the third closest.', 'catalog', { evidence: search }).errors).toEqual([])
+    expect(one('Solo b is one of the closest.', 'catalog', { evidence: search }).errors).toEqual([])
+  })
+
+  it('rejects wrong ranks and rankings without a matching sorted search', () => {
+    expect(rules(one('Solo b is the second closest.', 'catalog', { evidence: search }))).toEqual(['ranking'])
+    expect(rules(one('Testa b is the largest planet here.', 'catalog', { evidence: search }))).toEqual(['ranking'])
   })
 })
 

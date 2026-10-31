@@ -33,7 +33,8 @@ Rules:
 5. Cite sources only as given in the tool data (e.g. "Agol et al. 2021"). Never invent references or links. Put planet ids you discuss in "refs" and "planets"; the app shows their profile links.
 6. If a planet name is ambiguous or not found, do not guess: answer with "type": "clarification" and the candidate ids in "clarify.options".
 7. If the tools and concept references do not contain what is needed, answer with "type": "insufficient_data" and say what is missing (basis "unavailable"). Do not fill gaps from memory.
-8. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
+8. Rankings ("closest", "second largest") must follow the order of a search_planets result sorted by that property. Size classes (sub-Neptune, super-Earth) go in separate "classification" claims.
+9. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
 
 When you have the data, reply with ONLY this JSON on a single line (no indentation, no markdown, no prose outside it):
 ${ANSWER_FORMAT}
@@ -78,4 +79,5 @@ export const ISSUE_LABELS = {
   clarification: 'an invalid clarification',
   title: 'a heading that contained a value',
   interpretation: 'an interpretation presented as data',
+  ranking: 'a ranking that does not match the sorted NASA data',
 }

@@ -261,6 +261,17 @@ const LIFE = /\b(life|living organisms|biosignatures?|inhabited|aliens?|extrater
 const EARTH_LIKE = /\b(earth[- ](like|twin)|second earth|earth 2\.0)\b(?!\s+(size|radius|mass|in size|in radius|in mass))/i
 
 const TYPE_LABELS = /\b(rocky world|sub-neptune|neptune-like|gas giant)\b/gi
+const SIZE_CLASS = /\b(sub-neptunes?|super-earths?|neptune-like|gas giants?|hot jupiters?|mini-neptunes?|rocky worlds?)\b/i
+
+// Rankings ("the second closest") must match a search sorted by that property.
+const ORDINALS = { first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, seventh: 7, eighth: 8, ninth: 9, tenth: 10 }
+const SUPERLATIVES = {
+  closest: ['distance', 'asc'], nearest: ['distance', 'asc'], farthest: ['distance', 'desc'], furthest: ['distance', 'desc'],
+  largest: ['radius', 'desc'], biggest: ['radius', 'desc'], smallest: ['radius', 'asc'],
+  hottest: ['eq_temp', 'desc'], coldest: ['eq_temp', 'asc'], coolest: ['eq_temp', 'asc'],
+  'most massive': ['mass', 'desc'], heaviest: ['mass', 'desc'], 'least massive': ['mass', 'asc'], lightest: ['mass', 'asc'],
+}
+const RANK_RE = new RegExp(`\\b(one of the\\s+)?(?:(${Object.keys(ORDINALS).join('|')}|\\d+(?:st|nd|rd|th))[- ]?)?(${Object.keys(SUPERLATIVES).join('|')})\\b`, 'gi')
 
 const sentences = (text) => text.split(/(?<=[.!?;])\s+/)
 const negated = (text, re) => sentences(text).filter((s) => re.test(s)).every((s) => NEGATION.test(s.slice(0, s.search(re) + 40)))
@@ -290,6 +301,10 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
   const usedSources = new Map()
   const referenced = new Set()
   const concepts = toolResults.filter((r) => r.name === 'explain_concept' && r.result?.status === 'ok')
+  const conceptKeys = new Set(concepts.map((c) => c.result.concept))
+  const searches = toolResults
+    .filter((r) => r.name === 'search_planets' && r.result?.status === 'ok')
+    .map((r) => ({ sortBy: r.args?.sort_by ?? 'distance', order: r.args?.order === 'desc' ? 'desc' : 'asc', names: r.result.planets.map((p) => p.name) }))
   for (const c of concepts) for (const ref of c.result.references ?? []) usedSources.set(ref.label, { label: ref.label, url: ref.url ?? null })
   let checked = 0
 
@@ -307,6 +322,7 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
       const badBasis = bases.filter((b) => !BASES.includes(b))
       if (!bases.length || badBasis.length) return fail(where, 'schema', `Unknown basis "${badBasis.join(', ') || '(none)'}"; use one of: ${BASES.join(', ')}`)
       for (const id of claim.refs ?? []) {
+        if (conceptKeys.has(id)) continue // a concept key used as a reference is harmless
         if (!ev.planets.has(id)) fail(where, 'planet-ref', `Planet id "${id}" is not in the tool results`)
         else referenced.add(id)
       }
@@ -440,6 +456,10 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     if (HABITABLE_DENIAL.test(raw) && !speculative) {
       fail(where, 'habitability', 'Do not claim a planet is uninhabitable either; the catalogue cannot establish it')
     }
+    if (dataBasis && SIZE_CLASS.test(raw)) {
+      fail(where, 'classification', 'Size classes (sub-Neptune, super-Earth…) are classifications, not data: put them in a separate claim labelled classification')
+    }
+    checkRanking(raw, where)
     if ((dataBasis || has('classification')) && INFERENCE.test(raw)) {
       fail(where, 'interpretation', 'Interpretations ("suggesting", "likely"…) are not data: move them to a separate, hedged hypothesis claim')
     }
@@ -452,6 +472,36 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     if (LIFE.test(raw) && !negated(raw, LIFE)) {
       if (!has('hypothesis') && !(has('established') && !mentionsPlanet)) fail(where, 'life', 'Statements about life must be labelled hypothesis and hedged')
       else if (has('hypothesis') && !HEDGE.test(raw)) fail(where, 'life', 'A hypothesis about life must be hedged (might, could, unknown…)')
+    }
+  }
+
+  function checkRanking(raw, where) {
+    const lower = raw.toLowerCase()
+    const named = [...ev.names].filter((n) => lower.includes(n.toLowerCase()))
+    for (const m of raw.matchAll(RANK_RE)) {
+      if (m[1]) continue // "one of the closest" is not a rank
+      const word = m[2]?.toLowerCase()
+      const rank = word ? (ORDINALS[word] ?? parseInt(word, 10)) : 1
+      const [sortBy, order] = SUPERLATIVES[m[3].toLowerCase()]
+      const candidates = searches.filter((s) => s.sortBy === sortBy && s.order === order)
+      const subjects = named.filter((n) => candidates.some((s) => s.names.includes(n)))
+      if (!named.length) continue // a general statement, numbers are checked separately
+      if (!candidates.length) {
+        fail(where, 'ranking', `"${m[0]}" needs a search_planets result sorted by ${sortBy} (${order})`)
+        continue
+      }
+      // The ranked planet is the one named closest before the superlative.
+      const before = raw.slice(0, m.index).toLowerCase()
+      const subject = [...subjects].sort((a, b) => before.lastIndexOf(b.toLowerCase()) - before.lastIndexOf(a.toLowerCase()))[0]
+      if (!subject) {
+        fail(where, 'ranking', `"${m[0]}" refers to a planet that is not in the sorted search results`)
+        continue
+      }
+      const ok = candidates.some((s) => s.names.indexOf(subject) + 1 === rank)
+      if (!ok) {
+        const actual = candidates[0].names.indexOf(subject) + 1
+        fail(where, 'ranking', `${subject} is number ${actual} in the search sorted by ${sortBy}, not ${rank}`)
+      }
     }
   }
 
