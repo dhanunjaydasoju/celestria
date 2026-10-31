@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import MeasurementRow from '../../components/data/MeasurementRow.jsx'
 import PlanetPicker from '../../components/ui/PlanetPicker.jsx'
+import { FEATURED_PLANET_IDS } from '../../data/featured.js'
 import ProvenanceBadge from '../../components/data/ProvenanceBadge.jsx'
 import { sourceLabel } from '../../components/data/sourceLabel.js'
 import { isScientific, scienceValue } from '../../contracts/planet.js'
@@ -149,7 +150,7 @@ export default function PlanetProfile({
         <PlanetViewport planet={planet} size="hero" autoRotate={!reducedMotion} />
         <div key={planet.id} className="pp-visual__fade" aria-hidden="true" />
         <div className="pp-visual__picker">
-          <PlanetPicker planets={planets} value={planet.id} onChange={onSelectPlanet} />
+          <PlanetPicker planets={planets} value={planet.id} onChange={onSelectPlanet} featuredIds={FEATURED_PLANET_IDS} />
         </div>
       </section>
 

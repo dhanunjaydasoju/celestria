@@ -5,6 +5,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router'
 import PlanetPicker from '../../components/ui/PlanetPicker.jsx'
+import { FEATURED_PLANET_IDS } from '../../data/featured.js'
 import PagePlaceholder from '../../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../../store/useCelestria.js'
 import PlanetViewport from '../../three/viewports/PlanetViewport.jsx'
@@ -40,7 +41,7 @@ export default function PlanetViewportPage() {
       <PlanetViewport planet={planet} size="hero" autoRotate={!reducedMotion} />
       <div key={planet.id} className="pvp__fade" aria-hidden="true" />
       <div className="pvp__bar">
-        <PlanetPicker planets={planets} value={planet.id} onChange={(pid) => navigate(`/viewport/${pid}`)} />
+        <PlanetPicker planets={planets} value={planet.id} onChange={(pid) => navigate(`/viewport/${pid}`)} featuredIds={FEATURED_PLANET_IDS} />
         <Link to={`/planet/${planet.id}`} className="pvp__profile">
           Planet profile <ArrowRight size={14} />
         </Link>

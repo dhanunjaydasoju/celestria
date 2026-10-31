@@ -9,6 +9,7 @@ import { scienceValue } from '../../contracts/planet.js'
 import { sig } from '../../three/shared/format.js'
 import { buildSystemModel, groupByHost } from '../../three/system/systemModel.js'
 import SystemViewport from '../../three/viewports/SystemViewport.jsx'
+import PlanetPicker from '../../components/ui/PlanetPicker.jsx'
 import './SystemExplorer.css'
 
 const SPEEDS = [0.25, 1, 4, 16]
@@ -55,6 +56,12 @@ export default function SystemExplorer({ planets, host, onHostChange, profileHre
 }
 
 function SystemExplorerInner({ system, systems, onHostChange, profileHref, reducedMotion }) {
+  // Systems as picker items; before searching, the largest systems are listed.
+  const systemItems = useMemo(
+    () => systems.map((s) => ({ id: s.host, name: s.host, host: `${s.planets.length} planet${s.planets.length === 1 ? '' : 's'}` })),
+    [systems],
+  )
+  const featuredSystems = useMemo(() => systems.slice(0, 25).map((s) => s.host), [systems])
   const [selectedId, setSelectedId] = useState(null)
   const [paused, setPaused] = useState(reducedMotion)
   const [speed, setSpeed] = useState(1)
@@ -84,16 +91,17 @@ function SystemExplorerInner({ system, systems, onHostChange, profileHref, reduc
         <p className="sx-star">{starLine(model.star, distancePc)}</p>
       </header>
 
-      <label className="sx-switch">
-        <span>System</span>
-        <select value={system.host} onChange={(e) => onHostChange(e.target.value)}>
-          {systems.map((s) => (
-            <option key={s.host} value={s.host}>
-              {s.host} ({s.planets.length})
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className="sx-switch">
+        <PlanetPicker
+          planets={systemItems}
+          value={system.host}
+          onChange={onHostChange}
+          label="Choose a system"
+          grouped={false}
+          noun="systems"
+          featuredIds={featuredSystems}
+        />
+      </div>
 
       <div className="sx-controls" role="toolbar" aria-label="Simulation controls">
         <button type="button" onClick={() => setPaused((p) => !p)} aria-label={paused ? 'Resume' : 'Pause'}>

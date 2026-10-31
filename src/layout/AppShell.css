@@ -192,6 +192,24 @@
   padding-left: var(--space-3);
 }
 
+.app-drawer__featured {
+  padding: var(--space-3) 0 0 var(--space-4);
+}
+
+.app-drawer__group {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.app-drawer__list .app-drawer__all {
+  margin: var(--space-2) 0 var(--space-3) var(--space-4);
+  padding: 6px var(--space-2);
+  border: 0;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--color-accent);
+}
+
 .app-drawer__empty {
   margin: 0;
   padding: var(--space-3) var(--space-4);

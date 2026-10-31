@@ -1,15 +1,31 @@
 // Searchable planet selector grouped by host star — owner: UI (implemented
 // by LEAD). Only switches planets; no viewer settings.
 // Keyboard: ↑/↓ move, Enter selects, Escape closes.
+// Large catalogues (> SHOW_ALL_LIMIT) are search-first: before typing, only
+// featured items and the current planet's siblings are listed; typing shows
+// the best `limit` matches (name prefix first).
 
 import { Check, ChevronDown, Search } from 'lucide-react'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import './PlanetPicker.css'
 
+const SHOW_ALL_LIMIT = 300
+
 /**
- * @param {{ planets: { id: string, name: string, host: string }[], value: string, onChange: (id: string) => void, label?: string }} props
+ * @param {{ planets: { id: string, name: string, host: string }[], value: string, onChange: (id: string) => void,
+ *           label?: string, featuredIds?: string[], limit?: number, grouped?: boolean, noun?: string }} props
+ *   grouped=false renders a flat list with `host` as a subtitle (e.g. systems).
  */
-export default function PlanetPicker({ planets, value, onChange, label = 'Choose a planet' }) {
+export default function PlanetPicker({
+  planets,
+  value,
+  onChange,
+  label = 'Choose a planet',
+  featuredIds = [],
+  limit = 60,
+  grouped = true,
+  noun = 'planets',
+}) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -20,16 +36,38 @@ export default function PlanetPicker({ planets, value, onChange, label = 'Choose
   const uid = useId()
   const current = planets.find((p) => p.id === value)
 
+  const large = planets.length > SHOW_ALL_LIMIT
+  const searchable = useMemo(() => planets.map((p) => ({ p, name: p.name.toLowerCase(), host: p.host.toLowerCase() })), [planets])
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return q ? planets.filter((p) => p.name.toLowerCase().includes(q) || p.host.toLowerCase().includes(q)) : planets
-  }, [planets, query])
+    if (q) {
+      const prefix = []
+      const contains = []
+      for (const it of searchable) {
+        if (it.name.startsWith(q) || it.host.startsWith(q)) prefix.push(it.p)
+        else if (it.name.includes(q) || it.host.includes(q)) contains.push(it.p)
+        if (large && prefix.length >= limit) break
+      }
+      const all = [...prefix, ...contains]
+      return large ? all.slice(0, limit) : all
+    }
+    if (!large) return planets
+    const byId = new Map(planets.map((p) => [p.id, p]))
+    const current = byId.get(value)
+    const picks = [
+      ...featuredIds.map((id) => byId.get(id)),
+      ...(current && grouped ? planets.filter((p) => p.host === current.host) : current ? [current] : []),
+    ].filter(Boolean)
+    return [...new Map(picks.map((p) => [p.id, p])).values()]
+  }, [searchable, planets, query, large, limit, featuredIds, value, grouped])
 
   const groups = useMemo(() => {
+    if (!grouped) return [[null, filtered.map((p, i) => ({ ...p, index: i }))]]
     const m = new Map()
     filtered.forEach((p, i) => m.set(p.host, [...(m.get(p.host) ?? []), { ...p, index: i }]))
     return [...m.entries()]
-  }, [filtered])
+  }, [filtered, grouped])
 
   const openPicker = () => {
     setQuery('')
@@ -104,8 +142,8 @@ export default function PlanetPicker({ planets, value, onChange, label = 'Choose
               ref={search}
               type="search"
               value={query}
-              placeholder="Search planets or stars"
-              aria-label="Search planets or stars"
+              placeholder={grouped ? 'Search planets or stars' : `Search ${noun}`}
+              aria-label={grouped ? 'Search planets or stars' : `Search ${noun}`}
               aria-controls={`${uid}-list`}
               aria-activedescendant={filtered[active] ? `${uid}-opt-${active}` : undefined}
               onChange={(e) => {
@@ -116,12 +154,14 @@ export default function PlanetPicker({ planets, value, onChange, label = 'Choose
           </label>
           <ul ref={list} id={`${uid}-list`} className="ppk__list" role="listbox" aria-label={label}>
             {groups.map(([host, items]) => (
-              <li key={host} role="presentation">
-                <div className="ppk__group" aria-hidden="true">
-                  {host}
-                  <span>{items.length}</span>
-                </div>
-                <ul role="group" aria-label={host}>
+              <li key={host ?? 'all'} role="presentation">
+                {host && (
+                  <div className="ppk__group" aria-hidden="true">
+                    {host}
+                    <span>{items.length}</span>
+                  </div>
+                )}
+                <ul role="group" aria-label={host ?? label}>
                   {items.map((p) => (
                     <li
                       key={p.id}
@@ -133,7 +173,10 @@ export default function PlanetPicker({ planets, value, onChange, label = 'Choose
                       onPointerEnter={() => setActive(p.index)}
                       onClick={() => choose(p.id)}
                     >
-                      {p.name}
+                      <span className="ppk__optname">
+                        {p.name}
+                        {!grouped && <small>{p.host}</small>}
+                      </span>
                       {p.id === value && <Check size={14} aria-hidden="true" />}
                     </li>
                   ))}
@@ -141,9 +184,13 @@ export default function PlanetPicker({ planets, value, onChange, label = 'Choose
               </li>
             ))}
           </ul>
-          {filtered.length === 0 && <p className="ppk__empty">No planets match “{query}”</p>}
+          {filtered.length === 0 && <p className="ppk__empty">No {noun} match “{query}”</p>}
           <p className="ppk__count">
-            {filtered.length} of {planets.length} planets
+            {large && !query.trim()
+              ? `Featured · type to search all ${planets.length.toLocaleString('en-US')} ${noun}`
+              : large && filtered.length >= limit
+                ? `Top ${limit} matches of ${planets.length.toLocaleString('en-US')} ${noun}`
+                : `${filtered.length} of ${planets.length.toLocaleString('en-US')} ${noun}`}
           </p>
         </div>
       )}

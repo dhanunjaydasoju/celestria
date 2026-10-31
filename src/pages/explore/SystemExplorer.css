@@ -45,6 +45,7 @@
 
 .sx-switch {
   position: absolute;
+  z-index: 4;
   top: var(--space-6);
   right: var(--space-6);
   display: flex;
@@ -54,6 +55,11 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-muted);
+}
+
+.sx-switch .ppk__pop {
+  left: auto;
+  right: 0;
 }
 
 .sx-switch select {
@@ -172,7 +178,12 @@
   .sx-switch span {
     display: none;
   }
-  .sx-switch select {
+  .sx-switch .ppk__pop {
+  left: auto;
+  right: 0;
+}
+
+.sx-switch select {
     max-width: 126px;
   }
   .sx-controls {

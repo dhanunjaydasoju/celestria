@@ -1,5 +1,6 @@
 // owner: UI (D2.4). Immersive planet profile over the store's catalog.
 // Template lives in pages/planet/PlanetProfile.jsx (shared with /lab/profile).
+import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../store/useCelestria.js'
@@ -10,8 +11,17 @@ export default function PlanetPage() {
   const navigate = useNavigate()
   const status = useCelestria((s) => s.catalogStatus)
   const planets = useCelestria((s) => s.planets)
-  const planet = useCelestria((s) => s.byId[id])
+  const indexPlanet = useCelestria((s) => s.byId[id])
+  const detail = useCelestria((s) => s.details[id])
+  const loadDetail = useCelestria((s) => s.loadDetail)
   const reducedMotion = useCelestria((s) => s.reducedMotion)
+  // The index has values and provenance; the full record adds uncertainties
+  // and sources, so it replaces the index planet once loaded.
+  const planet = detail ?? indexPlanet
+
+  useEffect(() => {
+    if (indexPlanet) loadDetail(id)
+  }, [id, indexPlanet, loadDetail])
 
   if (!planet) {
     return (

@@ -3,7 +3,7 @@
 // 3D viewports never read this store; pages pass values in as props.
 
 import { create } from 'zustand'
-import { getCatalog } from '../services/api.js'
+import { getCatalog, getPlanet } from '../services/api.js'
 
 const MAX_COMPARE = 4
 
@@ -54,6 +54,19 @@ export const useCelestria = create((set, get) => ({
         inflight = null
       })
     return inflight
+  },
+
+  // ── planet details ────────────────────────────────────────────────────────
+  // The catalogue index omits uncertainties and sources; pages that show them
+  // load the full record here.
+  details: {},
+  detailStatus: {},
+  loadDetail(id) {
+    if (!id || get().details[id] || get().detailStatus[id] === 'loading') return
+    set((s) => ({ detailStatus: { ...s.detailStatus, [id]: 'loading' } }))
+    getPlanet(id)
+      .then(({ planet }) => set((s) => ({ details: { ...s.details, [id]: planet }, detailStatus: { ...s.detailStatus, [id]: 'ready' } })))
+      .catch(() => set((s) => ({ detailStatus: { ...s.detailStatus, [id]: 'error' } })))
   },
 
   // ── selection ─────────────────────────────────────────────────────────────

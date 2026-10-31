@@ -145,6 +145,17 @@
   cursor: pointer;
 }
 
+.ppk__optname {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ppk__optname small {
+  font-size: 11px;
+  color: var(--color-missing);
+}
+
 .ppk__option.is-active {
   background: var(--color-surface);
   color: var(--color-text);

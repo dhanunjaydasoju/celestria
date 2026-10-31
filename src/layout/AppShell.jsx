@@ -4,6 +4,7 @@
 import { ChevronDown, Menu, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NavLink, Outlet } from 'react-router'
+import { FEATURED_PLANET_IDS } from '../data/featured.js'
 import { useCelestria } from '../store/useCelestria.js'
 import './AppShell.css'
 
@@ -20,11 +21,14 @@ export default function AppShell() {
   const [open, setOpen] = useState(false)
   const [planetsOpen, setPlanetsOpen] = useState(false)
   const planets = useCelestria((st) => st.planets)
+  const byId = useCelestria((st) => st.byId)
+  // Featured planets only (the full catalogue is ~6,500); "Browse all" leads
+  // to Planet Viewport's searchable picker.
   const planetGroups = useMemo(() => {
     const m = new Map()
-    for (const p of planets) m.set(p.host, [...(m.get(p.host) ?? []), p])
+    for (const p of FEATURED_PLANET_IDS.map((id) => byId[id]).filter(Boolean)) m.set(p.host, [...(m.get(p.host) ?? []), p])
     return [...m.entries()]
-  }, [planets])
+  }, [byId])
   const menuButton = useRef(null)
   const firstLink = useRef(null)
 
@@ -107,16 +111,21 @@ export default function AppShell() {
                     {planetGroups.length === 0 ? (
                       <p className="app-drawer__empty">Planets appear here once the catalog has loaded.</p>
                     ) : (
-                      planetGroups.map(([host, list]) => (
-                        <div key={host} className="app-drawer__group">
-                          <p className="app-drawer__host">{host}</p>
-                          {list.map((p) => (
-                            <NavLink key={p.id} to={`/viewport/${p.id}`} onClick={() => setOpen(false)}>
-                              {p.name}
-                            </NavLink>
-                          ))}
-                        </div>
-                      ))
+                      <>
+                        <p className="app-drawer__host app-drawer__featured">Featured planets</p>
+                        {planetGroups.map(([host, list]) => (
+                          <div key={host} className="app-drawer__group">
+                            {list.map((p) => (
+                              <NavLink key={p.id} to={`/viewport/${p.id}`} onClick={() => setOpen(false)}>
+                                {p.name}
+                              </NavLink>
+                            ))}
+                          </div>
+                        ))}
+                        <NavLink to="/viewport" className="app-drawer__all" onClick={() => setOpen(false)} end>
+                          Browse all {planets.length.toLocaleString('en-US')} planets →
+                        </NavLink>
+                      </>
                     )}
                   </div>
                 </div>
