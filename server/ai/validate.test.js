@@ -136,6 +136,9 @@ describe('validateAnswer: scientific claims', () => {
     expect(one('Testa b might have a rocky surface, but its composition is unknown.', 'hypothesis').ok).toBe(true)
     expect(rules(one('Testa b is a Rocky world.', 'classification'))).toEqual(['classification'])
     expect(rules(one('Solo b is a sub-Neptune with a radius of 2.5 R⊕.', 'calculated'))).toEqual(['classification'])
+    // Only the class the tools assigned: Testa b (1.1 R⊕) is a "Rocky world", not a super-Earth.
+    expect(rules(one('Testa b is classified as a super-Earth.', 'classification'))).toEqual(['classification'])
+    expect(one('Testa b is classified as a Rocky world by its size.', 'classification').ok).toBe(true)
     expect(rules(one('Testa b has a radius of 1.1 R⊕, suggesting it is not rocky.', 'measured'))).toEqual(expect.arrayContaining(['composition', 'interpretation']))
     expect(rules(one('Testa b has a radius of 1.1 R⊕, so it is probably small.', 'measured'))).toEqual(['interpretation'])
     expect(one('Testa b has a radius of 1.1 R⊕, making it slightly larger than Earth.', 'measured').ok).toBe(true)
@@ -195,6 +198,16 @@ describe('validateAnswer: sources, links and planets', () => {
     const date = orbit.at(-1).result.position.dateUtc.slice(0, 10)
     expect(one(`The next transit of Testa b is on ${date}.`, 'calculated', { evidence: orbit }).errors).toEqual([])
     expect(rules(one('The next transit of Testa b is on 2031-02-03.', 'calculated', { evidence: orbit }))).toEqual(['date'])
+    // Written-out dates and times are checked against the tool's date, to the minute.
+    const iso = orbit.at(-1).result.position.dateUtc
+    const d = new Date(iso)
+    const month = d.toLocaleString('en-US', { month: 'long', timeZone: 'UTC' })
+    const hhmm = (ms) => new Date(ms).toISOString().slice(11, 16)
+    const written = `${month} ${d.getUTCDate()}, ${d.getUTCFullYear()}`
+    expect(one(`The next transit of Testa b is predicted on ${written}, at ${hhmm(d.getTime())} UTC.`, 'calculated', { evidence: orbit }).errors).toEqual([])
+    expect(one(`The next transit of Testa b is predicted on ${d.getUTCDate()} ${month} ${d.getUTCFullYear()}.`, 'calculated', { evidence: orbit }).errors).toEqual([])
+    expect(rules(one(`The next transit of Testa b is predicted on ${written}, at ${hhmm(d.getTime() + 3 * 3600_000)} UTC.`, 'calculated', { evidence: orbit }))).toEqual(['date'])
+    expect(rules(one('The next transit of Testa b is predicted on March 3, 2031.', 'calculated', { evidence: orbit }))).toEqual(['date'])
   })
 })
 

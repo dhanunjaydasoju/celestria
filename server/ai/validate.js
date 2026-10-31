@@ -164,7 +164,7 @@ const CONSTANTS = [[365.25, 'days'], [5.51, 'g/cm³'], [317.83, 'M⊕'], [11.209
  * @param {{ name: string, args?: object, result: object }[]} toolResults
  */
 export function buildEvidence(toolResults, { question = '' } = {}) {
-  const ev = { numbers: [], strings: new Set(), names: new Set(), planets: new Map(), sources: new Map(), urls: new Set() }
+  const ev = { numbers: [], strings: new Set(), names: new Set(), planets: new Map(), sources: new Map(), urls: new Set(), types: new Map() }
   const addNumber = (value, unit, status, extra = {}) => {
     if (typeof value === 'number' && Number.isFinite(value)) ev.numbers.push({ value, unit: canonUnit(unit), status, ...extra })
   }
@@ -194,6 +194,9 @@ export function buildEvidence(toolResults, { question = '' } = {}) {
     }
     for (const k of ['name', 'host', 'planet']) if (typeof node[k] === 'string') ev.names.add(node[k])
     if (typeof node.label === 'string' && typeof node.url === 'string') addSource(node.label, node.url)
+    // CELESTRIA's size/temperature class per planet ("Rocky world · Temperate").
+    const typeLabel = typeof node.type === 'string' ? node.type : node.type?.label
+    if (typeof node.name === 'string' && typeof typeLabel === 'string') ev.types.set(node.name, typeLabel)
 
     const own = typeof node.status === 'string' && PROVENANCE.has(node.status) ? node.status : node.basis === 'established' ? 'established' : status
     const ownUnit = typeof node.unit === 'string' ? node.unit : unit
@@ -236,6 +239,12 @@ const CITATION_RE = /\b([A-Z][\p{L}'’-]+(?:\s(?:&|and)\s[A-Z][\p{L}'’-]+)?(?
 const MD_LINK_RE = /\[([^\]]*)\]\(([^)\s]+)\)/g
 const URL_RE = /\bhttps?:\/\/[^\s)\]>"']+/g
 const ISO_DATE_RE = /\b\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?Z?)?\b/g
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+const MONTH_RE = `(${MONTHS.join('|')}|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\\.?`
+// "October 31, 2026" or "31 October 2026", optionally ", at 21:06 UTC".
+const HUMAN_DATE_RE = new RegExp(`\\b(?:${MONTH_RE}\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(\\d{4})|(\\d{1,2})(?:st|nd|rd|th)?\\s+${MONTH_RE},?\\s+(\\d{4}))(?:,?\\s*(?:at\\s+)?(\\d{1,2}):(\\d{2})(?:\\s*UTC)?)?`, 'gi')
+const MONTH_NAMES = new Set([...MONTHS, 'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sep', 'sept', 'oct', 'nov', 'dec'])
+const monthIndex = (m) => MONTHS.findIndex((full) => full.startsWith(m.toLowerCase().replace('.', '').slice(0, 3)))
 
 function stripNames(text, names) {
   let s = String(text ?? '')
@@ -261,6 +270,7 @@ const LIFE = /\b(life|living organisms|biosignatures?|inhabited|aliens?|extrater
 const EARTH_LIKE = /\b(earth[- ](like|twin)|second earth|earth 2\.0)\b(?!\s+(size|radius|mass|in size|in radius|in mass))/i
 
 const TYPE_LABELS = /\b(rocky world|sub-neptune|neptune-like|gas giant)\b/gi
+const CLASS_TERMS = /\b(rocky world|sub-neptune|neptune-like|gas giant|super-earth|mini-neptune|hot jupiter|ice giant|terrestrial|scorching|hot|warm|temperate|cold)s?\b/i
 const SIZE_CLASS = /\b(sub-neptunes?|super-earths?|neptune-like|gas giants?|hot jupiters?|mini-neptunes?|rocky worlds?)\b/i
 
 // Rankings ("the second closest") must match a search sorted by that property.
@@ -347,12 +357,13 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
 
     // Citations must name a source in the evidence.
     for (const m of [...text.matchAll(CITATION_RE)]) {
+      if (MONTH_NAMES.has(m[1].toLowerCase().replace('.', ''))) continue // "November 2026" is a date
       const label = normLabel(`${m[1]} ${m[2]}`)
       const hit = [...labelsNorm.entries()].find(([k]) => k === label || k.startsWith(label) || label.startsWith(k))
       if (hit) usedSources.set(hit[1].label, hit[1])
       else fail(where, 'citation', `Citation "${m[0].trim()}" does not match any source in the tool results`)
     }
-    text = text.replace(CITATION_RE, ' ⟨cite⟩ ')
+    text = text.replace(CITATION_RE, (c, author) => (MONTH_NAMES.has(author.toLowerCase().replace('.', '')) ? c : ' ⟨cite⟩ '))
     for (const s of ev.sources.values()) if (raw.includes(s.label)) usedSources.set(s.label, s)
 
     // Dates are only allowed if the tools produced them (or the user gave them).
@@ -361,6 +372,23 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
       if (!ok) fail(where, 'date', `Date ${d} is not in the tool results`)
     }
     text = text.replace(ISO_DATE_RE, ' ⟨date⟩ ')
+    // Written-out dates and times must match a date the tools produced, to the minute.
+    const isoDates = [...ev.strings].filter((s) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(s))
+    for (const m of [...text.matchAll(HUMAN_DATE_RE)]) {
+      const month = monthIndex(m[1] ?? m[5]) + 1
+      const day = Number(m[2] ?? m[4])
+      const year = Number(m[3] ?? m[6])
+      const ymd = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+      const ok = isoDates.some((iso) => {
+        if (m[7] == null) return iso.startsWith(ymd)
+        // Allow rounding to the nearest minute.
+        const t = Date.parse(iso)
+        const claimed = Date.parse(`${ymd}T${String(m[7]).padStart(2, '0')}:${m[8]}:00Z`)
+        return Math.abs(t - claimed) <= 60_000
+      }) || question.includes(m[0])
+      if (!ok) fail(where, 'date', `Date "${m[0].trim()}" does not match a date produced by the orbit tools`)
+    }
+    text = text.replace(HUMAN_DATE_RE, ' ⟨date⟩ ')
 
     const body = stripNames(text, ev.names).replace(/^\s*\d+[.)]\s/, ' ').replace(/\b\d+(st|nd|rd|th)\b/g, ' ')
     const nums = extractNumbers(body)
@@ -449,6 +477,7 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     if (has('classification') && !/class|categor|size|visual|type/i.test(raw)) {
       fail(where, 'classification', 'A classification must say it is a size/temperature class, not a measured composition')
     }
+    if (has('classification')) checkClassTerms(raw, where)
     if (HZ_PLACEMENT.test(raw) && !negated(raw, HZ_PLACEMENT)) {
       const generic = has('established') && !mentionsPlanet && !dataBasis
       if (!generic && !speculative) fail(where, 'habitable-zone', 'Habitable-zone placement is not computed by the tools; state it only as a hedged hypothesis')
@@ -472,6 +501,21 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     if (LIFE.test(raw) && !negated(raw, LIFE)) {
       if (!has('hypothesis') && !(has('established') && !mentionsPlanet)) fail(where, 'life', 'Statements about life must be labelled hypothesis and hedged')
       else if (has('hypothesis') && !HEDGE.test(raw)) fail(where, 'life', 'A hypothesis about life must be hedged (might, could, unknown…)')
+    }
+  }
+
+  // A classification may only use the class the tools assigned to the planet named.
+  function checkClassTerms(raw, where) {
+    const terms = [...raw.matchAll(new RegExp(CLASS_TERMS.source, 'gi'))].map((m) => m[0].toLowerCase().replace(/s$/, ''))
+    if (!terms.length) return
+    const lower = raw.toLowerCase()
+    const named = [...ev.types.keys()].filter((n) => lower.includes(n.toLowerCase()))
+    if (!named.length) {
+      return fail(where, 'classification', 'Name the planet whose CELESTRIA size class you state (from get_planet or search results)')
+    }
+    for (const term of terms) {
+      const ok = named.some((n) => ev.types.get(n).toLowerCase().includes(term))
+      if (!ok) fail(where, 'classification', `"${term}" is not CELESTRIA's class for ${named.join(', ')} (${named.map((n) => ev.types.get(n)).join('; ')})`)
     }
   }
 
