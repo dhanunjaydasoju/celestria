@@ -5,7 +5,7 @@ import { useCelestria } from '../store/useCelestria.js'
 export default function ComparePage() {
   const compareIds = useCelestria((s) => s.compareIds)
   return (
-    <PagePlaceholder title="Compare" owner="UI" deliverable="D2.5 Comparison">
+    <PagePlaceholder title="Compare">
       <p className="num">{compareIds.length} selected</p>
     </PagePlaceholder>
   )

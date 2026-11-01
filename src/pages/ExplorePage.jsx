@@ -2,6 +2,7 @@
 import { useNavigate, useParams } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../store/useCelestria.js'
+import { catalogMessage } from './catalogMessages.js'
 import SystemExplorer from './explore/SystemExplorer.jsx'
 
 export default function ExplorePage() {
@@ -13,15 +14,10 @@ export default function ExplorePage() {
   const setPageFocus = useCelestria((s) => s.setPageFocus)
 
   if (status !== 'ready' || planets.length === 0) {
+    const msg = catalogMessage({ status })
     return (
-      <PagePlaceholder title="Explore" owner="LEAD" deliverable="M2 System viewer">
-        <p>
-          {status === 'error'
-            ? 'The catalog could not be loaded.'
-            : status === 'ready'
-              ? 'No planets in the catalog yet. The live NASA catalog arrives with D3.4.'
-              : 'Loading catalog…'}
-        </p>
+      <PagePlaceholder title={msg.title ?? 'Explore'}>
+        <p>{msg.message}</p>
       </PagePlaceholder>
     )
   }

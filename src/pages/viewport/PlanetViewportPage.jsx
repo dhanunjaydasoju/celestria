@@ -9,6 +9,7 @@ import { FEATURED_PLANET_IDS } from '../../data/featured.js'
 import PagePlaceholder from '../../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../../store/useCelestria.js'
 import PlanetViewport from '../../three/viewports/PlanetViewport.jsx'
+import { catalogMessage } from '../catalogMessages.js'
 import './PlanetViewportPage.css'
 
 const DEFAULT_ID = 'kepler-452-b'
@@ -22,13 +23,10 @@ export default function PlanetViewportPage() {
   const reducedMotion = useCelestria((s) => s.reducedMotion)
 
   if (status !== 'ready' || planets.length === 0) {
+    const msg = catalogMessage({ status })
     return (
-      <PagePlaceholder title="Planet Viewport" owner="LEAD" deliverable="Planet Viewport">
-        <p>
-          {status === 'ready'
-            ? 'No planets in the catalog yet. The live NASA catalog arrives with D3.4.'
-            : 'Loading catalog…'}
-        </p>
+      <PagePlaceholder title={msg.title ?? 'Planet Viewport'}>
+        <p>{msg.message}</p>
       </PagePlaceholder>
     )
   }

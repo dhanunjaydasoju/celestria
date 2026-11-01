@@ -7,7 +7,7 @@ export default function CatalogPage() {
   const status = useCelestria((s) => s.catalogStatus)
   const planets = useCelestria((s) => s.planets)
   return (
-    <PagePlaceholder title="Catalog" owner="UI" deliverable="D2.3 Search / filter / sort">
+    <PagePlaceholder title="Catalog">
       <p className="num">
         Catalog: {status} · {planets.length} planets
       </p>

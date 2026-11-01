@@ -23,7 +23,7 @@ export function createApp({ store, distDir = null, ai = null, trustProxy = false
   app.disable('x-powered-by')
   // Behind a hosting proxy, per-client AI limits need the real client IP.
   if (trustProxy) app.set('trust proxy', trustProxy)
-  app.use(express.json({ limit: '32kb' }))
+  app.use(express.json({ limit: BODY_LIMIT }))
 
   app.use('/api', catalogRouter(store))
   app.use('/api', habitabilityRouter(store))
@@ -40,10 +40,31 @@ export function createApp({ store, distDir = null, ai = null, trustProxy = false
     app.get('/{*splat}', (_req, res) => res.sendFile(path.join(distDir, 'index.html')))
   }
 
+  // Request-body errors from express.json() are the client's fault: answer
+  // with a 4xx in the API error shape instead of a 500, and don't log them.
+  app.use((err, _req, res, next) => {
+    const body = BODY_ERRORS[err?.type]
+    if (!body) return next(err)
+    res.status(body.status).json({ error: { code: body.code, message: body.message } })
+  })
+
   // Last-resort JSON error handler; never leak stack traces to clients.
   app.use((err, _req, res, _next) => {
     console.error(err)
     res.status(500).json({ error: { code: 'UNKNOWN', message: 'Internal server error.' } })
   })
   return app
+}
+
+const BODY_LIMIT = '32kb'
+
+// body-parser error types (err.type) → API error.
+const BODY_ERRORS = {
+  'entity.parse.failed': { status: 400, code: 'BAD_REQUEST', message: 'The request body is not valid JSON.' },
+  'entity.too.large': { status: 413, code: 'PAYLOAD_TOO_LARGE', message: `The request body is larger than ${BODY_LIMIT}.` },
+  'entity.verify.failed': { status: 400, code: 'BAD_REQUEST', message: 'The request body could not be read.' },
+  'request.aborted': { status: 400, code: 'BAD_REQUEST', message: 'The request was aborted.' },
+  'request.size.invalid': { status: 400, code: 'BAD_REQUEST', message: 'The request body size does not match its Content-Length.' },
+  'encoding.unsupported': { status: 415, code: 'UNSUPPORTED_MEDIA_TYPE', message: 'Unsupported request body encoding.' },
+  'charset.unsupported': { status: 415, code: 'UNSUPPORTED_MEDIA_TYPE', message: 'Unsupported request body charset.' },
 }

@@ -1,8 +1,9 @@
 // owner: LEAD (M3). Orbital Simulator over the store's catalog.
 import { useEffect } from 'react'
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../store/useCelestria.js'
+import { catalogMessage } from './catalogMessages.js'
 import OrbitSimulator from './orbit/OrbitSimulator.jsx'
 
 export default function OrbitPage() {
@@ -24,20 +25,18 @@ export default function OrbitPage() {
 
   if (indexPlanet && !planet) {
     return (
-      <PagePlaceholder title="Orbital simulator" owner="LEAD" deliverable="M3 Orbital Simulator">
+      <PagePlaceholder title="Orbital simulator">
         <p>Loading {indexPlanet.name}…</p>
       </PagePlaceholder>
     )
   }
 
   if (!planet) {
+    const msg = catalogMessage({ status, id })
     return (
-      <PagePlaceholder title="Orbital simulator" owner="LEAD" deliverable="M3 Orbital Simulator">
-        <p>
-          {status === 'loading' || status === 'idle'
-            ? 'Loading catalog…'
-            : `No planet with id "${id}" in the catalog. The live NASA catalog arrives with D3.4.`}
-        </p>
+      <PagePlaceholder title={msg.title ?? 'Orbital simulator'}>
+        <p>{msg.message}</p>
+        {msg.kind === 'notFound' && <Link to="/orbit">Open the Orbital Simulator</Link>}
       </PagePlaceholder>
     )
   }

@@ -1,9 +1,10 @@
 // owner: UI (D2.4). Immersive planet profile over the store's catalog.
 // Template lives in pages/planet/PlanetProfile.jsx (shared with /lab/profile).
 import { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../store/useCelestria.js'
+import { catalogMessage } from './catalogMessages.js'
 import PlanetProfile from './planet/PlanetProfile.jsx'
 
 export default function PlanetPage() {
@@ -24,13 +25,11 @@ export default function PlanetPage() {
   }, [id, indexPlanet, loadDetail])
 
   if (!planet) {
+    const msg = catalogMessage({ status, id })
     return (
-      <PagePlaceholder title="Planet profile" owner="UI" deliverable="D2.4 Planet profile">
-        <p>
-          {status === 'loading' || status === 'idle'
-            ? 'Loading catalog…'
-            : `No planet with id "${id}" in the catalog. The live NASA catalog arrives with D3.4.`}
-        </p>
+      <PagePlaceholder title={msg.title ?? 'Planet profile'}>
+        <p>{msg.message}</p>
+        {msg.kind === 'notFound' && <Link to="/viewport">Browse confirmed planets</Link>}
       </PagePlaceholder>
     )
   }

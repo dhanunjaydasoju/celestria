@@ -4,6 +4,7 @@
 import { Navigate } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
 import { useCelestria } from '../store/useCelestria.js'
+import { catalogMessage } from './catalogMessages.js'
 
 const DEFAULT_ID = 'hd-80606-b'
 
@@ -16,13 +17,10 @@ export default function OrbitIndexPage() {
     const id = byId[DEFAULT_ID] ? DEFAULT_ID : planets[0].id
     return <Navigate to={`/planet/${id}/orbit`} replace />
   }
+  const msg = catalogMessage({ status })
   return (
-    <PagePlaceholder title="Orbital simulator" owner="LEAD" deliverable="M3 Orbital Simulator">
-      <p>
-        {status === 'ready'
-          ? 'No planets in the catalog yet. The live NASA catalog arrives with D3.4.'
-          : 'Loading catalog…'}
-      </p>
+    <PagePlaceholder title={msg.title ?? 'Orbital simulator'}>
+      <p>{msg.message}</p>
     </PagePlaceholder>
   )
 }

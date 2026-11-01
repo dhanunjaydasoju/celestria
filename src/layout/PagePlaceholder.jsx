@@ -1,13 +1,11 @@
-// Temporary page body used by M0 route stubs — owner: UI. Delete once every
-// page has real content.
+// Simple page body for routes without a dedicated layout (About, not-found
+// and loading states) — owner: UI. Shows only user-facing content: no
+// internal owner or deliverable labels.
 
-export default function PagePlaceholder({ title, owner, deliverable, children }) {
+export default function PagePlaceholder({ title, children }) {
   return (
     <section style={{ padding: 'var(--space-8) var(--space-6)', maxWidth: 760 }}>
-      <p style={{ color: 'var(--color-text-muted)', fontSize: 13, margin: 0 }}>
-        {owner} · {deliverable}
-      </p>
-      <h1 style={{ margin: 'var(--space-2) 0 var(--space-4)' }}>{title}</h1>
+      <h1 style={{ margin: '0 0 var(--space-4)' }}>{title}</h1>
       {children}
     </section>
   )
