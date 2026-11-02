@@ -24,6 +24,7 @@ function reset({ status = 'ready', details = {}, detailStatus = {} } = {}) {
     detailStatus,
     loadDetail: () => {},
     reducedMotion: false,
+    astronomerOpen: false,
   })
 }
 vi.mock('../../store/useCelestria.js', () => ({ useCelestria: (sel) => sel(state) }))
@@ -92,6 +93,13 @@ describe('SunfallPage', () => {
     expect(text(html)).toContain('Radius Radius not in the catalogue')
     expect(html).toContain('prov prov--missing')
     expect(html).toContain('data-status="unavailable"')
+  })
+
+  it('marks the page while the AI drawer is open, so the result stays clear of it', () => {
+    reset({ details: { [trappist.id]: trappist }, detailStatus: { [trappist.id]: 'ready' } })
+    expect(render(`/planet/${trappist.id}/sunfall`)).toContain('class="sf"')
+    state.astronomerOpen = true
+    expect(render(`/planet/${trappist.id}/sunfall`)).toContain('class="sf has-drawer"')
   })
 
   it('passes reduced motion through', () => {

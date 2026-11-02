@@ -29,6 +29,7 @@ export default function SunfallPage() {
   const detailStatus = useCelestria((s) => s.detailStatus[id])
   const loadDetail = useCelestria((s) => s.loadDetail)
   const reducedMotion = useCelestria((s) => s.reducedMotion)
+  const drawerOpen = useCelestria((s) => s.astronomerOpen)
 
   useEffect(() => {
     if (indexPlanet) loadDetail(id)
@@ -53,7 +54,7 @@ export default function SunfallPage() {
 
   const name = indexPlanet.name
   return (
-    <div className="sf">
+    <div className={`sf${drawerOpen ? ' has-drawer' : ''}`}>
       <header className="sf-bar">
         <Link to={`/planet/${id}`} className="sf-back">
           <ArrowLeft size={14} aria-hidden="true" /> Profile

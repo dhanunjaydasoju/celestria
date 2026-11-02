@@ -109,6 +109,21 @@
   color: var(--color-text-muted);
 }
 
+/* The AI drawer (460 px, desktop) overlays the right of the page: keep the
+   result, counter and controls centred in the visible part of the scene. */
+@media (min-width: 761px) {
+  .sf.has-drawer .sunfall__result,
+  .sf.has-drawer .sunfall__controls {
+    left: calc((100% - 460px) / 2);
+  }
+  .sf.has-drawer .sunfall__result {
+    width: min(560px, calc(100% - 460px - 2 * var(--space-4)));
+  }
+  .sf.has-drawer .sunfall__counter {
+    font-size: clamp(22px, 3.6cqi, 44px);
+  }
+}
+
 @media (max-width: 760px) {
   .sf {
     min-height: 0;
