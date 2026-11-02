@@ -183,3 +183,26 @@
     padding-bottom: 11px;
   }
 }
+
+/* Add mode: planets already chosen stay visible but cannot be picked. */
+.ppk__button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ppk__button:disabled:hover {
+  border-color: var(--color-border);
+}
+
+.ppk__option.is-excluded {
+  color: var(--color-missing);
+  cursor: default;
+}
+
+.ppk__tag {
+  flex: none;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-missing);
+}

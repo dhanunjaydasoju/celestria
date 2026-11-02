@@ -17,6 +17,16 @@ describe('compare slice', () => {
     expect(ids.length).toBe(MAX_COMPARE)
     expect(ids.filter((x) => x === 'a').length).toBe(1)
   })
+
+  it('replaces the list with setCompare, deduplicated and capped, keeping order', () => {
+    useCelestria.getState().setCompare(['b', 'a', 'b', 'c', 'd', 'e'])
+    expect(useCelestria.getState().compareIds).toEqual(['b', 'a', 'c', 'd'])
+    const before = useCelestria.getState().compareIds
+    useCelestria.getState().setCompare(['b', 'a', 'c', 'd'])
+    expect(useCelestria.getState().compareIds).toBe(before) // no-op when unchanged
+    useCelestria.getState().setCompare([])
+    expect(useCelestria.getState().compareIds).toEqual([])
+  })
 })
 
 describe('catalog slice', () => {

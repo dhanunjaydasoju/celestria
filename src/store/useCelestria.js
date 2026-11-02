@@ -95,6 +95,13 @@ export const useCelestria = create((set, get) => ({
   clearCompare() {
     set({ compareIds: [] })
   },
+  /** Replace the whole list (the Compare page syncs it from its URL). */
+  setCompare(ids) {
+    const next = [...new Set(ids)].slice(0, MAX_COMPARE)
+    const cur = get().compareIds
+    if (next.length === cur.length && next.every((id, i) => id === cur[i])) return
+    set({ compareIds: next })
+  },
 
   // ── settings ──────────────────────────────────────────────────────────────
   paused: false,

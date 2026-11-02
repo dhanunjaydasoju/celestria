@@ -4,6 +4,8 @@
 // Large catalogues (> SHOW_ALL_LIMIT) are search-first: before typing, only
 // featured items and the current planet's siblings are listed; typing shows
 // the best `limit` matches (name prefix first).
+// Add mode (Compare): pass value={null}, a `placeholder` and `excludeIds`;
+// excluded planets stay listed but cannot be chosen.
 
 import { Check, ChevronDown, Search } from 'lucide-react'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
@@ -13,7 +15,8 @@ const SHOW_ALL_LIMIT = 300
 
 /**
  * @param {{ planets: { id: string, name: string, host: string }[], value: string, onChange: (id: string) => void,
- *           label?: string, featuredIds?: string[], limit?: number, grouped?: boolean, noun?: string }} props
+ *           label?: string, featuredIds?: string[], limit?: number, grouped?: boolean, noun?: string,
+ *           placeholder?: string, hint?: string, excludeIds?: string[], excludedLabel?: string, disabled?: boolean }} props
  *   grouped=false renders a flat list with `host` as a subtitle (e.g. systems).
  */
 export default function PlanetPicker({
@@ -25,6 +28,11 @@ export default function PlanetPicker({
   limit = 60,
   grouped = true,
   noun = 'planets',
+  placeholder = 'Select a planet',
+  hint = null,
+  excludeIds = [],
+  excludedLabel = 'Added',
+  disabled = false,
 }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -35,6 +43,7 @@ export default function PlanetPicker({
   const list = useRef(null)
   const uid = useId()
   const current = planets.find((p) => p.id === value)
+  const excluded = useMemo(() => new Set(excludeIds), [excludeIds])
 
   const large = planets.length > SHOW_ALL_LIMIT
   const searchable = useMemo(() => planets.map((p) => ({ p, name: p.name.toLowerCase(), host: p.host.toLowerCase() })), [planets])
@@ -79,6 +88,7 @@ export default function PlanetPicker({
     if (refocus) button.current?.focus()
   }
   const choose = (id) => {
+    if (excluded.has(id)) return
     close()
     if (id !== value) onChange(id)
   }
@@ -124,12 +134,13 @@ export default function PlanetPicker({
         className="ppk__button"
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label={`${label}. Current: ${current?.name ?? 'none'}`}
+        aria-label={current || !hint ? `${label}. Current: ${current?.name ?? 'none'}` : label}
+        disabled={disabled}
         onClick={() => (open ? close() : openPicker())}
       >
         <span className="ppk__current">
-          <span className="ppk__name">{current?.name ?? 'Select a planet'}</span>
-          {current && <span className="ppk__host">{current.host}</span>}
+          <span className="ppk__name">{current?.name ?? placeholder}</span>
+          {current ? <span className="ppk__host">{current.host}</span> : hint && <span className="ppk__host">{hint}</span>}
         </span>
         <ChevronDown size={16} className="ppk__chevron" aria-hidden="true" />
       </button>
@@ -169,7 +180,8 @@ export default function PlanetPicker({
                       data-index={p.index}
                       role="option"
                       aria-selected={p.id === value}
-                      className={`ppk__option${p.index === active ? ' is-active' : ''}`}
+                      aria-disabled={excluded.has(p.id) || undefined}
+                      className={`ppk__option${p.index === active ? ' is-active' : ''}${excluded.has(p.id) ? ' is-excluded' : ''}`}
                       onPointerEnter={() => setActive(p.index)}
                       onClick={() => choose(p.id)}
                     >
@@ -178,6 +190,7 @@ export default function PlanetPicker({
                         {!grouped && <small>{p.host}</small>}
                       </span>
                       {p.id === value && <Check size={14} aria-hidden="true" />}
+                      {excluded.has(p.id) && <span className="ppk__tag">{excludedLabel}</span>}
                     </li>
                   ))}
                 </ul>
