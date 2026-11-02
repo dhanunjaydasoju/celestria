@@ -7,7 +7,7 @@ vi.mock('../../three/viewports/PlanetViewport.jsx', () => ({ default: () => <div
 const { default: PlanetProfile } = await import('./PlanetProfile.jsx')
 
 const planet = labPlanets.find((p) => p.name === 'TRAPPIST-1 e')
-const render = (compare) =>
+const render = (compare, extra = {}) =>
   renderToStaticMarkup(
     <MemoryRouter>
       <PlanetProfile
@@ -19,6 +19,7 @@ const render = (compare) =>
         closeHref="/explore"
         onSelectPlanet={() => {}}
         compare={compare}
+        {...extra}
       />
     </MemoryRouter>,
   )
@@ -55,5 +56,42 @@ describe('Planet profile: Add to compare', () => {
 
   it('hides the control when no comparison list is provided (lab)', () => {
     expect(render(null)).not.toMatch(/Add to compare|In comparison|Comparison full/)
+  })
+})
+
+describe('Planet profile: SUNFALL action', () => {
+  const sunfallHref = (id) => `/planet/${id}/sunfall`
+
+  it('links to the planet’s SUNFALL page next to the Orbital simulator', () => {
+    const html = render(null, { sunfallHref })
+    expect(html).toContain(`href="/planet/${planet.id}/sunfall"`)
+    expect(html).toContain('SUNFALL: volume vs the Sun')
+    expect(html.indexOf('Orbital simulator')).toBeLessThan(html.indexOf('SUNFALL'))
+  })
+
+  it('stays visible but disabled, with the reason, when there is no usable radius', () => {
+    for (const radiusEarth of [{ value: null, status: 'missing' }, { value: 2.2, status: 'imputed' }]) {
+      const html = renderToStaticMarkup(
+        <MemoryRouter>
+          <PlanetProfile
+            planet={{ ...planet, radiusEarth }}
+            planets={labPlanets}
+            planetHref={(id) => `/planet/${id}`}
+            systemHref={(h) => `/explore/${h}`}
+            orbitHref={(id) => `/planet/${id}/orbit`}
+            sunfallHref={sunfallHref}
+            closeHref="/explore"
+            onSelectPlanet={() => {}}
+          />
+        </MemoryRouter>,
+      )
+      expect(html).toContain('SUNFALL unavailable: needs a catalogue radius')
+      expect(html).toContain('aria-disabled="true"')
+      expect(html).not.toContain('/sunfall"')
+    }
+  })
+
+  it('is hidden where no SUNFALL route is given (the lab)', () => {
+    expect(render(null)).not.toContain('SUNFALL')
   })
 })

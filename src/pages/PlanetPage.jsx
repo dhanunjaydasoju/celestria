@@ -43,6 +43,7 @@ export default function PlanetPage() {
       planetHref={(pid) => `/planet/${pid}`}
       systemHref={(host) => `/explore/${encodeURIComponent(host)}`}
       orbitHref={(pid) => `/planet/${pid}/orbit`}
+      sunfallHref={(pid) => `/planet/${pid}/sunfall`}
       closeHref={`/explore/${encodeURIComponent(planet.host)}`}
       onSelectPlanet={(pid) => navigate(`/planet/${pid}`)}
       reducedMotion={reducedMotion}

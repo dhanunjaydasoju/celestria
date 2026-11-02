@@ -15,6 +15,7 @@ It started as a 24-hour hackathon project. Project rules, the data model, owners
 | Planet Viewport | `/viewport/:id?` | Full-screen procedural planet with a searchable picker over the whole catalogue. |
 | Planet profile | `/planet/:id` | Every catalogue value with uncertainty, provenance badge and source citation. Also host-star, orbit and discovery panels, habitability indicators, and a footnote on how NASA's composite table combines papers. |
 | Orbital Simulator | `/planet/:id/orbit` (menu: `/orbit`) | Star, planet and orbital path only. Time slider, step, play/pause, speed, reset. Live distance, speed (vis-viva) and phase. Real-date positioning when the timing uncertainty allows it. Assumptions such as a circular orbit when *e* is unknown are shown as banners. |
+| SUNFALL | `/planet/:id/sunfall` (menu: `/sunfall`) | How many copies of a planet equal the Sun's volume, N = (R☉ / R)³, for any catalogue planet with a radius. A procedural 3D Sun and an instanced swarm of the planet's copies, which look like its Planet Viewport impression and are drawn at true size relative to the Sun (enlarged and labelled only when tiny). A counter follows the swarm and ends on the result with its uncertainty range, or as "more than" / "fewer than" for radius limits. It is labelled a volume equivalence, not a packing count. Planets with no radius get no number. Opened from each profile, with a catalogue picker on the page. |
 | Compare | `/compare?ids=…` | Up to four planets side by side, with Earth and the Sun as a separate reference column. A size comparison has true-scale and visibility modes. Planets are added from a catalogue search or a profile's "Add to compare" button, and Compare is in the menu. Values keep their uncertainty, limits and provenance. Highest or lowest values are marked only when they differ beyond their uncertainties. "Ask the Astronomer to compare these planets" opens the AI with the comparison as context. |
 | Habitability | `/habitability` | Catalogue-wide flux × star temperature diagram with Kopparapu et al. (2014) zone bands, summary counts and a sortable table. Every planet links to its profile. |
 | Ask the Astronomer | header button, any page | AI answers grounded in the catalogue (see below). It knows which planet or page you are on. |
@@ -186,6 +187,11 @@ The AI tests never call the real provider.
 - **Compare** has no metric charts. The size view compares radii only. Many rows are honestly left unranked, because NASA values often lack uncertainties or mix minimum masses, model estimates and measurements.
 - **No dedicated catalogue search page.** Planets are found through the planet picker, System View and the habitability table. Filters such as discovery method or year range are not built.
 - **Not built:** fun facts, spacecraft journey, soundscape, star map.
+- **SUNFALL:**
+  - The comparison uses our Sun, not the planet's host star.
+  - Small copies are a few pixels wide at true scale, so the enlarged inset shows their look.
+  - Copies are lit like Planet Viewport, which is an artistic choice.
+  - The AI astronomer cannot state the volume count, because no tool provides it.
 - **Production hardening is incomplete:**
   - no security headers (CSP and similar)
   - static assets are served without compression

@@ -17,6 +17,8 @@ describe('derivePageContext', () => {
     expect(derivePageContext({ pathname: '/planet/testa-b', byId })).toEqual({ page: 'planet', planetId: 'testa-b', label: 'Profile · Testa b' })
     expect(derivePageContext({ pathname: '/viewport/testa-b', byId })).toMatchObject({ page: 'viewport', planetId: 'testa-b' })
     expect(derivePageContext({ pathname: '/planet/testa-b/orbit', byId })).toMatchObject({ page: 'orbit', planetId: 'testa-b', label: 'Orbital Simulator · Testa b' })
+    expect(derivePageContext({ pathname: '/planet/testa-b/sunfall', byId })).toEqual({ page: 'sunfall', planetId: 'testa-b', label: 'SUNFALL · Testa b' })
+    expect(derivePageContext({ pathname: '/planet/nope/sunfall', byId })).toMatchObject({ page: 'general' })
   })
 
   it('uses the System View focus (shown system, selected planet)', () => {
@@ -38,6 +40,18 @@ describe('suggestQuestions', () => {
     const sparse = suggestQuestions({ page: 'orbit', planetId: 'testa-c' }, { byId, hosts })
     expect(sparse).toEqual(['What is known about the orbit of Testa c?', 'How long is a year on Testa c?'])
     expect(suggestQuestions({ page: 'planet', planetId: 'testa-c' }, { byId, hosts })).not.toContain('How does Testa c compare with Earth?')
+  })
+
+  it('offers SUNFALL questions about the planet, never a count or packing claim', () => {
+    const qs = suggestQuestions({ page: 'sunfall', planetId: 'testa-b' }, { byId, hosts })
+    expect(qs).toEqual([
+      'How was the radius of Testa b measured?',
+      'How does Testa b compare with Earth?',
+      'What kind of star does Testa b orbit?',
+      'How was Testa b discovered?',
+    ])
+    for (const q of qs) expect(q).not.toMatch(/fit|pack|how many|volume/i)
+    expect(suggestQuestions({ page: 'sunfall', planetId: 'testa-c' }, { byId, hosts })[0]).toBe('Why is the radius of Testa c not in the catalogue?')
   })
 
   it('offers system, compare and general questions', () => {

@@ -35,3 +35,12 @@ describe('menu: Compare entry', () => {
     expect(html).toContain('(2 selected)')
   })
 })
+
+describe('menu: SUNFALL entry', () => {
+  it('lists SUNFALL once, after the Orbital Simulator', () => {
+    state.compareIds = []
+    const order = [...render().matchAll(/<a[^>]*href="([^"]+)"[^>]*>/g)].map((m) => m[1])
+    expect(order.filter((h) => h === '/sunfall')).toHaveLength(1)
+    expect(order.indexOf('/sunfall')).toBe(order.indexOf('/orbit') + 1)
+  })
+})

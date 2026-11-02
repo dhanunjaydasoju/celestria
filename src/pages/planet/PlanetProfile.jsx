@@ -5,7 +5,7 @@
 // content comes from the Planet object. Used by PlanetPage (store catalog)
 // and /lab/profile (lab fixtures).
 
-import { ArrowLeft, ArrowRight, Check, ChevronDown, Orbit, Plus, Telescope, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Orbit, Plus, Sun, Telescope, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import MeasurementRow from '../../components/data/MeasurementRow.jsx'
@@ -14,6 +14,7 @@ import { FEATURED_PLANET_IDS } from '../../data/featured.js'
 import ProvenanceBadge from '../../components/data/ProvenanceBadge.jsx'
 import { sourceLabel } from '../../components/data/sourceLabel.js'
 import { isScientific, scienceValue } from '../../contracts/planet.js'
+import { sunfallResult } from '../../science/sunfall.js'
 import {
   distanceLightYears,
   isFixedCircular,
@@ -39,6 +40,23 @@ function TextRow({ label, value, note }) {
         {!value && <ProvenanceBadge kind="missing" />}
       </dd>
     </div>
+  )
+}
+
+/** Opens SUNFALL; disabled with the reason when there is no usable radius. */
+function SunfallAction({ planet, href }) {
+  const available = useMemo(() => sunfallResult(planet).status !== 'unavailable', [planet])
+  if (available) {
+    return (
+      <Link to={href} className="pp-btn">
+        <Sun size={15} aria-hidden="true" /> SUNFALL: volume vs the Sun
+      </Link>
+    )
+  }
+  return (
+    <span className="pp-btn is-disabled" aria-disabled="true" title="SUNFALL needs a catalogue radius; none is invented">
+      <Sun size={15} aria-hidden="true" /> SUNFALL unavailable: needs a catalogue radius
+    </span>
   )
 }
 
@@ -148,6 +166,7 @@ const MISSING = { value: null, status: 'missing' }
  * @param {(id: string) => string} props.planetHref
  * @param {(host: string) => string} props.systemHref
  * @param {(id: string) => string} props.orbitHref
+ * @param {(id: string) => string} [props.sunfallHref]   omitted (e.g. in the lab) hides the SUNFALL action
  * @param {string} props.closeHref
  * @param {(id: string) => void} props.onSelectPlanet
  * @param {boolean} [props.reducedMotion]
@@ -160,6 +179,7 @@ export default function PlanetProfile({
   planetHref,
   systemHref,
   orbitHref,
+  sunfallHref = null,
   closeHref,
   onSelectPlanet,
   reducedMotion = false,
@@ -264,6 +284,7 @@ export default function PlanetProfile({
                   <Orbit size={15} /> Orbital simulator unavailable
                 </span>
               )}
+              {sunfallHref && <SunfallAction planet={planet} href={sunfallHref(planet.id)} />}
               {compare && <CompareAction planet={planet} compare={compare} />}
             </div>
           </header>

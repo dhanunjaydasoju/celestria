@@ -21,8 +21,10 @@ const routes = [
       { path: 'explore/:host?', lazy: page(() => import('./pages/ExplorePage.jsx')) },
       { path: 'planet/:id', lazy: page(() => import('./pages/PlanetPage.jsx')) },
       { path: 'planet/:id/orbit', lazy: page(() => import('./pages/OrbitPage.jsx')) },
+      { path: 'planet/:id/sunfall', lazy: page(() => import('./pages/SunfallPage.jsx')) },
       { path: 'viewport/:id?', lazy: page(() => import('./pages/viewport/PlanetViewportPage.jsx')) },
       { path: 'orbit', lazy: page(() => import('./pages/OrbitIndexPage.jsx')) },
+      { path: 'sunfall', lazy: page(() => import('./pages/SunfallIndexPage.jsx')) },
       { path: 'about', lazy: page(() => import('./pages/AboutPage.jsx')) },
       { path: 'habitability', lazy: page(() => import('./pages/HabitabilityPage.jsx')) },
       // Catalog (CatalogPage.jsx) and Compare are kept in the codebase but not

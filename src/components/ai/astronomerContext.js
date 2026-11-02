@@ -18,6 +18,10 @@ const decode = (s) => {
 export function derivePageContext({ pathname, byId, compareIds = [], pageFocus = null }) {
   const planetLabel = (id) => byId[id]?.name ?? null
   let m
+  if ((m = /^\/planet\/([^/]+)\/sunfall\/?$/.exec(pathname)) && byId[decode(m[1])]) {
+    const id = decode(m[1])
+    return { page: 'sunfall', planetId: id, label: `SUNFALL · ${planetLabel(id)}` }
+  }
   if ((m = /^\/planet\/([^/]+)\/orbit\/?$/.exec(pathname)) && byId[decode(m[1])]) {
     const id = decode(m[1])
     return { page: 'orbit', planetId: id, label: `Orbital Simulator · ${planetLabel(id)}` }
@@ -52,6 +56,16 @@ export function suggestQuestions(context, { byId, hosts = {} }) {
   if (planet) {
     const n = planet.name
     const siblings = (hosts[planet.host] ?? []).length
+    if (context.page === 'sunfall') {
+      // About the planet's size and how it is known; the volume count itself
+      // comes from CELESTRIA's own calculation, not from the AI's tools.
+      return [
+        has(planet.radiusEarth) ? `How was the radius of ${n} measured?` : `Why is the radius of ${n} not in the catalogue?`,
+        (has(planet.radiusEarth) || has(planet.massEarth)) && `How does ${n} compare with Earth?`,
+        `What kind of star does ${n} orbit?`,
+        planet.discovery?.method ? `How was ${n} discovered?` : `What has actually been measured about ${n}?`,
+      ].filter(Boolean).slice(0, 4)
+    }
     if (context.page === 'orbit') {
       return [
         has(planet.eccentricity) ? `How eccentric is the orbit of ${n}?` : `What is known about the orbit of ${n}?`,
