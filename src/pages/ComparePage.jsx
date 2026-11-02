@@ -5,6 +5,7 @@
 // catalogue, upgraded to full records (uncertainties, sources) as they load.
 // The comparison itself is src/science/compare.js.
 
+import { Telescope } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import PlanetPicker from '../components/ui/PlanetPicker.jsx'
@@ -14,6 +15,7 @@ import { useCelestria } from '../store/useCelestria.js'
 import { catalogMessage } from './catalogMessages.js'
 import CompareTable from './compare/CompareTable.jsx'
 import { EarthCard, PlanetCard } from './compare/SelectedPlanets.jsx'
+import SizeComparison from './compare/SizeComparison.jsx'
 import { parseIds, resolveSelection, searchWith, sourcesByPlanet } from './compare/compareView.js'
 import { sourceLabel } from '../components/data/sourceLabel.js'
 import './compare/Compare.css'
@@ -37,6 +39,7 @@ export default function ComparePage() {
   const loadDetail = useCelestria((s) => s.loadDetail)
   const compareIds = useCelestria((s) => s.compareIds)
   const setCompare = useCelestria((s) => s.setCompare)
+  const openAstronomer = useCelestria((s) => s.openAstronomer)
 
   const [announcement, setAnnouncement] = useState('')
   const focusAdd = useRef(false)
@@ -228,6 +231,15 @@ export default function ComparePage() {
                 </ul>
               </section>
 
+              {ids.length >= 2 && (
+                <div className="cmp-ask">
+                  <button type="button" className="cmp-ask__btn" onClick={openAstronomer}>
+                    <Telescope size={15} aria-hidden="true" /> Ask the Astronomer to compare these planets
+                  </button>
+                  <p>Opens the astronomer with these planets as context and suggested questions. Nothing is asked until you choose or type a question.</p>
+                </div>
+              )}
+
               {ids.length === 1 && (
                 <p className="cmp-prompt">
                   Add another planet to see which values differ clearly. With one planet, values are shown beside Earth&apos;s for reference only.
@@ -241,6 +253,8 @@ export default function ComparePage() {
                     `Uncertainties and sources for ${listNames(failed.map((id) => byId[id].name))} could not be loaded; their values are shown without them, and differences involving them are not highlighted.`}
                 </p>
               )}
+
+              <SizeComparison comparison={comparison} planets={chosen} />
 
               <CompareTable comparison={comparison} planets={chosen} />
 

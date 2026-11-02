@@ -377,3 +377,31 @@
     opacity: 0;
   }
 }
+
+/* Add to compare (a button among the link-styled actions). */
+button.pp-btn {
+  background: none;
+  font: 13px var(--font-ui);
+  cursor: pointer;
+}
+
+button.pp-btn:focus-visible,
+a.pp-btn:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.pp-link {
+  align-self: center;
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pp-link:hover,
+.pp-link:focus-visible {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  outline: none;
+}

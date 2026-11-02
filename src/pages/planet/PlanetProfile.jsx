@@ -5,8 +5,8 @@
 // content comes from the Planet object. Used by PlanetPage (store catalog)
 // and /lab/profile (lab fixtures).
 
-import { ArrowLeft, ArrowRight, ChevronDown, Orbit, Telescope, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Orbit, Plus, Telescope, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import MeasurementRow from '../../components/data/MeasurementRow.jsx'
 import PlanetPicker from '../../components/ui/PlanetPicker.jsx'
@@ -39,6 +39,61 @@ function TextRow({ label, value, note }) {
         {!value && <ProvenanceBadge kind="missing" />}
       </dd>
     </div>
+  )
+}
+
+/** Add to compare / In comparison / Comparison full, with the list count. */
+function CompareAction({ planet, compare }) {
+  const { ids, max, href, onAdd } = compare
+  // The Add button is replaced by a link once added; keep keyboard focus on it.
+  const added = useRef(false)
+  const link = useRef(null)
+  const inList = ids.includes(planet.id)
+  useEffect(() => {
+    if (inList && added.current) link.current?.focus()
+    added.current = false
+  }, [inList])
+  const count = <span className="pp-btn__count" aria-label={`${ids.length} of ${max} planets selected`}>{ids.length}/{max}</span>
+  let control
+  if (inList) {
+    control = (
+      <Link ref={link} to={href} className="pp-btn">
+        <Check size={15} aria-hidden="true" /> In comparison · View {count}
+      </Link>
+    )
+  } else if (ids.length >= max) {
+    control = (
+      <Link to={href} className="pp-btn" title={`Up to ${max} planets can be compared. Remove one on the Compare page to add ${planet.name}.`}>
+        Comparison full · View {count}
+      </Link>
+    )
+  } else {
+    control = (
+      <button
+        type="button"
+        className="pp-btn"
+        onClick={() => {
+          added.current = true
+          onAdd(planet.id)
+        }}
+      >
+        <Plus size={15} aria-hidden="true" /> Add to compare
+        {ids.length > 0 && count}
+      </button>
+    )
+  }
+  return (
+    <>
+      {control}
+      {ids.length > 0 && !ids.includes(planet.id) && ids.length < max && (
+        <Link to={href} className="pp-link">
+          View comparison ({ids.length})
+        </Link>
+      )}
+      <span className="sr-only" role="status" aria-live="polite">
+        {ids.includes(planet.id) ? `${planet.name} is in the comparison, ${ids.length} of ${max} planets.` : ''}
+      </span>
+    </>
   )
 }
 
@@ -96,6 +151,8 @@ const MISSING = { value: null, status: 'missing' }
  * @param {string} props.closeHref
  * @param {(id: string) => void} props.onSelectPlanet
  * @param {boolean} [props.reducedMotion]
+ * @param {{ ids: string[], max: number, href: string, onAdd: (id: string) => void }} [props.compare]
+ *   comparison list; omitted (e.g. in the lab) hides the Add to compare control
  */
 export default function PlanetProfile({
   planet,
@@ -106,6 +163,7 @@ export default function PlanetProfile({
   closeHref,
   onSelectPlanet,
   reducedMotion = false,
+  compare = null,
 }) {
   const [expanded, setExpanded] = useState(false)
   const params = useMemo(() => visualParams(planet), [planet])
@@ -206,6 +264,7 @@ export default function PlanetProfile({
                   <Orbit size={15} /> Orbital simulator unavailable
                 </span>
               )}
+              {compare && <CompareAction planet={planet} compare={compare} />}
             </div>
           </header>
 

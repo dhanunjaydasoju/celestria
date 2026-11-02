@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import PagePlaceholder from '../layout/PagePlaceholder.jsx'
-import { useCelestria } from '../store/useCelestria.js'
+import { MAX_COMPARE, useCelestria } from '../store/useCelestria.js'
 import { catalogMessage } from './catalogMessages.js'
 import PlanetProfile from './planet/PlanetProfile.jsx'
 
@@ -16,6 +16,8 @@ export default function PlanetPage() {
   const detail = useCelestria((s) => s.details[id])
   const loadDetail = useCelestria((s) => s.loadDetail)
   const reducedMotion = useCelestria((s) => s.reducedMotion)
+  const compareIds = useCelestria((s) => s.compareIds)
+  const addCompare = useCelestria((s) => s.addCompare)
   // The index has values and provenance; the full record adds uncertainties
   // and sources, so it replaces the index planet once loaded.
   const planet = detail ?? indexPlanet
@@ -44,6 +46,7 @@ export default function PlanetPage() {
       closeHref={`/explore/${encodeURIComponent(planet.host)}`}
       onSelectPlanet={(pid) => navigate(`/planet/${pid}`)}
       reducedMotion={reducedMotion}
+      compare={{ ids: compareIds, max: MAX_COMPARE, href: `/compare?ids=${compareIds.join(',')}`, onAdd: addCompare }}
     />
   )
 }

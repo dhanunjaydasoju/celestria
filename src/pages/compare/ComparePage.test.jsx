@@ -23,6 +23,7 @@ function reset(status = 'ready') {
     loadDetail: () => {},
     compareIds: [],
     setCompare: () => {},
+    openAstronomer: () => {},
   })
 }
 vi.mock('../../store/useCelestria.js', () => ({ useCelestria: (sel) => sel(state) }))
@@ -185,5 +186,24 @@ describe('Compare page table', () => {
     const p = byName['HR 8799 b']
     state.detailStatus = { [p.id]: 'error' }
     expect(text(html())).toContain('Uncertainties and sources for HR 8799 b could not be loaded')
+  })
+})
+
+describe('Compare page: size view and AI entry', () => {
+  it('shows the size comparison in visibility mode by default, with a scale note and Earth', () => {
+    const h = render(`/compare?ids=${ids('TRAPPIST-1 e', 'HR 8799 b')}`)
+    expect(h).toContain('id="size-title"')
+    expect(h).toMatch(/aria-pressed="true"[^>]*>Visibility scale/)
+    expect(h).toMatch(/aria-pressed="false"[^>]*>True scale/)
+    expect(h).toContain('enlarged for visibility')
+    expect(h).toContain('Earth: reference radius, 1 R⊕')
+    expect(h).toContain('size-c--model') // HR 8799 b: model-based radius
+    expect(h).toMatch(/role="img" aria-label="TRAPPIST-1 e: radius 0.920 \+0.013 −0.012 R⊕, measured;/)
+  })
+
+  it('offers the AI astronomer only for two or more planets', () => {
+    expect(render(`/compare?ids=${ids('TRAPPIST-1 e', 'Proxima Cen b')}`)).toContain('Ask the Astronomer to compare these planets')
+    expect(render(`/compare?ids=${ids('TRAPPIST-1 e')}`)).not.toContain('Ask the Astronomer to compare')
+    expect(render('/compare')).not.toContain('Ask the Astronomer to compare')
   })
 })

@@ -43,6 +43,7 @@ describe('suggestQuestions', () => {
   it('offers system, compare and general questions', () => {
     expect(suggestQuestions({ page: 'system', host: 'Solo' }, { byId, hosts })).not.toContain('Which planet around Solo is the largest?')
     expect(suggestQuestions({ page: 'compare', compareIds: ['testa-b', 'solo-b'] }, { byId, hosts })[0]).toBe('Compare Testa b and Solo b.')
+    expect(suggestQuestions({ page: 'compare', compareIds: ['testa-b', 'testa-c', 'solo-b'] }, { byId, hosts })[0]).toBe('Compare Testa b, Testa c and Solo b.')
     expect(suggestQuestions({ page: 'general' }, { byId, hosts })).toHaveLength(4)
   })
 

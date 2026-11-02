@@ -15,6 +15,7 @@ It started as a 24-hour hackathon project. Project rules, the data model, owners
 | Planet Viewport | `/viewport/:id?` | Full-screen procedural planet with a searchable picker over the whole catalogue. |
 | Planet profile | `/planet/:id` | Every catalogue value with uncertainty, provenance badge and source citation. Also host-star, orbit and discovery panels, habitability indicators, and a footnote on how NASA's composite table combines papers. |
 | Orbital Simulator | `/planet/:id/orbit` (menu: `/orbit`) | Star, planet and orbital path only. Time slider, step, play/pause, speed, reset. Live distance, speed (vis-viva) and phase. Real-date positioning when the timing uncertainty allows it. Assumptions such as a circular orbit when *e* is unknown are shown as banners. |
+| Compare | `/compare?ids=…` | Up to four planets side by side, with Earth and the Sun as a separate reference column. A size comparison has true-scale and visibility modes. Planets are added from a catalogue search or a profile's "Add to compare" button, and Compare is in the menu. Values keep their uncertainty, limits and provenance. Highest or lowest values are marked only when they differ beyond their uncertainties. "Ask the Astronomer to compare these planets" opens the AI with the comparison as context. |
 | Habitability | `/habitability` | Catalogue-wide flux × star temperature diagram with Kopparapu et al. (2014) zone bands, summary counts and a sortable table. Every planet links to its profile. |
 | Ask the Astronomer | header button, any page | AI answers grounded in the catalogue (see below). It knows which planet or page you are on. |
 | About | `/about` | NASA sync status and a "Check NASA for updates" button. |
@@ -88,6 +89,25 @@ In production one Express process serves both `dist/` and `/api` from the same o
   - concurrency with a bounded queue
   - timeouts
 - The drawer shows only progress stages the server has confirmed, with a real elapsed clock.
+
+## Planet comparison
+
+- **Comparison model.** `src/science/compare.js` is pure and tested. It groups values into planet basics, physical, orbital, host star, and discovery and system.
+  - Each value keeps its uncertainty, limit, provenance, mass kind and source. Imputed values are never used.
+- **Ranking.** A row is ranked only when every planet has a comparable value of the same kind.
+  - Missing values, limits, assumed values and minimum masses (M sin i) block ranking, as do model estimates mixed with measurements.
+  - A highest or lowest value is highlighted only when its uncertainty range clears every other planet's. An unknown uncertainty never counts as a clear difference.
+- **Earth and Sun reference.** `src/science/earthReference.js` holds the values, with status `reference`, from:
+  - NASA NSSDCA Earth and Sun fact sheets
+  - IAU 2015 Resolution B3
+  - Bouvier & Wadhwa 2010 (solar age)
+
+  Reference values are never ranked against planets, never counted towards the four, and never sent to the AI.
+- **Size view.** It draws only catalogue radii, on one shared scale.
+  - NASA-calculated and model-based radii are styled differently from measured ones.
+  - A planet with no radius, or only a limit, is shown as an outline with no size.
+  - True scale shows the radius uncertainty as a faint ring. Visibility scale enlarges tiny bodies and labels them.
+- **AI.** The AI astronomer has its own server-side `compare_planets` tool. The page only opens the astronomer with the compared planets as context.
 
 ## Habitability methodology
 
@@ -163,7 +183,7 @@ The AI tests never call the real provider.
 
 ## Known limitations
 
-- **Compare** (`/compare`) is a placeholder: the comparison table, charts and size comparison are not built yet.
+- **Compare** has no metric charts. The size view compares radii only. Many rows are honestly left unranked, because NASA values often lack uncertainties or mix minimum masses, model estimates and measurements.
 - **No dedicated catalogue search page.** Planets are found through the planet picker, System View and the habitability table. Filters such as discovery method or year range are not built.
 - **Not built:** fun facts, spacecraft journey, soundscape, star map.
 - **Production hardening is incomplete:**

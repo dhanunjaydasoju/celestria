@@ -78,7 +78,8 @@ export function suggestQuestions(context, { byId, hosts = {} }) {
   }
   if (context.page === 'compare' && context.compareIds?.length >= 2) {
     const names = context.compareIds.map((id) => byId[id]?.name).filter(Boolean)
-    return [`Compare ${names.join(' and ')}.`, `Which of these planets has the longest orbit?`, `Which values here are measured and which are estimated?`]
+    const list = names.length > 2 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names.join(' and ')
+    return [`Compare ${list}.`, `Which of these planets has the longest orbit?`, `Which values here are measured and which are estimated?`]
   }
   return [
     'Which Earth-sized planets are closest to us?',

@@ -17,6 +17,7 @@ const NAV = [
   { to: '/viewport', label: 'Planet Viewport', planets: true },
   { to: '/orbit', label: 'Orbital Simulator' },
   { to: '/habitability', label: 'Habitability' },
+  { to: '/compare', label: 'Compare', compare: true },
   { to: '/about', label: 'About' },
 ]
 
@@ -25,6 +26,7 @@ export default function AppShell() {
   const [planetsOpen, setPlanetsOpen] = useState(false)
   const planets = useCelestria((st) => st.planets)
   const byId = useCelestria((st) => st.byId)
+  const compareCount = useCelestria((st) => st.compareIds.length)
   // Featured planets only (the full catalogue is ~6,500); "Browse all" leads
   // to Planet Viewport's searchable picker.
   const planetGroups = useMemo(() => {
@@ -109,6 +111,14 @@ export default function AppShell() {
               <div className="app-drawer__row">
                 <NavLink ref={i === 0 ? firstLink : undefined} to={item.to} end={item.end} onClick={() => setOpen(false)}>
                   {item.label}
+                  {item.compare && compareCount > 0 && (
+                    <>
+                      <span className="app-drawer__count" aria-hidden="true">
+                        {compareCount}
+                      </span>
+                      <span className="sr-only"> ({compareCount} selected)</span>
+                    </>
+                  )}
                 </NavLink>
                 {item.planets && (
                   <button
