@@ -37,6 +37,11 @@ export const REFERENCE_STATUS = 'reference'
 /** @returns {ReferenceValue} */
 const ref = (value, unit, basis, source) => Object.freeze({ value, status: REFERENCE_STATUS, unit, basis, source })
 
+/** Earth volumetric mean radius, km (NASA NSSDCA Earth Fact Sheet). Defines 1 R⊕ here. */
+export const EARTH_RADIUS_KM = 6371.0
+/** Nominal solar radius, km (IAU 2015 Resolution B3). Defines 1 R☉ here. */
+export const SUN_RADIUS_KM = 695700
+
 // Earth's sidereal orbit: a = 149.598 × 10⁶ km = 1.0000 AU, e = 0.0167 (NASA).
 const EARTH_A_AU = 1
 const EARTH_E = 0.0167
