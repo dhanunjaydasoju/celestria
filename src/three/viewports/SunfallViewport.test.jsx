@@ -47,6 +47,12 @@ describe('SunfallViewport overlay', () => {
     expect(text(render(planet('Est', q(2.4, 'estimated'))))).toContain('Estimated radius')
   })
 
+  it('captions the hero inset as an enlarged copy, and shows none without a radius', () => {
+    const h = text(render(planet('Terra', q(1))))
+    expect(h).toContain('Each copy Terra Enlarged here; the copies in the scene are to scale')
+    expect(render(planet('Void', { value: null, status: 'missing' }))).not.toContain('sunfall__hero')
+  })
+
   it('keeps bound wording for radius limits', () => {
     const up = text(render(planet('Up', q(2, 'measured', { limit: '<' })), { reducedMotion: true }))
     expect(up).toContain('upper limit only')

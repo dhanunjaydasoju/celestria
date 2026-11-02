@@ -113,12 +113,59 @@
   outline: none;
 }
 
+/* Caption under the hero inset (layout in camera.js heroInsetLayout). */
+.sunfall__hero {
+  position: absolute;
+  left: 24px;
+  bottom: 18px;
+  z-index: 1;
+  width: 150px;
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--color-text-muted);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.sunfall__hero strong,
+.sunfall__hero span {
+  display: block;
+}
+
+.sunfall__hero strong {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.sunfall__hero-short {
+  display: none !important;
+}
+
+.sunfall__hero-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 600px) {
   .sunfall__labels {
     font-size: 11px;
   }
   .sunfall__labels ul {
     font-size: 10.5px;
+  }
+  .sunfall__hero {
+    left: 10px;
+    bottom: 168px;
+    width: 64px;
+    font-size: 9px;
+  }
+  .sunfall__hero-long {
+    display: none !important;
+  }
+  .sunfall__hero-short {
+    display: block !important;
   }
   .sunfall__result {
     bottom: 60px;

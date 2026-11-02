@@ -35,3 +35,31 @@ export function cameraPose(t, total, aspect = 16 / 9) {
   const k = distanceScale(aspect)
   return [Math.sin(p * 1.2) * 2.2, 1.5 - e * 0.6, (CAMERA_Z + (CAMERA_END_Z - CAMERA_Z) * e) * k]
 }
+
+/** Width (px) below which the overlay uses its compact layout. */
+export const COMPACT_WIDTH = 600
+
+/**
+ * Hero inset: one enlarged copy of the planet in a screen corner, so its look
+ * stays readable when the to-scale copies are only a few pixels across.
+ * Pixel coordinates from the canvas's bottom-left corner. The DOM caption in
+ * Sunfall.css uses the same numbers.
+ * @param {number} width   canvas width, px
+ * @param {number} height  canvas height, px
+ */
+export function heroInsetLayout(width, height) {
+  const compact = width < COMPACT_WIDTH
+  const r = compact ? 26 : 48
+  const left = compact ? 16 : 24
+  const bottom = compact ? 200 : 68 // room for the caption below; compact: above the result block
+  return { compact, radius: r, center: [left + r, Math.min(bottom + r, Math.max(r, height - r - 8))] }
+}
+
+/**
+ * Arrival flash size in scene units: a few copy radii, capped so giant
+ * copies do not flood the Sun with glare.
+ * @param {number} copyScene  copy radius, scene units
+ */
+export function flashWorldSize(copyScene) {
+  return Math.min(Math.max(copyScene * 2.5, SUN_SCENE_RADIUS * 0.03), SUN_SCENE_RADIUS * 0.06)
+}

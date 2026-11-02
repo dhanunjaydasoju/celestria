@@ -105,6 +105,15 @@ export default function SunfallViewport({ planet, result, quality = 'auto', redu
         )}
       </div>
 
+      {plan.animate && (
+        <p className="sunfall__hero">
+          <strong>Each copy</strong>
+          <span className="sunfall__hero-name">{planet.name}</span>
+          <span className="sunfall__hero-long">Enlarged here; the copies in the scene are to scale</span>
+          <span className="sunfall__hero-short">(enlarged)</span>
+        </p>
+      )}
+
       <div className="sunfall__result" aria-live="polite">
         {plan.animate ? (
           <>

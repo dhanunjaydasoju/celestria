@@ -8,9 +8,10 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import Starfield from '../shared/Starfield.jsx'
 import Sun from '../sun/Sun.jsx'
-import { CAMERA_Z, FOV, SUN_SCENE_RADIUS, cameraPose } from './camera.js'
+import { CAMERA_Z, FOV, SUN_SCENE_RADIUS, cameraPose, flashWorldSize } from './camera.js'
 import { tick } from './clock.js'
 import { counterText, progressAt } from './plan.js'
+import HeroInset from './HeroInset.jsx'
 import { ArrivalFlashes, PlanetSwarm } from './PlanetSwarm.jsx'
 import { buildTrajectories, seedFrom } from './trajectories.js'
 
@@ -57,8 +58,8 @@ export default function SunfallScene({ planetId, params, result, plan, tier, tie
         : null,
     [plan, planetId],
   )
-  const detail = tierKey === 'high' ? { subdivisions: 4, octaves: 3 } : { subdivisions: 2, octaves: 2 }
-  const flashSize = (plan.animate ? Math.max(plan.size.scene * 5, SUN_SCENE_RADIUS * 0.035) : 0) / Math.tan(((FOV / 2) * Math.PI) / 180)
+  const detail = tierKey === 'high' ? { subdivisions: 4, octaves: 4 } : { subdivisions: 2, octaves: 3 }
+  const flashSize = (plan.animate ? flashWorldSize(plan.size.scene) : 0) / Math.tan(((FOV / 2) * Math.PI) / 180)
 
   return (
     <>
@@ -68,6 +69,7 @@ export default function SunfallScene({ planetId, params, result, plan, tier, tie
         <>
           <PlanetSwarm params={params} paths={paths} count={plan.copies} scale={plan.size.scene} timeRef={timeRef} {...detail} />
           <ArrivalFlashes paths={paths} count={plan.copies} size={flashSize} timeRef={timeRef} />
+          <HeroInset params={params} animate={animate} />
         </>
       )}
       <Driver clockRef={clockRef} timeRef={timeRef} result={result} plan={plan} onCounter={onCounter} onState={onState} />

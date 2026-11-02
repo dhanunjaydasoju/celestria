@@ -6,9 +6,8 @@
 
 import { useFrame } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
-import { AdditiveBlending, BackSide, Color, IcosahedronGeometry, ShaderMaterial, SRGBColorSpace } from 'three'
-import { atmosphereFragment, atmosphereVertex } from './shaders/atmosphere.js'
-import { createSurfaceMaterial } from './surfaceMaterial.js'
+import { IcosahedronGeometry } from 'three'
+import { atmosphereShellScale, createAtmosphereMaterial, createSurfaceMaterial } from './surfaceMaterial.js'
 import { visualParams } from './visualParams.js'
 
 const DETAIL = {
@@ -22,28 +21,6 @@ const geometryCache = new Map()
 function sharedGeometry(subdivisions) {
   if (!geometryCache.has(subdivisions)) geometryCache.set(subdivisions, new IcosahedronGeometry(1, subdivisions))
   return geometryCache.get(subdivisions)
-}
-
-const srgb = (hex) => new Color(hex)
-const lightColor = ([r, g, b]) => new Color().setRGB(r, g, b, SRGBColorSpace)
-
-function createAtmosphereMaterial(params, shellScale) {
-  const a = params.atmosphere
-  return new ShaderMaterial({
-    vertexShader: atmosphereVertex,
-    fragmentShader: atmosphereFragment,
-    side: BackSide,
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-    uniforms: {
-      uColor: { value: srgb(a.color) },
-      uLightPos: { value: [0, 0, 0] },
-      uLightColor: { value: lightColor(params.light.rgb) },
-      uStrength: { value: a.strength },
-      uLimb: { value: Math.sqrt(1 - 1 / (shellScale * shellScale)) },
-    },
-  })
 }
 
 /**
@@ -73,7 +50,7 @@ export default function ProceduralPlanet({
   const params = useMemo(() => paramsProp ?? visualParams(planet), [paramsProp, planet])
   const { subdivisions, octaves } = DETAIL[detail] ?? DETAIL.hero
   const geometry = sharedGeometry(subdivisions)
-  const shellScale = params.atmosphere ? 1 + params.atmosphere.thickness * 2.6 : 1
+  const shellScale = atmosphereShellScale(params)
 
   const surface = useMemo(() => createSurfaceMaterial(params, octaves), [params, octaves])
   const atmosphere = useMemo(

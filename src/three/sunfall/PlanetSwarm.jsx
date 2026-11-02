@@ -1,6 +1,11 @@
-// SUNFALL planet copies and arrival flashes — owner: LEAD (Stage S3).
-// One instanced draw call for every copy and one Points draw call for the
-// flashes, both animated on the GPU from a shared time ref.
+// SUNFALL planet copies and arrival flashes — owner: LEAD (Stage S3, S3.1).
+// One instanced draw call for every copy's surface, one for its atmosphere
+// shell (when the planet's look has one) and one Points call for the
+// flashes, all animated on the GPU from a shared time ref. Copies use the
+// planet's own Planet Viewport materials (visualParams → surfaceMaterial.js)
+// and are lit mainly from the Planet Viewport's key-light direction, so each
+// copy looks like the planet's own view. Orientation varies per copy; the
+// surface pattern (seeded from the planet's name) does not.
 
 import { useFrame } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
@@ -13,13 +18,9 @@ import {
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   ShaderMaterial,
-  SRGBColorSpace,
 } from 'three'
-import { createSurfaceMaterial } from '../planet/surfaceMaterial.js'
-import { starLightRGB } from '../star/starColor.js'
-import { flashFragment, flashVertex, swarmVertex } from './shaders.js'
-
-const SUN_TEFF_K = 5772 // IAU 2015 nominal; copies are lit by our Sun, not their host star
+import { swarmMaterials } from './materials.js'
+import { flashFragment, flashVertex } from './shaders.js'
 
 /**
  * @param {{ params: ReturnType<typeof import('../planet/visualParams.js').visualParams>,
@@ -43,31 +44,29 @@ export function PlanetSwarm({ params, paths, count, scale, subdivisions, octaves
     return g
   }, [paths, count, subdivisions])
 
-  const material = useMemo(() => {
-    const surface = createSurfaceMaterial(params, octaves)
-    const m = new ShaderMaterial({
-      vertexShader: swarmVertex,
-      fragmentShader: surface.fragmentShader,
-      defines: surface.defines,
-      uniforms: { ...surface.uniforms, uScale: { value: scale } },
-    })
-    m.uniforms.uLightPos.value = [0, 0, 0]
-    // A little ambient light so night sides facing the camera keep a hint of the planet's colours.
-    m.uniforms.uAmbient.value = 0.12
-    m.uniforms.uLightColor.value = new Color().setRGB(...starLightRGB(SUN_TEFF_K).rgb, SRGBColorSpace)
-    surface.dispose()
-    return m
-  }, [params, octaves, scale])
+  const { surface, atmosphere } = useMemo(() => swarmMaterials(params, { octaves, scale }), [params, octaves, scale])
 
   useEffect(() => () => geometry.dispose(), [geometry])
-  useEffect(() => () => material.dispose(), [material])
+  useEffect(
+    () => () => {
+      surface.dispose()
+      atmosphere?.dispose()
+    },
+    [surface, atmosphere],
+  )
 
-  const mesh = useRef()
+  const surfaceMesh = useRef()
+  const shellMesh = useRef()
   useFrame(() => {
-    if (mesh.current) mesh.current.material.uniforms.uTime.value = timeRef.current
+    for (const mesh of [surfaceMesh.current, shellMesh.current]) if (mesh) mesh.material.uniforms.uTime.value = timeRef.current
   })
 
-  return <mesh ref={mesh} geometry={geometry} material={material} frustumCulled={false} raycast={() => null} />
+  return (
+    <>
+      <mesh ref={surfaceMesh} geometry={geometry} material={surface} frustumCulled={false} raycast={() => null} />
+      {atmosphere && <mesh ref={shellMesh} geometry={geometry} material={atmosphere} frustumCulled={false} raycast={() => null} />}
+    </>
+  )
 }
 
 /** Brief flare where each copy enters the Sun. */

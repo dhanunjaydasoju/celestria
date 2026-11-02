@@ -13,5 +13,12 @@ export const SUNFALL_LAB_PLANETS = [
   synthetic('synthetic-estimated', 'Synthetic · estimated 2.4 R⊕', { value: 2.4, status: 'estimated' }),
   synthetic('synthetic-tiny', 'Synthetic · 0.3 R⊕ (enlarged)', { value: 0.3, status: 'measured', err: [0.02, -0.02] }),
   synthetic('synthetic-missing', 'Synthetic · radius missing', { value: null, status: 'missing' }),
+  {
+    ...synthetic('synthetic-no-temperature', 'Synthetic · 2 R⊕, no temperature data', { value: 2, status: 'measured' }),
+    eqTempK: { value: null, status: 'missing' },
+    insolationEarth: { value: null, status: 'missing' },
+    semiMajorAxisAU: { value: null, status: 'missing' },
+    star: { ...base.star, teff: { value: null, status: 'missing' }, lumLog: { value: null, status: 'missing' } },
+  },
   synthetic('synthetic-imputed', 'Synthetic · radius imputed only', { value: 2.2, status: 'imputed' }),
 ]

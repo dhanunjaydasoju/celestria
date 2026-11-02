@@ -4,6 +4,7 @@
 import { OrbitControls, Stars } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useMemo } from 'react'
+import { PLANET_KEY_LIGHT } from '../planet/keyLight.js'
 import ProceduralPlanet from '../planet/ProceduralPlanet.jsx'
 import { visualParams } from '../planet/visualParams.js'
 import FitCamera from '../camera/FitCamera.jsx'
@@ -14,7 +15,7 @@ import { SPACE_BACKGROUND } from '../shared/space.js'
 
 // Star placed to the upper left, slightly in front: a gibbous phase with a
 // visible terminator, so night-side glow on hot worlds can be seen.
-const LIGHT_POSITION = [-10, 3, 3.5]
+const LIGHT_POSITION = PLANET_KEY_LIGHT
 
 // Planet radius is 1; atmosphere shells reach ~1.16. Framing fits this
 // sphere to both viewport width and height (see camera/framing.js).

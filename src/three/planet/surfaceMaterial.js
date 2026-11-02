@@ -1,8 +1,9 @@
-// Procedural planet surface material — owner: LEAD. Shared by
-// ProceduralPlanet and the SUNFALL swarm, so copies look exactly like the
-// planet's impression.
+// Procedural planet materials (surface and atmosphere shell) — owner: LEAD.
+// Shared by ProceduralPlanet and the SUNFALL swarm, so copies look like the
+// planet's impression in Planet Viewport.
 
-import { Color, ShaderMaterial, SRGBColorSpace } from 'three'
+import { AdditiveBlending, BackSide, Color, ShaderMaterial, SRGBColorSpace } from 'three'
+import { atmosphereFragment, atmosphereVertex } from './shaders/atmosphere.js'
 import { surfaceFragment, surfaceVertex } from './shaders/surface.js'
 
 const srgb = (hex) => new Color(hex)
@@ -34,6 +35,31 @@ export function createSurfaceMaterial(params, octaves) {
       uLightIntensity: { value: 1.55 },
       uAmbient: { value: 0.035 },
       uTime: { value: 0 },
+    },
+  })
+}
+
+/** Atmosphere shell size relative to the planet (1 when it has none). */
+export function atmosphereShellScale(params) {
+  return params.atmosphere ? 1 + params.atmosphere.thickness * 2.6 : 1
+}
+
+/** Fresnel atmosphere shell (back faces, additive). */
+export function createAtmosphereMaterial(params, shellScale) {
+  const a = params.atmosphere
+  return new ShaderMaterial({
+    vertexShader: atmosphereVertex,
+    fragmentShader: atmosphereFragment,
+    side: BackSide,
+    transparent: true,
+    depthWrite: false,
+    blending: AdditiveBlending,
+    uniforms: {
+      uColor: { value: srgb(a.color) },
+      uLightPos: { value: [0, 0, 0] },
+      uLightColor: { value: lightColor(params.light.rgb) },
+      uStrength: { value: a.strength },
+      uLimb: { value: Math.sqrt(1 - 1 / (shellScale * shellScale)) },
     },
   })
 }
