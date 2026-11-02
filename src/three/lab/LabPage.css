@@ -213,3 +213,23 @@
     bottom: auto;
   }
 }
+
+.lab-sun__panel--top {
+  top: 52px;
+  bottom: auto;
+}
+
+.lab-sun__panel select {
+  max-width: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  font: 12px var(--font-ui);
+}
+
+.lab-sun__debug {
+  max-height: 160px;
+  margin: 0;
+  overflow: auto;
+  font-size: 10.5px;
+}

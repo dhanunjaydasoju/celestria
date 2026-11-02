@@ -1,0 +1,140 @@
+/* SUNFALL viewport overlay — owner: LEAD (Stage S3). */
+
+.sunfall__labels {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 1;
+  max-width: min(360px, calc(100% - 2 * var(--space-4)));
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.sunfall__labels p {
+  margin: 0;
+}
+
+.sunfall__labels p:nth-child(2) {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.sunfall__labels ul {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-4);
+}
+
+.sunfall__kicker {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.sunfall__result {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(64px, 10vh, 96px);
+  z-index: 1;
+  width: min(640px, calc(100% - 2 * var(--space-4)));
+  transform: translateX(-50%);
+  text-align: center;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+}
+
+.sunfall__result p {
+  margin: 0;
+}
+
+.sunfall__counter {
+  min-height: 1.1em;
+  font-size: clamp(26px, 8vw, 64px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.sunfall__unit {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 80%, transparent);
+}
+
+.sunfall__headline {
+  margin-top: var(--space-3) !important;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--color-text);
+}
+
+.sunfall__range,
+.sunfall__note {
+  margin-top: var(--space-2) !important;
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
+}
+
+.sunfall__controls {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-4);
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  transform: translateX(-50%);
+}
+
+.sunfall__controls button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid color-mix(in srgb, var(--color-text) 25%, transparent);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  color: var(--color-text);
+  font: 12.5px var(--font-ui);
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.sunfall__controls button:hover,
+.sunfall__controls button:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .sunfall__labels {
+    font-size: 11px;
+  }
+  .sunfall__labels ul {
+    font-size: 10.5px;
+  }
+  .sunfall__result {
+    bottom: 60px;
+  }
+  .sunfall__unit {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+  }
+  .sunfall__controls {
+    flex-wrap: nowrap;
+    width: calc(100% - 2 * var(--space-3));
+    gap: 6px;
+  }
+  .sunfall__controls button {
+    padding: 6px 9px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}

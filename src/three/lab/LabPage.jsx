@@ -10,6 +10,7 @@
 //   /lab/earth?t=<s>&still=1     homepage Earth hero on its own (craft at t seconds; still = no motion)
 //   /lab/soyuz                   close-up of the Soyuz-inspired spacecraft
 //   /lab/sun?q=&fit=&still=1     SUNFALL Sun on its own, with quality, framing and layer controls
+//   /lab/sunfall?id=&q=&still=1  SUNFALL swarm: copies of a planet falling into the Sun
 
 import { useEffect, useMemo, useState } from 'react'
 import SystemExplorer from '../../pages/explore/SystemExplorer.jsx'
@@ -23,6 +24,7 @@ import EarthHeroScene from '../viewports/EarthHeroScene.jsx'
 import LabGallery from './LabGallery.jsx'
 import LabSoyuz from './LabSoyuz.jsx'
 import LabSun from './LabSun.jsx'
+import LabSunfall from './LabSunfall.jsx'
 import { labTestSystemPlanets } from './testSystems.js'
 
 const SYSTEM_PLANETS = [...labPlanets.filter((p) => !p.synthetic), ...labTestSystemPlanets]
@@ -37,6 +39,7 @@ const MODES = [
   { key: 'earth', label: 'Earth hero' },
   { key: 'soyuz', label: 'Soyuz' },
   { key: 'sun', label: 'Sun (SUNFALL)' },
+  { key: 'sunfall', label: 'SUNFALL swarm' },
 ]
 
 export default function LabPage() {
@@ -82,7 +85,7 @@ export default function LabPage() {
     )
   }
 
-  if (viewport === 'earth' || viewport === 'soyuz' || viewport === 'sun') {
+  if (viewport === 'earth' || viewport === 'soyuz' || viewport === 'sun' || viewport === 'sunfall') {
     return (
       <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - var(--header-height))' }}>
         <nav className="lab__modes lab__modes--floating" style={{ zIndex: 2 }}>
@@ -97,6 +100,8 @@ export default function LabPage() {
             <EarthHeroScene key={search.get('t')} startTime={Number(search.get('t')) || 0} reducedMotion={search.get('still') === '1'} />
           ) : viewport === 'sun' ? (
             <LabSun />
+          ) : viewport === 'sunfall' ? (
+            <LabSunfall />
           ) : (
             <LabSoyuz />
           )}

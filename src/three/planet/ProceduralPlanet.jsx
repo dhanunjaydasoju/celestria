@@ -8,7 +8,7 @@ import { useFrame } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { AdditiveBlending, BackSide, Color, IcosahedronGeometry, ShaderMaterial, SRGBColorSpace } from 'three'
 import { atmosphereFragment, atmosphereVertex } from './shaders/atmosphere.js'
-import { surfaceFragment, surfaceVertex } from './shaders/surface.js'
+import { createSurfaceMaterial } from './surfaceMaterial.js'
 import { visualParams } from './visualParams.js'
 
 const DETAIL = {
@@ -26,35 +26,6 @@ function sharedGeometry(subdivisions) {
 
 const srgb = (hex) => new Color(hex)
 const lightColor = ([r, g, b]) => new Color().setRGB(r, g, b, SRGBColorSpace)
-
-function createSurfaceMaterial(params, octaves) {
-  const s = params.surface
-  return new ShaderMaterial({
-    vertexShader: surfaceVertex,
-    fragmentShader: surfaceFragment,
-    defines: { OCTAVES: octaves },
-    uniforms: {
-      uType: { value: s.type },
-      uSeed: { value: s.seed },
-      uColorLow: { value: srgb(s.colors[0]) },
-      uColorMid: { value: srgb(s.colors[1]) },
-      uColorHigh: { value: srgb(s.colors[2]) },
-      uGlowColor: { value: srgb(s.glowColor) },
-      uGlow: { value: s.glow },
-      uIce: { value: s.ice },
-      uBandFreq: { value: s.bandFreq },
-      uBandContrast: { value: s.bandContrast },
-      uTurbulence: { value: s.turbulence },
-      uNoiseScale: { value: s.noiseScale },
-      uWrap: { value: s.wrap },
-      uLightPos: { value: [0, 0, 0] },
-      uLightColor: { value: lightColor(params.light.rgb) },
-      uLightIntensity: { value: 1.55 },
-      uAmbient: { value: 0.035 },
-      uTime: { value: 0 },
-    },
-  })
-}
 
 function createAtmosphereMaterial(params, shellScale) {
   const a = params.atmosphere
