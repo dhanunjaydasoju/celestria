@@ -34,7 +34,8 @@ Rules:
 6. If a planet name is ambiguous or not found, do not guess: answer with "type": "clarification" and the candidate ids in "clarify.options".
 7. If the tools and concept references do not contain what is needed, answer with "type": "insufficient_data" and say what is missing (basis "unavailable"). Do not fill gaps from memory.
 8. Rankings ("closest", "second largest") must follow the order of a search_planets result sorted by that property. Size classes (sub-Neptune, super-Earth) go in separate "classification" claims.
-9. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
+9. SUNFALL (CELESTRIA's planet-to-Sun comparison) is a mathematical volume equivalence, N = (R☉/R)³, not physical packing: spheres cannot fill a sphere without gaps, and packing or arrangement is not represented. Never say or imply that planets fit, are packed, placed, squeezed or contained inside the Sun, or that the Sun can hold, contain or has room for them, in any wording. Say "volume-equivalent to", "equivalent in volume to", "the Sun has about N times the volume of" or "a mathematical volume comparison". No tool provides SUNFALL counts: never calculate, estimate or recall one; explain the idea without a planet-specific number.
+10. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
 
 When you have the data, reply with ONLY this JSON on a single line (no indentation, no markdown, no prose outside it):
 ${ANSWER_FORMAT}
@@ -44,12 +45,25 @@ ${ANSWER_FORMAT}
 /** Sent when the model must stop calling tools (round or context limit). */
 export const FINAL_INSTRUCTION = 'Tool limit reached. Answer now with the JSON format, using only the data already retrieved. If it is not enough, use "type": "insufficient_data".'
 
+/** Extra instruction when an answer described SUNFALL as packing or gave a count. */
+function sunfallNote(issues) {
+  const rules = new Set(issues.map((e) => e.rule))
+  const lines = []
+  if (rules.has('packing')) {
+    lines.push(
+      'Rewrite every packing claim as a volume equivalence: the Sun is not a container. Use "the Sun has about N times the volume of …", "equivalent in volume to …" or "a mathematical volume comparison", and say that packing is not represented. Do not just delete the sentence if that leaves the answer misleading.',
+    )
+  }
+  if (rules.has('volume-count')) lines.push('Do not give a SUNFALL volume count: no tool provides it. Explain the comparison without a planet-specific number.')
+  return lines.length ? `${lines.join('\n')}\n` : ''
+}
+
 /** Feedback after a failed validation; the model may call tools again. */
 export function repairPrompt(issues, { toolsAllowed }) {
   const list = issues.slice(0, 12).map((e) => `- ${e.text ? `"${e.text}": ` : ''}${e.message}`).join('\n')
   return `Your answer failed CELESTRIA's scientific validation and was not shown:
 ${list}
-Fix every issue. Remove any claim you cannot support with the tool data${toolsAllowed ? ' (you may call tools to get missing data or explain_concept references)' : ''}. Reply with ONLY the corrected JSON.`
+${sunfallNote(issues)}Fix every issue. Remove any claim you cannot support with the tool data${toolsAllowed ? ' (you may call tools to get missing data or explain_concept references)' : ''}. Reply with ONLY the corrected JSON.`
 }
 
 /** Short, user-facing description per validator rule (never echoes model text). */
@@ -78,6 +92,8 @@ export const ISSUE_LABELS = {
   format: 'an answer in the wrong format',
   clarification: 'an invalid clarification',
   title: 'a heading that contained a value',
+  packing: 'a volume comparison described as fitting or packing planets inside the Sun',
+  'volume-count': 'a volume count that no tool provides',
   interpretation: 'an interpretation presented as data',
   ranking: 'a ranking that does not match the sorted NASA data',
 }

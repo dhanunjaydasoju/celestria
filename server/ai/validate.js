@@ -13,10 +13,14 @@
 //   • science   — no composition, habitable-zone placement or life claims
 //                 presented as fact; speculation must be hedged
 //   • sources   — citations, links and planet ids must come from the evidence
+//   • SUNFALL   — a volume equivalence is never described as packing planets
+//                 into the Sun, and no volume count is given unless a tool
+//                 provided it (packing.js)
 //
 // It never fixes an answer: it reports errors so the caller can retry or
 // fall back. Fully deterministic; no model involved.
 
+import { isVolumeEquivalence, packingClaims, splitSentences, volumeCounts } from './packing.js'
 import { CONSTELLATIONS } from './tools/catalog.js'
 import { planetLinks } from './tools/format.js'
 
@@ -347,6 +351,7 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     .map((r) => ({ sortBy: r.args?.sort_by ?? 'distance', order: r.args?.order === 'desc' ? 'desc' : 'asc', names: r.result.planets.map((p) => p.name) }))
   for (const c of concepts) for (const ref of c.result.references ?? []) usedSources.set(ref.label, { label: ref.label, url: ref.url ?? null })
   let checked = 0
+  const claimTexts = [] // in order, for the cross-claim SUNFALL check
 
   answer.sections.forEach((section, si) => {
     const claims = section?.claims
@@ -367,8 +372,11 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
         else referenced.add(id)
       }
       checkClaim(claim.text, bases, where)
+      checkVolumeCount(claim.text, where)
+      claimTexts.push({ text: claim.text, where })
     })
   })
+  checkPacking()
   for (const id of answer.planets ?? []) {
     if (!ev.planets.has(id)) fail({}, 'planet-ref', `Planet id "${id}" is not in the tool results`)
     else referenced.add(id)
@@ -620,6 +628,31 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
         const actual = candidates[0].names.indexOf(subject) + 1
         fail(where, 'ranking', `${subject} is number ${actual} in the search sorted by ${sortBy}, not ${rank}`)
       }
+    }
+  }
+
+  // SUNFALL: a volume equivalence, never physical packing (packing.js).
+  function checkPacking() {
+    const names = [...ev.names]
+    const message =
+      'Describes the volume comparison as physically fitting, packing or holding planets inside the Sun. It is a volume equivalence only: rewrite as "the Sun has about N times the volume of …" or "equivalent in volume to …", with N only if a tool result gives it'
+    for (const hit of packingClaims(claimTexts.map((c) => c.text), { names })) fail(claimTexts[hit.index].where, 'packing', message)
+    answer.sections.forEach((section, si) => {
+      if (typeof section?.title === 'string' && packingClaims([section.title], { names }).length) {
+        fail({ section: si, text: section.title.slice(0, 80) }, 'packing', message)
+      }
+    })
+  }
+
+  // No SUNFALL count unless a tool result contains it: number words always
+  // fail (no tool writes them); digits must match the evidence.
+  function checkVolumeCount(raw, where) {
+    const message = 'Gives a volume-equivalence count that no tool result provides. Do not calculate or estimate it: explain the comparison without a planet-specific number'
+    if (volumeCounts(raw).length) return fail(where, 'volume-count', message)
+    for (const s of splitSentences(raw)) {
+      if (!isVolumeEquivalence(s)) continue
+      const unsupported = extractNumbers(s).some((n) => !ev.numbers.some((e) => sameNumber(n.str, e.value)))
+      if (unsupported) return fail(where, 'volume-count', message)
     }
   }
 
