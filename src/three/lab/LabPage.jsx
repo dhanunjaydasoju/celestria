@@ -9,6 +9,7 @@
 //   /lab/orbit?id=<planet-id>    Orbital Simulator over lab fixtures
 //   /lab/earth?t=<s>&still=1     homepage Earth hero on its own (craft at t seconds; still = no motion)
 //   /lab/soyuz                   close-up of the Soyuz-inspired spacecraft
+//   /lab/sun?q=&fit=&still=1     SUNFALL Sun on its own, with quality, framing and layer controls
 
 import { useEffect, useMemo, useState } from 'react'
 import SystemExplorer from '../../pages/explore/SystemExplorer.jsx'
@@ -21,6 +22,7 @@ import { labPlanets, labSource } from './fixtures.js'
 import EarthHeroScene from '../viewports/EarthHeroScene.jsx'
 import LabGallery from './LabGallery.jsx'
 import LabSoyuz from './LabSoyuz.jsx'
+import LabSun from './LabSun.jsx'
 import { labTestSystemPlanets } from './testSystems.js'
 
 const SYSTEM_PLANETS = [...labPlanets.filter((p) => !p.synthetic), ...labTestSystemPlanets]
@@ -34,6 +36,7 @@ const MODES = [
   { key: 'orbit', label: 'Orbit' },
   { key: 'earth', label: 'Earth hero' },
   { key: 'soyuz', label: 'Soyuz' },
+  { key: 'sun', label: 'Sun (SUNFALL)' },
 ]
 
 export default function LabPage() {
@@ -79,7 +82,7 @@ export default function LabPage() {
     )
   }
 
-  if (viewport === 'earth' || viewport === 'soyuz') {
+  if (viewport === 'earth' || viewport === 'soyuz' || viewport === 'sun') {
     return (
       <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - var(--header-height))' }}>
         <nav className="lab__modes lab__modes--floating" style={{ zIndex: 2 }}>
@@ -90,7 +93,13 @@ export default function LabPage() {
           ))}
         </nav>
         <div style={{ position: 'absolute', inset: 0 }}>
-          {viewport === 'earth' ? <EarthHeroScene key={search.get('t')} startTime={Number(search.get('t')) || 0} reducedMotion={search.get('still') === '1'} /> : <LabSoyuz />}
+          {viewport === 'earth' ? (
+            <EarthHeroScene key={search.get('t')} startTime={Number(search.get('t')) || 0} reducedMotion={search.get('still') === '1'} />
+          ) : viewport === 'sun' ? (
+            <LabSun />
+          ) : (
+            <LabSoyuz />
+          )}
         </div>
       </div>
     )
