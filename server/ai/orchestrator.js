@@ -222,7 +222,7 @@ export function createAstronomer({ config, client, limiter, getToolContext, log 
         } catch (err) {
           stats.costUsd += ticket.settleCall(null)
           if (!(err instanceof ProviderError)) throw err
-          stats.providerErrors.push({ model, code: err.code })
+          stats.providerErrors.push({ model, code: err.code, ...(err.providerCode ? { providerCode: err.providerCode } : {}) })
           // Fallback only for retryable failures, once, and then stay on it.
           if (err.retryable && !stats.fallbackUsed && model !== config.fallbackModel && !runSignal.aborted) {
             stats.fallbackUsed = true

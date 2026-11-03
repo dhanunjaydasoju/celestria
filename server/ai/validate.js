@@ -24,7 +24,7 @@
 // fall back. Fully deterministic; no model involved.
 
 import { ATTRIBUTED_UNITS, compatible, describeEntity, mentions, subjectAt } from './entities.js'
-import { isVolumeEquivalence, packingClaims, splitSentences, volumeCounts } from './packing.js'
+import { isVolumeEquivalence, packingClaims, packingMisnomers, splitSentences, volumeCounts } from './packing.js'
 import { CONSTELLATIONS } from './tools/catalog.js'
 import { planetLinks } from './tools/format.js'
 
@@ -348,6 +348,9 @@ const LIFE = /\b(life|living organisms|biosignatures?|inhabited|aliens?|extrater
 const EARTH_LIKE = /\b(earth[- ](like|twin)|second earth|earth 2\.0)\b(?!\s+(size|radius|mass|in size|in radius|in mass))/i
 
 const TYPE_LABELS = /\b(rocky world|sub-neptune|neptune-like|gas giant)\b/gi
+// A size class attributed to temperature ("a rocky world based on its size and temperature").
+const SIZE_FROM_TEMPERATURE = /\b(rocky world|sub-neptune|neptune-like|gas giant)s?\b[^.;]*?\b(based on|from|by|using|determined by|derived from|according to)\b[^.;]{0,40}\btemperatures?\b/i
+const THERMAL_TERMS = /\b(scorching|hot|warm|temperate|cold)\b/i
 const CLASS_TERMS = /\b(rocky world|sub-neptune|neptune-like|gas giant|super-earth|mini-neptune|hot jupiter|ice giant|terrestrial|scorching|hot|warm|temperate|cold)s?\b/i
 const SIZE_CLASS = /\b(sub-neptunes?|super-earths?|neptune-like|gas giants?|hot jupiters?|mini-neptunes?|rocky worlds?)\b/i
 
@@ -564,6 +567,9 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
       fail(where, 'classification', 'A classification must say it is a size/temperature class, not a measured composition')
     }
     if (has('classification')) checkClassTerms(raw, where)
+    if (has('classification') && SIZE_FROM_TEMPERATURE.test(raw) && !THERMAL_TERMS.test(raw)) {
+      fail(where, 'classification', "CELESTRIA's size class (rocky world, sub-Neptune, Neptune-like, gas giant) comes from radius alone (mass only when no radius is known); the temperature band is a separate label")
+    }
     if (HZ_PLACEMENT.test(raw) && !negated(raw, HZ_PLACEMENT)) {
       const supported = checkZoneClaim(raw, bases, where)
       if (supported === null) {
@@ -718,6 +724,11 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     const message =
       'Describes the volume comparison as physically fitting, packing or holding planets inside the Sun. It is a volume equivalence only: rewrite as "the Sun has about N times the volume of …" or "equivalent in volume to …", with N only if a tool result gives it'
     for (const hit of packingClaims(claimTexts.map((c) => c.text), { names })) fail(claimTexts[hit.index].where, 'packing', message)
+    for (const c of claimTexts) {
+      if (packingMisnomers(c.text).length) {
+        fail(c.where, 'packing', 'A volume equivalence assumes no packing at all ("perfect packing" would still leave gaps): say it compares mathematical volumes without modelling physical arrangement or packing gaps')
+      }
+    }
     answer.sections.forEach((section, si) => {
       if (typeof section?.title === 'string' && packingClaims([section.title], { names }).length) {
         fail({ section: si, text: section.title.slice(0, 80) }, 'packing', message)

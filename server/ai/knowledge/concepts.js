@@ -166,7 +166,7 @@ export const CONCEPTS = {
       "Example of the cube rule: if one sphere's radius is 10 times another's, its volume is 1,000 times larger.",
       "SUNFALL divides the Sun's volume by a planet's volume. The result is a mathematical volume equivalence, not the number of planets that could physically fit inside the Sun.",
       'Identical spheres cannot fill space without gaps. Even the densest possible arrangement of equal spheres fills only about 74% of the space (π ÷ (3√2) ≈ 0.7405, the Kepler conjecture, proved by Hales in 2005).',
-      'Any physical arrangement of solid spheres therefore leaves empty space between them; SUNFALL does not model packing or arrangement at all.',
+      'Any physical arrangement of solid spheres therefore leaves empty space between them. SUNFALL compares mathematical volumes without modelling physical arrangement or packing gaps.',
       'Volume says nothing about mass: a larger volume does not mean a larger mass, and two bodies of equal volume can have very different masses.',
     ],
     references: [

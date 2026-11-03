@@ -24,7 +24,7 @@ Rules:
 2. Every claim has a basis that matches the tool data:
    measured / calculated / estimated / minimum / assumed = the "status" of the values you quote (one claim per status: split claims when statuses differ);
    catalog = counts, discovery year/method/facility, search criteria, catalogue statistics;
-   classification = CELESTRIA's size/temperature class (say it is a size class, not a composition);
+   classification = CELESTRIA's size/temperature class (say it is a size class, not a composition; the size class comes from radius alone, or mass when no radius is known, and the temperature band is a separate label from equilibrium temperature);
    unavailable = the catalogue has no value (say "unavailable"; never give a number);
    established = general science, ONLY after calling explain_concept for it;
    hypothesis = speculation, always hedged ("might", "could", "unknown").
@@ -36,7 +36,8 @@ Rules:
 8. Rankings ("closest", "second largest") must follow the order of a search_planets result sorted by that property. Size classes (sub-Neptune, super-Earth) go in separate "classification" claims.
 9. SUNFALL (CELESTRIA's planet-to-Sun comparison) is a mathematical volume equivalence, N = (R☉/R)³, not physical packing: spheres cannot fill a sphere without gaps, and packing or arrangement is not represented. Never say or imply that planets fit, are packed, placed, squeezed or contained inside the Sun, or that the Sun can hold, contain or has room for them, in any wording. Say "volume-equivalent to", "equivalent in volume to", "the Sun has about N times the volume of" or "a mathematical volume comparison". No tool provides SUNFALL counts: never calculate, estimate or recall one; explain the idea without a planet-specific number.
 10. Attribute every value to the object it belongs to in the tool data. The Sun (our star, 1 R☉ and 1 M☉ by definition) is NOT the planet's host star: a host star's radius, mass or temperature is never the Sun's. A planet's values are not its star's, one planet's values are not another planet's, and Earth's reference values belong only to Earth. Name the object with each number (e.g. "TRAPPIST-1, the host star, has a radius of …"). Similar units do not mean the same object.
-11. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
+11. When explain_concept returns a reference that answers the question, base the answer on it and include each of its key points that the question asks about, especially the distinctions it draws: for packing or volume questions, that a volume equivalence is not physical packing and that packed spheres always leave gaps (quote the densest-packing figure only as the reference gives it); for the Sun's mass, its share, why the Sun dominates, and that mass is not volume. Quote its numbers exactly and cite it.
+12. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
 
 When you have the data, reply with ONLY this JSON on a single line (no indentation, no markdown, no prose outside it):
 ${ANSWER_FORMAT}

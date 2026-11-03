@@ -117,7 +117,9 @@ function visualType(p) {
     label: `${ARCHETYPE_LABELS[size.type]}${thermal.band !== 'unknown' ? ` · ${THERMAL_LABELS[thermal.band]}` : ''}`,
     status: 'classification',
     basis: size.sizeBasis
-      ? `Size class from ${size.sizeBasis.field === 'radiusEarth' ? 'radius' : 'mass'} thresholds (≤1.6, 1.6–4, 4–8, >8 R⊕); temperature band from ${thermal.thermalBasis ? 'equilibrium temperature' : 'no data'}`
+      ? `Size class "${ARCHETYPE_LABELS[size.type]}" from ${
+          size.sizeBasis.field === 'radiusEarth' ? 'radius alone (below 1.6, 1.6–4, 4–8, 8+ R⊕)' : 'mass alone, because no radius is known (below 2, 2–10, 10–50, 50+ M⊕)'
+        }. ${thermal.thermalBasis ? `The temperature band "${THERMAL_LABELS[thermal.band]}" is a separate label, from equilibrium temperature.` : 'No temperature band (no temperature data).'}`
       : 'Insufficient data to classify',
     caveat: 'A visual size/temperature class, not a measured composition.',
   }

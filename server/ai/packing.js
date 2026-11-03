@@ -80,6 +80,27 @@ export function packingClaims(texts, { names = [] } = {}) {
   return found
 }
 
+// "Assumes perfect packing": a volume equivalence assumes no packing at all,
+// and "perfect packing" usually means the densest real packing (about 74 %),
+// which still leaves gaps. Allowed only when negated in the same clause.
+const MISNOMER = /\b(?:assum\w*|impl(?:y|ies|ying)|requir\w*|treat\w*\s+\w+\s+as|as if)\b[^.;]{0,30}?\b(?:perfect|ideal|tight|complete|gap-?free|100\s?%)\s+(?:sphere\s+)?packing\b|\bperfect(?:ly)?\s+pack(?:ing|ed)\b/i
+const CLAUSE_NEGATION = /\b(?:not|never|no|without|nor)\b|n['’]t\b/i
+
+/**
+ * Sentences that describe a volume equivalence as some kind of (perfect)
+ * packing.
+ * @param {string} text
+ * @returns {string[]}
+ */
+export function packingMisnomers(text) {
+  return sentences(text).filter((s) => {
+    const m = MISNOMER.exec(s)
+    if (!m) return false
+    const clauseStart = Math.max(s.lastIndexOf(',', m.index), s.lastIndexOf(' and ', m.index), s.lastIndexOf(' but ', m.index), 0)
+    return !CLAUSE_NEGATION.test(s.slice(clauseStart, m.index))
+  })
+}
+
 // ── Volume counts ──────────────────────────────────────────────────────────
 
 // A volume equivalence: "times the volume", "volumes of", "Earth volumes",

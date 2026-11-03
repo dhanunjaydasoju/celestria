@@ -13,12 +13,14 @@ export class ProviderError extends Error {
    * @param {string} message
    * @param {{ retryable: boolean, status?: number }} opts
    */
-  constructor(code, message, { retryable, status } = {}) {
+  constructor(code, message, { retryable, status, providerCode } = {}) {
     super(message)
     this.name = 'ProviderError'
     this.code = code
     this.retryable = Boolean(retryable)
     this.status = status ?? null
+    // The provider's own error code (e.g. "capacity_exhausted"), for logs.
+    this.providerCode = typeof providerCode === 'string' && /^[\w.-]{1,40}$/.test(providerCode) ? providerCode : null
   }
 }
 
@@ -70,7 +72,9 @@ export function createFeatherlessClient(config, { fetch: doFetch = globalThis.fe
       throw new ProviderError('malformed', 'Response was not JSON', { retryable: true, status: res.status })
     }
     // Featherless can answer HTTP 200 with { error: {...} } and no choices.
-    if (json?.error) throw new ProviderError('provider_error', `Provider error: ${clip(json.error.message ?? json.error.code ?? JSON.stringify(json.error))}`, { retryable: true, status: res.status })
+    if (json?.error) {
+      throw new ProviderError('provider_error', `Provider error: ${clip(json.error.message ?? json.error.code ?? JSON.stringify(json.error))}`, { retryable: true, status: res.status, providerCode: json.error.code })
+    }
     const choice = json?.choices?.[0]
     const message = choice?.message
     if (!message || typeof message !== 'object') throw new ProviderError('malformed', 'Response had no message', { retryable: true, status: res.status })
