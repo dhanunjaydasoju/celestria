@@ -481,8 +481,11 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
       checked++
       const scale = n.unit === '%' ? 100 : 1
       const unitWanted = n.unit === '%' ? '×' : n.unit
-      const valueHits = ev.numbers.filter((e) => sameNumber(n.str, e.value, scale))
-      const hits = valueHits.filter((e) => unitCompatible(unitWanted, e.unit))
+      // A percentage matches a ratio (×100) or, exactly, a percentage the
+      // references state ("about 99.8%" of a curated concept).
+      const percents = n.unit === '%' ? ev.numbers.filter((e) => e.unit === '%' && sameNumber(n.str, e.value)) : []
+      const valueHits = [...ev.numbers.filter((e) => sameNumber(n.str, e.value, scale)), ...percents]
+      const hits = valueHits.filter((e) => unitCompatible(unitWanted, e.unit) || percents.includes(e))
       if (!hits.length) {
         const otherUnits = [...new Set(valueHits.map((e) => e.unit).filter(Boolean))]
         if (otherUnits.length && n.unit) {

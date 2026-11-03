@@ -155,6 +155,38 @@ export const CONCEPTS = {
     keyPoints: ['Each value keeps its own reference.', 'Some values are calculated by the archive from others (marked calculated).', 'Missing values stay missing: CELESTRIA does not fill them in for scientific answers.'],
     references: [NASA('/docs/pscp_about.html', 'NASA Exoplanet Archive: About the PSCompPars table')],
   },
+  // SUNFALL context (added after the live AI evaluations). No planet-specific
+  // counts and no packing claims: SUNFALL shows a volume equivalence only.
+  volume_equivalence: {
+    title: 'Volume equivalence versus sphere packing',
+    aliases: ['volume comparison', 'volume equivalence', 'volume equivalent', 'volume ratio', 'compare the volume', 'volume of a sphere', 'sphere volume', 'sphere packing', 'packing', 'kepler conjecture', 'sunfall', 'fit inside', 'fit inside the sun', 'fit in the sun'],
+    summary:
+      "The volume of a sphere is V = 4/3 πr³, so volume grows with the cube of the radius: doubling the radius makes the volume 8 times larger. The volume ratio of two spheres is (radius of the larger ÷ radius of the smaller)³. A volume equivalence states how many times larger one volume is than another; it is a calculation, not a count of objects arranged in space.",
+    keyPoints: [
+      "Example of the cube rule: if one sphere's radius is 10 times another's, its volume is 1,000 times larger.",
+      "SUNFALL divides the Sun's volume by a planet's volume. The result is a mathematical volume equivalence, not the number of planets that could physically fit inside the Sun.",
+      'Identical spheres cannot fill space without gaps. Even the densest possible arrangement of equal spheres fills only about 74% of the space (π ÷ (3√2) ≈ 0.7405, the Kepler conjecture, proved by Hales in 2005).',
+      'Any physical arrangement of solid spheres therefore leaves empty space between them; SUNFALL does not model packing or arrangement at all.',
+      'Volume says nothing about mass: a larger volume does not mean a larger mass, and two bodies of equal volume can have very different masses.',
+    ],
+    references: [
+      { label: 'Weisstein, "Sphere", MathWorld (Wolfram)', url: 'https://mathworld.wolfram.com/Sphere.html' },
+      { label: 'Weisstein, "Kepler Conjecture", MathWorld (Wolfram)', url: 'https://mathworld.wolfram.com/KeplerConjecture.html' },
+      { label: 'Hales 2005, "A proof of the Kepler conjecture", Annals of Mathematics 162, 1065–1185', url: 'https://doi.org/10.4007/annals.2005.162.1065' },
+    ],
+  },
+  sun_mass_share: {
+    title: "The Sun's share of Solar System mass",
+    aliases: ['solar system mass', "solar system's mass", 'solar system mass distribution', 'mass of the solar system', 'mass distribution', "sun's share", 'sun mass share', 'how massive is the sun'],
+    summary:
+      "The Sun accounts for about 99.8% of the Solar System's mass (NASA). As the solar nebula collapsed under its own gravity, most of its material was pulled towards the centre and formed the Sun.",
+    keyPoints: [
+      'Much of the remaining material formed the planets and other objects that orbit the Sun; the rest of the leftover gas and dust was blown away by the young Sun’s early solar wind. That is why the planets together hold only a small fraction of the total mass.',
+      'The Sun is a huge ball of hydrogen and helium held together by its own gravity, about 100 times wider than Earth.',
+      'Mass and volume are different quantities: mass is the amount of matter, volume is the space a body occupies. A volume comparison (such as SUNFALL) says nothing about mass.',
+    ],
+    references: [{ label: 'NASA Science, "Sun: Facts"', url: 'https://science.nasa.gov/sun/facts/' }],
+  },
 }
 
 const norm = (s) => String(s ?? '').toLowerCase().replace(/[_\s-]+/g, ' ').replace(/[^a-z0-9' ]/g, '').trim()
