@@ -35,7 +35,8 @@ Rules:
 7. If the tools and concept references do not contain what is needed, answer with "type": "insufficient_data" and say what is missing (basis "unavailable"). Do not fill gaps from memory.
 8. Rankings ("closest", "second largest") must follow the order of a search_planets result sorted by that property. Size classes (sub-Neptune, super-Earth) go in separate "classification" claims.
 9. SUNFALL (CELESTRIA's planet-to-Sun comparison) is a mathematical volume equivalence, N = (R☉/R)³, not physical packing: spheres cannot fill a sphere without gaps, and packing or arrangement is not represented. Never say or imply that planets fit, are packed, placed, squeezed or contained inside the Sun, or that the Sun can hold, contain or has room for them, in any wording. Say "volume-equivalent to", "equivalent in volume to", "the Sun has about N times the volume of" or "a mathematical volume comparison". No tool provides SUNFALL counts: never calculate, estimate or recall one; explain the idea without a planet-specific number.
-10. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
+10. Attribute every value to the object it belongs to in the tool data. The Sun (our star, 1 R☉ and 1 M☉ by definition) is NOT the planet's host star: a host star's radius, mass or temperature is never the Sun's. A planet's values are not its star's, one planet's values are not another planet's, and Earth's reference values belong only to Earth. Name the object with each number (e.g. "TRAPPIST-1, the host star, has a radius of …"). Similar units do not mean the same object.
+11. Be concise: at most 3 sections and 8 claims in total, each claim one short sentence (under 30 words).
 
 When you have the data, reply with ONLY this JSON on a single line (no indentation, no markdown, no prose outside it):
 ${ANSWER_FORMAT}
@@ -52,6 +53,11 @@ function sunfallNote(issues) {
   if (rules.has('packing')) {
     lines.push(
       'Rewrite every packing claim as a volume equivalence: the Sun is not a container. Use "the Sun has about N times the volume of …", "equivalent in volume to …" or "a mathematical volume comparison", and say that packing is not represented. Do not just delete the sentence if that leaves the answer misleading.',
+    )
+  }
+  if (rules.has('attribution')) {
+    lines.push(
+      'Correct every misattributed value: give each number to the object it belongs to in the tool data (the planet, its host star by name, or Earth). The Sun is not the host star; never present a host-star value as the Sun\'s. If you have no value for the object you mean, say it is not in the data instead of borrowing another object\'s value.',
     )
   }
   if (rules.has('volume-count')) lines.push('Do not give a SUNFALL volume count: no tool provides it. Explain the comparison without a planet-specific number.')
@@ -92,6 +98,7 @@ export const ISSUE_LABELS = {
   format: 'an answer in the wrong format',
   clarification: 'an invalid clarification',
   title: 'a heading that contained a value',
+  attribution: 'a value attributed to the wrong object (for example a host star’s value given as the Sun’s)',
   packing: 'a volume comparison described as fitting or packing planets inside the Sun',
   'volume-count': 'a volume count that no tool provides',
   interpretation: 'an interpretation presented as data',

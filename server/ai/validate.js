@@ -13,6 +13,9 @@
 //   • science   — no composition, habitable-zone placement or life claims
 //                 presented as fact; speculation must be hedged
 //   • sources   — citations, links and planet ids must come from the evidence
+//   • entities  — a value must belong to the object the claim gives it to
+//                 (the Sun is not a host star; a planet's radius is not its
+//                 star's), using the owners tagged on the evidence (entities.js)
 //   • SUNFALL   — a volume equivalence is never described as packing planets
 //                 into the Sun, and no volume count is given unless a tool
 //                 provided it (packing.js)
@@ -20,6 +23,7 @@
 // It never fixes an answer: it reports errors so the caller can retry or
 // fall back. Fully deterministic; no model involved.
 
+import { ATTRIBUTED_UNITS, compatible, describeEntity, mentions, subjectAt } from './entities.js'
 import { isVolumeEquivalence, packingClaims, splitSentences, volumeCounts } from './packing.js'
 import { CONSTELLATIONS } from './tools/catalog.js'
 import { planetLinks } from './tools/format.js'
@@ -161,14 +165,14 @@ export function extractNumbers(text) {
 // ── Evidence ───────────────────────────────────────────────────────────────
 // Reference constants an answer may quote. Earth's own "1 R⊕" etc. are left
 // out on purpose: they would let any value near 1 pass as a constant.
-const CONSTANTS = [[365.25, 'days'], [5.51, 'g/cm³'], [317.83, 'M⊕'], [11.209, 'R⊕'], [3.26156, 'light-years'], [9.81, 'm/s²'], [9.80665, 'm/s²']]
+const CONSTANTS = [[365.25, 'days', 'earth'], [5.51, 'g/cm³', 'earth'], [317.83, 'M⊕', 'jupiter'], [11.209, 'R⊕', 'jupiter'], [3.26156, 'light-years'], [9.81, 'm/s²', 'earth'], [9.80665, 'm/s²', 'earth']]
 
 /**
  * Index every number, label, source, link and planet in the tool results.
  * @param {{ name: string, args?: object, result: object }[]} toolResults
  */
 export function buildEvidence(toolResults, { question = '' } = {}) {
-  const ev = { numbers: [], strings: new Set(), names: new Set(), planets: new Map(), sources: new Map(), urls: new Set(), types: new Map(), hz: new Map(), hzHosts: new Map() }
+  const ev = { numbers: [], strings: new Set(), names: new Set(), planets: new Map(), sources: new Map(), urls: new Set(), types: new Map(), hz: new Map(), hzHosts: new Map(), stars: new Set(), hosts: new Map() }
   const addNumber = (value, unit, status, extra = {}) => {
     if (typeof value === 'number' && Number.isFinite(value)) ev.numbers.push({ value, unit: canonUnit(unit), status, ...extra })
   }
@@ -182,15 +186,21 @@ export function buildEvidence(toolResults, { question = '' } = {}) {
     ev.strings.add(s)
     // display/basis strings restate values that are indexed with their own status.
     if (key === 'display' || key === 'basis') return
-    for (const n of extractNumbers(stripNames(s, ev.names))) addNumber(n.value, n.unit, status === 'established' ? 'established' : 'reference')
+    // Numbers in texts are context (thresholds, notes), not the record's own
+    // measurements; reference texts that name Earth belong to Earth.
+    const own = /\bEarth\b/.test(s) ? { kind: 'earth', name: 'Earth' } : null
+    for (const n of extractNumbers(stripNames(s, ev.names))) addNumber(n.value, n.unit, status === 'established' ? 'established' : 'reference', { entity: own })
   }
 
-  const walk = (node, status, unit, key) => {
+  // Each number keeps the entity it belongs to (planet, star/system, Earth),
+  // so a claim cannot attribute it to another object (checkAttribution).
+  const walk = (node, status, unit, key, entity = null, field = null) => {
     if (node == null) return
-    if (typeof node === 'number') return void addNumber(node, unit, status ?? 'catalog')
+    if (typeof node === 'number') return void addNumber(node, unit, status ?? 'catalog', { entity })
     if (typeof node === 'string') return void (key === 'source' ? addSource(node) : addText(node, status, key))
-    if (Array.isArray(node)) return void node.forEach((n) => walk(n, status, unit, key))
+    if (Array.isArray(node)) return void node.forEach((n) => walk(n, status, unit, key, entity, field))
     if (typeof node !== 'object') return
+    entity = entityOf(node, key, entity)
 
     if (typeof node.name === 'string' && typeof node.id === 'string' && !ev.planets.has(node.id)) {
       const links = planetLinks({ id: node.id, name: node.name, host: node.host ?? '' })
@@ -211,25 +221,52 @@ export function buildEvidence(toolResults, { question = '' } = {}) {
     const own = typeof node.status === 'string' && PROVENANCE.has(node.status) ? node.status : node.basis === 'established' ? 'established' : status
     const ownUnit = typeof node.unit === 'string' ? node.unit : unit
     if (typeof node.value === 'number' && own) {
-      addNumber(node.value, ownUnit, own, { uncertainty: node.uncertainty ?? null, limit: node.limit ?? null, source: typeof node.source === 'string' ? node.source : node.source?.label })
+      addNumber(node.value, ownUnit, own, { uncertainty: node.uncertainty ?? null, limit: node.limit ?? null, source: typeof node.source === 'string' ? node.source : node.source?.label, entity })
     }
     for (const [k, v] of Object.entries(node)) {
       if (k === 'value' || k === 'uncertainty' || k === 'status' || k === 'unit') continue
-      // Keys of comparison maps are planet names.
-      if (k === 'values' || k === 'relativeToEarth' || k === 'relativeToFirst') Object.keys(v ?? {}).forEach((n) => ev.names.add(n))
-      walk(v, own, ownUnit, k)
+      // Keys of comparison maps are planet names; a 'star.*' row belongs to that planet's host.
+      if (k === 'values' || k === 'relativeToEarth' || k === 'relativeToFirst') {
+        for (const [name, item] of Object.entries(v ?? {})) {
+          ev.names.add(name)
+          const owner = String(key ?? '').startsWith('star.') ? { kind: 'star', name: ev.hosts.get(name) ?? null } : { kind: 'planet', name }
+          walk(item, own, ownUnit, k, owner, key)
+        }
+        continue
+      }
+      walk(v, own, ownUnit, k, entity, field)
     }
   }
+
+  // Whose values a node holds: a planet record, a star, a system.
+  const entityOf = (node, key, parent) => {
+    const host = typeof node.host === 'string' ? node.host : null
+    if (key === 'star' || /^star[A-Z]/.test(key ?? '')) return { kind: 'star', name: (typeof node.name === 'string' && key === 'star' ? node.name : null) ?? parentHost(parent) }
+    if (key === 'system') return { kind: 'star', name: parentHost(parent) }
+    // A habitable zone belongs to the star; its planet… fields stay the planet's.
+    if (key === 'habitableZone') return { kind: 'star', name: parentHost(parent), planet: parent?.kind === 'planet' ? parent.name : null }
+    if (/^planet[A-Z]/.test(key ?? '') && parent?.planet) return { kind: 'planet', name: parent.planet, host: parent.name }
+    if (typeof node.id === 'string' && typeof node.name === 'string') return { kind: 'planet', name: node.name, host }
+    if (typeof node.planet === 'string' && typeof node.id === 'string') return { kind: 'planet', name: node.planet, host }
+    if (host && !parent && Array.isArray(node.planets) && node.star) return { kind: 'star', name: host }
+    return parent
+  }
+  const parentHost = (e) => (e?.kind === 'star' ? e.name : e?.host ?? null)
   // Names first so numbers inside names are not indexed as values.
   const collectNames = (node) => {
     if (!node || typeof node !== 'object') return
     if (Array.isArray(node)) return node.forEach(collectNames)
     for (const k of ['name', 'host', 'planet']) if (typeof node[k] === 'string') ev.names.add(node[k])
+    if (typeof node.host === 'string') {
+      ev.stars.add(node.host)
+      const p = typeof node.name === 'string' && typeof node.id === 'string' ? node.name : typeof node.planet === 'string' ? node.planet : null
+      if (p) ev.hosts.set(p, node.host)
+    }
     Object.values(node).forEach(collectNames)
   }
   for (const r of toolResults) collectNames(r.result)
   for (const r of toolResults) walk(r.result, null, null, null)
-  for (const [value, unit] of CONSTANTS) addNumber(value, unit, 'constant')
+  for (const [value, unit, owner] of CONSTANTS) addNumber(value, unit, 'constant', { entity: owner ? { kind: owner, name: owner } : null })
   for (const n of extractNumbers(stripNames(question, ev.names))) addNumber(n.value, n.unit, 'user')
   return ev
 }
@@ -255,6 +292,13 @@ const MONTH_RE = `(${MONTHS.join('|')}|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|
 const HUMAN_DATE_RE = new RegExp(`\\b(?:${MONTH_RE}\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(\\d{4})|(\\d{1,2})(?:st|nd|rd|th)?\\s+${MONTH_RE},?\\s+(\\d{4}))(?:,?\\s*(?:at\\s+)?(\\d{1,2}):(\\d{2})(?:\\s*UTC)?)?`, 'gi')
 const MONTH_NAMES = new Set([...MONTHS, 'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sep', 'sept', 'oct', 'nov', 'dec'])
 const monthIndex = (m) => MONTHS.findIndex((full) => full.startsWith(m.toLowerCase().replace('.', '').slice(0, 3)))
+
+/** Names and designations blanked with letters of the same length, so number positions stay valid. */
+function maskSameLength(text, ms) {
+  let s = String(text)
+  for (const m of ms) s = s.slice(0, m.index) + 'x'.repeat(m.end - m.index) + s.slice(m.end)
+  return s.replace(DESIGNATION_RE, (d) => 'x'.repeat(d.length))
+}
 
 function stripNames(text, names) {
   let s = String(text ?? '')
@@ -377,6 +421,7 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
     })
   })
   checkPacking()
+  checkAttribution()
   for (const id of answer.planets ?? []) {
     if (!ev.planets.has(id)) fail({}, 'planet-ref', `Planet id "${id}" is not in the tool results`)
     else referenced.add(id)
@@ -627,6 +672,39 @@ export function validateAnswer(answer, toolResults, { question = '', requireRefe
       if (!ok) {
         const actual = candidates[0].names.indexOf(subject) + 1
         fail(where, 'ranking', `${subject} is number ${actual} in the search sorted by ${sortBy}, not ${rank}`)
+      }
+    }
+  }
+
+  // Entity attribution (entities.js): each quantity with a physical unit must
+  // belong to the object the sentence attributes it to.
+  function checkAttribution() {
+    const names = { planets: [...ev.planets.values()].map((p) => p.name), stars: [...ev.stars] }
+    let carried = null
+    let section = -1
+    for (const { text, where } of claimTexts) {
+      if (where.section !== section) {
+        carried = null
+        section = where.section
+      }
+      for (const sentence of splitSentences(text)) {
+        const ms = mentions(sentence, names)
+        let failed = false
+        for (const n of extractNumbers(maskSameLength(sentence, ms))) {
+          if (failed || !n.unit || !ATTRIBUTED_UNITS.has(n.unit)) continue
+          const candidates = ev.numbers.filter((e) => sameNumber(n.str, e.value) && (!e.unit || e.unit === n.unit))
+          if (!candidates.length) continue // the number rule reports it
+          const subject = subjectAt(sentence, n.index, ms, carried)
+          if (!subject || candidates.some((e) => compatible(subject, e.entity))) continue
+          const owners = [...new Set(candidates.map((e) => e.entity && describeEntity(e.entity)).filter(Boolean))]
+          fail(
+            where,
+            'attribution',
+            `${n.str} ${n.unit} is given to ${describeEntity(subject)}, but in the tool results it belongs to ${owners.join(', ')}. Attribute every value to the object it was measured for: the Sun is not the planet's host star, and a planet's values are not its star's`,
+          )
+          failed = true
+        }
+        carried = ms[0] ?? (ms.length ? carried : /\b(?:it|its)\b/i.test(sentence) ? carried : null)
       }
     }
   }
