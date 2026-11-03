@@ -22,6 +22,7 @@
 import { CONCEPTS, findConceptsIn } from './knowledge/concepts.js'
 import { LimitError } from './limits.js'
 import { ProviderError } from './featherless.js'
+import { CAPACITY_CODE, createCapacityCooldown } from './capacity.js'
 import { FINAL_INSTRUCTION, ISSUE_LABELS, repairPrompt, systemPrompt } from './prompts.js'
 import { findMentions } from './tools/catalog.js'
 import { runTool, TOOL_DEFINITIONS } from './tools/index.js'
@@ -104,6 +105,10 @@ const normQuestion = (q) => q.toLowerCase().replace(/\s+/g, ' ').replace(/[?!.]+
 export function createAstronomer({ config, client, limiter, getToolContext, log = () => {}, now = Date.now }) {
   const L = config.limits
   const cache = new Map()
+  // Server-wide: after "capacity_exhausted" the primary model is skipped for
+  // a few minutes, then probed by one question (capacity.js).
+  const cooldown = createCapacityCooldown({ now })
+  const hasFallback = Boolean(config.fallbackModel) && config.fallbackModel !== config.model
 
   const cacheGet = (key) => {
     const hit = cache.get(key)
@@ -187,8 +192,17 @@ export function createAstronomer({ config, client, limiter, getToolContext, log 
     emit('admitted')
     const deadline = AbortSignal.timeout(L.AI_REQUEST_TIMEOUT_MS)
     const runSignal = signal ? AbortSignal.any([signal, deadline]) : deadline
-    const stats = { calls: 0, costUsd: 0, providerErrors: [], fallbackUsed: false }
-    let model = config.model
+    const stats = { calls: 0, costUsd: 0, providerErrors: [], fallbackUsed: false, primarySkipped: false }
+    // While the primary model is cooling down after "capacity_exhausted",
+    // start on the fallback; that counts as this question's one fallback.
+    const choice = hasFallback ? cooldown.choose() : { usePrimary: true, probe: false }
+    let probe = choice.probe
+    let model = choice.usePrimary ? config.model : config.fallbackModel
+    if (!choice.usePrimary) {
+      stats.fallbackUsed = true
+      stats.primarySkipped = true
+      emit('fallback', { from: config.model, to: config.fallbackModel, reason: 'cooldown' })
+    }
     let result
     try {
       result = await run()
@@ -200,8 +214,9 @@ export function createAstronomer({ config, client, limiter, getToolContext, log 
       }
       throw err
     } finally {
+      if (probe) cooldown.released() // the probe never reached a verdict (cancelled, timed out, budget…)
       ticket.release()
-      log({ event: 'ask', status: result?.status ?? 'error', model, fallbackUsed: stats.fallbackUsed, calls: stats.calls, costUsd: Number(stats.costUsd.toFixed(6)), providerErrors: stats.providerErrors, ms: now() - started })
+      log({ event: 'ask', status: result?.status ?? 'error', model, fallbackUsed: stats.fallbackUsed, ...(stats.primarySkipped ? { primarySkipped: true } : {}), calls: stats.calls, costUsd: Number(stats.costUsd.toFixed(6)), providerErrors: stats.providerErrors, ms: now() - started })
     }
     if (cacheKey && result.status !== 'unverified') cachePut(cacheKey, result)
     return { ...result, ms: now() - started }
@@ -218,11 +233,21 @@ export function createAstronomer({ config, client, limiter, getToolContext, log 
         try {
           const r = await client.chat({ model, messages, tools, maxTokens: L.AI_MAX_OUTPUT_TOKENS, timeoutMs: Math.min(L.AI_CALL_TIMEOUT_MS, remaining), signal: runSignal })
           stats.costUsd += ticket.settleCall(r.usage.costUsd)
+          if (hasFallback && model === config.model) {
+            cooldown.succeeded() // the primary model has capacity again
+            probe = false
+          }
           return r
         } catch (err) {
           stats.costUsd += ticket.settleCall(null)
           if (!(err instanceof ProviderError)) throw err
           stats.providerErrors.push({ model, code: err.code, ...(err.providerCode ? { providerCode: err.providerCode } : {}) })
+          if (hasFallback && model === config.model) {
+            // Only "capacity_exhausted" starts (or restarts) the cooldown.
+            if (err.providerCode === CAPACITY_CODE) cooldown.capacity()
+            else if (probe) cooldown.released()
+            probe = false
+          }
           // Fallback only for retryable failures, once, and then stay on it.
           if (err.retryable && !stats.fallbackUsed && model !== config.fallbackModel && !runSignal.aborted) {
             stats.fallbackUsed = true
